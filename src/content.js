@@ -175,6 +175,11 @@ module.exports = {
     asof: "Confluence 11/12 · GSP DB 11/11 기준",
     modes: { plan: "현행 계획", planSub: "11/17 종료", changed: "제안", changedSub: "연장 · 분리" },
     changelog: [
+      { v: "v1.1", at: "2026.11.14", items: [
+        "화면 편집 기능 추가 — 상단 바 ✎ 편집에서 글자 수정, 도형(사각형 · 원 · 선 · 화살표 · 글상자), 블록 배경 · 글자색 변경",
+        "수정 내용은 edits.json 에 저장되어 git(dvt-board)에 커밋되고, 자동 배포로 사이트에 반영 (저장은 GitHub 토큰이 있는 편집자만 가능)",
+        "파비콘 추가. 보드의 숫자 · 근거 데이터는 v1 과 동일",
+      ] },
       { v: "v1", at: "2026.11.14", items: [
         "1 · 2 · 3차 DVT 결과(Confluence)와 PM 정례 10/07 ~ 11/11, E2E 사전준비, GSP DB 이슈트래킹을 한 보드로 정리",
         "NT 원인을 원인 제공 조직(TMC · TMKR 측 협력사 · LG U+ · Dasan)별로 분류",

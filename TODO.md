@@ -2,7 +2,7 @@
 
 - 공개 주소: https://gsp-dvt.vercel.app (Vercel 프로젝트 `gsp-dvt`, 팀 vibe-code-class, 로그인 보호 꺼짐)
 - 브랜치: `ChadKim0119/ccb` 의 `dvt-board` (main과 이력이 이어지지 않은 독립 브랜치, main은 acos-ccb 보드)
-- 현재 버전: v1 (2026.11.14) · 메인 5장 + Appendix 7장
+- 현재 버전: v1.1 (2026.11.14, v1 + 화면 편집 기능·파비콘. 데이터 갱신은 v2 로) · 메인 5장 + Appendix 7장
 - 데이터 기준: Confluence GSP 3차 DVT 결과 v4(11/12 누적), PM 정례 10/07·10/21·10/28·11/03·11/11, E2E 사전준비(11/11), GSP DB 이슈트래킹(11/11)
 - 스타일·엔진 원본: acos-ccb 핸드오프 문서 https://claude.ai/artifact/Jb2H7fU6BsKfnhW3UA2qbp (구성 요소 1~7번 엔진 재사용)
 
