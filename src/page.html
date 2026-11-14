@@ -329,7 +329,7 @@ body.staged .page.on { height: 800px; overflow-y: auto; overscroll-behavior: con
 .pg-back:hover, .p-back:hover { border-color: var(--ink); }
 .pg-back svg, .p-back svg { width: 16px; height: 16px; }
 .pg-back[hidden] { display: none; }
-.r5steps { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 10px; margin: 10px 0 4px; }
+.r5steps { display: grid; grid-template-columns: 1fr 1fr 1fr auto auto; gap: 10px; margin: 10px 0 4px; }
 .r5steps button { text-align: left; border: 1px solid var(--line); background: var(--paper); border-radius: 10px; padding: 9px 12px; cursor: pointer; font: inherit; color: var(--ink-2); transition: border-color .3s, background .3s, color .3s; }
 .r5steps button b { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--ink); }
 .r5steps button b .num { display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: var(--plan-wash); font-size: 12px; }
@@ -347,11 +347,33 @@ body.staged .page.on { height: 800px; overflow-y: auto; overscroll-behavior: con
 .st2 .r5-strike, .st3 .r5-strike, .st2 .r5-s2, .st3 .r5-s2, .st3 .r5-s3 { opacity: 1; }
 .st2 .r5-pl, .st3 .r5-pl { opacity: .45; }
 .r5-pl { transition: opacity .5s .4s; }
-.r5-arc { stroke-dasharray: 100; stroke-dashoffset: 100; opacity: 0; transition: stroke-dashoffset 1.2s var(--ease), opacity .2s; }
-.st3 .r5-arc { stroke-dashoffset: 0; opacity: 1; }
-.st3 .r5-arc:nth-of-type(2) { transition-delay: .3s; }
+.r5-arc { stroke-dasharray: 100; stroke-dashoffset: 100; opacity: 0; transition: stroke-dashoffset 1s var(--ease), opacity .15s; }
+.r5-head { opacity: 0; transition: opacity .2s; }
+.st2 .r5-role, .st3 .r5-role, .st3 .r5-move { stroke-dashoffset: 0; opacity: 1; }
+.st2 .r5-role, .st3 .r5-role { transition-delay: .6s; }
+.st2 .r5-role-h, .st3 .r5-role-h { opacity: 1; transition-delay: 1.6s; }
+.st3 .r5-move.m1 { transition-delay: .35s; }
+.st3 .r5-move-h.m0 { opacity: 1; transition-delay: 1s; }
+.st3 .r5-move-h.m1 { opacity: 1; transition-delay: 1.35s; }
+.r5-rolelab { transition-delay: 1.2s; }
+.st3 .r5-role, .st3 .r5-role-h, .st3 .r5-rolelab { opacity: .18; transition-delay: 0s; }
+#app > section.page:focus { outline: none; }
 .r5-arclab { transition-delay: 1s; }
-.r5bottom { display: grid; grid-template-columns: 1.5fr 1fr; gap: 24px; margin-top: 4px; align-items: start; }
+.r5box { margin-top: 12px; padding: 4px 18px 6px; background: var(--wash); border: 1px solid var(--line); border-radius: 12px; }
+.r5box .tbl { background: transparent; }
+.r5box .tbl th:nth-child(4), .r5box .tbl td:nth-child(4) { width: 112px; text-align: right; }
+.r5cmp tr.r5big td { font-size: 27px; font-weight: 700; padding-top: 8px; padding-bottom: 8px; vertical-align: middle; }
+.r5cmp tr.r5big td:first-child { font-size: 14px; }
+.r5evb { border: 1px solid var(--accent); background: var(--paper); color: var(--accent-deep); border-radius: 999px; padding: 4px 12px; font: inherit; font-size: 12.5px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+.r5evb:hover { background: var(--accent-wash); }
+.r5hint { align-self: center; font-size: 12px; color: var(--ink-3); white-space: nowrap; }
+.r5evl { list-style: none; margin: 10px 0 0; padding: 0; }
+.r5evl li { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.r5evl b { display: block; font-size: 14px; }
+.r5evl small { display: block; font-size: 12.5px; color: var(--ink-2); }
+.r5btn { flex: none; border: 1px solid var(--ink); border-radius: 999px; padding: 4px 12px; font-size: 12.5px; font-weight: 700; color: var(--ink); text-decoration: none; white-space: nowrap; }
+.r5btn:hover { background: var(--ink); color: #fff; }
+.r5btn.ext { border-color: var(--line); color: var(--ink-2); }
 .r5cmp td, .r5cmp th { padding-top: 6px; padding-bottom: 6px; }
 .r5cmp td { font-size: 13.5px; vertical-align: top; }
 .r5cmp th { font-size: 12.5px; }
@@ -361,7 +383,7 @@ body.staged .page.on { height: 800px; overflow-y: auto; overscroll-behavior: con
 .r5ev li { padding: 2px 0; line-height: 1.35; }
 .r5ev a { color: var(--accent-deep); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
 .r5ev small { display: block; color: var(--ink-3); font-size: 11.5px; }
-@media (max-width: 980px) { .r5steps, .r5bottom, .r5ev { grid-template-columns: 1fr; } }
+@media (max-width: 980px) { .r5steps { grid-template-columns: 1fr; } }
 .wl-stg { list-style: none; margin: 0 0 6px; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--ink); }
 .wl-stg li { padding: 10px 16px 0 0; min-width: 0; }
 .wl-stg li + li { padding-left: 16px; border-left: 1px solid var(--line); }
@@ -644,6 +666,7 @@ body.open .panel { transform: none; }
     var P = E.planTotal, A2 = E.actualTotal, Dl = E.deltaTotal, K = 7.4, BASE = 300, cx = [175, 455, 735, 1015], bw = 88;
     var aSum = function (cat, m) { return Math.round(E.actual.filter(function (r) { return r.cat === cat; }).reduce(function (s, r) { return s + r.v[m]; }, 0) * 10) / 10; };
     var y = function (v) { return BASE - v * K; };
+    var head = function (x, yy, cls) { return '<path class="r5-head ' + cls + '" d="M' + (x - 6.5) + ' ' + (yy - 11) + 'L' + (x + 6.5) + ' ' + (yy - 11) + 'L' + x + ' ' + (yy + 1) + 'z" fill="#e6007e"/>'; };
     var tx = function (x, yy, t, o) { o = o || {}; return '<text x="' + x + '" y="' + yy + '" text-anchor="' + (o.a || "middle") + '" font-size="' + (o.fs || 13) + '" font-weight="' + (o.fw || 600) + '" fill="' + (o.c || "var(--ink)") + '"' + (o.cls ? ' class="' + o.cls + '"' : "") + (o.halo ? ' stroke="var(--paper)" stroke-width="5" paint-order="stroke"' : "") + (o.attr || "") + '>' + t + '</text>'; };
     var svg = '<svg class="r5svg" viewBox="0 0 1180 382" role="img" aria-label="8 ~ 9월 계약 인력은 ACOS 변경 개발을 수행했고, 10 ~ 11월 DVT는 계획에 없던 신규 투입으로 수행"><defs>' +
       '<pattern id="r5hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="7" height="7" fill="#2460bf"/><line x1="0" y1="0" x2="0" y2="7" stroke="#e6007e" stroke-width="3"/></pattern>' +
@@ -658,7 +681,7 @@ body.open .panel { transform: none; }
         tx(px + bw / 2, y(p) - 8, '<tspan data-sp="r5p' + (early ? 0 : 1) + '">' + f1(p) + '</tspan>', { c: "var(--ink-2)", halo: 1 });
       if (early) svg += tx(px + bw / 2, y(p) + 30, "DVT 개발", { fs: 13, c: "var(--ink-2)", cls: "r5-pl" }) + tx(px + bw / 2, y(p) + 48, "· 대응", { fs: 13, c: "var(--ink-2)", cls: "r5-pl" }) +
         '<line class="r5-strike" x1="' + (px + 10) + '" x2="' + (px + bw - 10) + '" y1="' + (y(p) + 34) + '" y2="' + (y(p) + 34) + '" stroke="#e6007e" stroke-width="2.5"/>' +
-        tx(px + bw / 2, y(p) + 76, "역할 변경", { fs: 12, c: "#a3005a", cls: "r5-s2" }) + '<path class="r5-s2" d="M' + (px + bw / 2 + 2) + ' ' + (y(p) + 86) + 'q 30 20 ' + (bw / 2 + 24) + ' 6" fill="none" stroke="#e6007e" stroke-width="2" marker-end="url(#r5arrow)"/>';
+        (function () { var x1 = px + bw * 0.72, y1 = y(p) - 26, x2 = ax + bw / 2, y2 = y(a) - 28, pk = Math.min(y1, y2) - 34; return '<path class="r5-arc r5-role" pathLength="100" d="M' + x1 + ' ' + y1 + ' C ' + x1 + ' ' + pk + ', ' + x2 + ' ' + pk + ', ' + x2 + ' ' + y2 + '" fill="none" stroke="#e6007e" stroke-width="2.2"/>' + head(x2, y2, "r5-role-h") + tx((x1 + x2) / 2, pk + 4, "역할 변경", { fs: 12, c: "#a3005a", cls: "r5-s2 r5-rolelab", halo: 1 }); })();
       else svg += tx(px + bw / 2, y(p) - 26, "E2E 최소 인력", { fs: 12, fw: 500, c: "var(--ink-2)" });
       svg += '</g>';
       svg += '<line class="r5-lvl" x1="' + (px - 8) + '" x2="' + (ax + bw + 8) + '" y1="' + y(p) + '" y2="' + y(p) + '" stroke="var(--ink)" stroke-width="1.5" stroke-dasharray="5 4"/>';
@@ -670,13 +693,13 @@ body.open .panel { transform: none; }
         svg += '<rect x="' + ax + '" y="' + (yy - qa * K) + '" width="' + bw + '" height="' + qa * K + '" fill="#b55708"/>' + tx(ax + bw / 2, yy - qa * K / 2 + 5, f1(qa), { c: "#fff", fs: 12 }); yy -= qa * K;
         svg += '<rect x="' + ax + '" y="' + (yy - dv * K) + '" width="' + bw + '" height="' + dv * K + '" fill="#2460bf"/>';
         if (a > p) svg += '<rect x="' + ax + '" y="' + y(a) + '" width="' + bw + '" height="' + (a - p) * K + '" fill="url(#r5hatch)" opacity=".55"/>';
-        var mid = a > p ? (y(p) + yy) / 2 - 6 : yy - dv * K / 2;
-        svg += tx(ax + bw / 2, mid - 10, "ACOS 규격", { c: "#fff", fs: 12.5 }) + tx(ax + bw / 2, mid + 7, "변경 개발", { c: "#fff", fs: 12.5 }) + tx(ax + bw / 2, mid + 26, f1(dv), { c: "#fff", fs: 12 });
+        var mid = a > p ? (y(p) + yy) / 2 - 2 : yy - dv * K / 2;
+        svg += tx(ax + bw / 2, mid - 18, "GS · e-Care", { c: "#fff", fs: 12 }) + tx(ax + bw / 2, mid - 2, "변경 개발 ·", { c: "#fff", fs: 12 }) + tx(ax + bw / 2, mid + 14, "내부 테스트", { c: "#fff", fs: 12 }) + tx(ax + bw / 2, mid + 32, f1(dv), { c: "#fff", fs: 12 });
       } else {
         svg += '<rect x="' + ax + '" y="' + y(p) + '" width="' + bw + '" height="' + p * K + '" fill="var(--plan)"/>';
         svg += '<rect x="' + ax + '" y="' + y(a) + '" width="' + bw + '" height="' + (a - p) * K + '" rx="0" fill="#e6007e"/>';
         var mm = y(a) + (a - p) * K / 2;
-        svg += tx(ax + bw / 2, mm - 10, "신규 투입", { c: "#fff", fs: 12.5 }) + tx(ax + bw / 2, mm + 7, "DVT 개발", { c: "#fff", fs: 12.5 });
+        svg += tx(ax + bw / 2, mm - 10, "DVT 대응/개발", { c: "#fff", fs: 12.5 }) + tx(ax + bw / 2, mm + 7, "(신규 투입)", { c: "#fff", fs: 12 });
       }
       svg += tx(ax + bw / 2, y(a) - 8, f1(a), { halo: 1 }) + '</g>';
       // contract level line + delta
@@ -684,37 +707,53 @@ body.open .panel { transform: none; }
       svg += tx(px + bw / 2, BASE + 20, "계약", { fs: 12, fw: 500, c: "var(--ink-2)" }) + tx(ax + bw / 2, BASE + 20, "수행", { fs: 12, fw: 500, c: "var(--ink-2)" }) + tx(c, BASE + 44, E.months[m], { fs: 15 });
     });
     // DVT work moves right: arcs from the 8 · 9월 contract bars to the 10 · 11월 bars
-    var arc = function (m1, m2, peak, lab, lx, ly) { var x1 = cx[m1] - bw / 2 - 6, y1 = y(P[m1]) - 26, x2 = cx[m2] + bw / 2 + 6, y2 = y(A2[m2]) - 28; return '<path class="r5-arc" pathLength="100" d="M' + x1 + ' ' + y1 + ' C ' + x1 + ' ' + peak + ', ' + x2 + ' ' + peak + ', ' + x2 + ' ' + y2 + '" fill="none" stroke="#e6007e" stroke-width="2.2" marker-end="url(#r5arrow)"/>' + tx(lx, ly, lab, { fs: 12.5, c: "#a3005a", cls: "r5-s3 r5-arclab" }); };
-    svg += arc(0, 2, -14, "8월에 못 한 DVT 개발 업무", 545, 16) + arc(1, 3, 14, "9월에 못 한 DVT 개발 업무", 1010, 56);
-    svg += '<g class="r5-s2">' + tx(315, BASE + 72, "① 같은 인력 · 업무 변경: DVT 개발 → ACOS 규격 변경 개발", { fs: 13, c: "#2460bf" }) + '</g>';
+    var arc = function (m1, m2, peak, lab, lx, ly, n) { var x1 = cx[m1] - bw - 6 + bw * 0.28, y1 = y(P[m1]) - 26, x2 = cx[m2] + bw / 2 + 6, y2 = y(A2[m2]) - 28; return '<path class="r5-arc r5-move m' + n + '" pathLength="100" d="M' + x1 + ' ' + y1 + ' C ' + x1 + ' ' + peak + ', ' + x2 + ' ' + peak + ', ' + x2 + ' ' + y2 + '" fill="none" stroke="#e6007e" stroke-width="2.2"/>' + head(x2, y2, "r5-move-h m" + n) + tx(lx, ly, lab, { fs: 12.5, c: "#a3005a", cls: "r5-s3 r5-arclab", halo: 1 }); };
+    svg += arc(0, 2, -14, "8월에 못 한 DVT 개발 업무", 545, 16, 0) + arc(1, 3, 14, "9월에 못 한 DVT 개발 업무", 1010, 56, 1);
+    svg += '<g class="r5-s2">' + tx(315, BASE + 72, "① 같은 인력 · 업무 변경: DVT 개발 → ACOS 규격에 따른 GS · e-Care 변경 개발 · 내부 테스트", { fs: 13, c: "#2460bf" }) + '</g>';
     svg += '<g class="r5-s3">' + tx(875, BASE + 72, "② 인력 계획이 없던 기간에 신규 투입 = 추가 개발", { fs: 13, c: "#a3005a" }) + '</g></svg>';
 
     var steps = [
       ["계약 계획", "8 ~ 9월 DVT 개발 · 대응 " + f1(P[0] + P[1]) + " MM, 10 ~ 11월은 E2E 최소 인력 " + f1(P[2] + P[3]) + " MM"],
-      ["8 ~ 9월 업무 변경", "같은 인력이 ACOS 규격 변경에 따른 GS · e-Care 변경 개발 수행"],
+      ["8 ~ 9월 업무 변경", "같은 인력이 ACOS 규격에 따른 GS · e-Care 변경 개발 · 내부 테스트 수행"],
       ["10 ~ 11월 신규 투입", "DVT 업무는 이동, 수행 인력은 계획에 없던 기간에 새로 투입"],
     ];
-    var stepper = '<div class="r5steps" role="group" aria-label="단계">' + steps.map(function (st, i) { return '<button type="button" data-step="' + (i + 1) + '"><b><span class="num">' + (i + 1) + '</span>' + esc(st[0]) + '</b><small>' + esc(st[1]) + '</small></button>'; }).join("") + '<button type="button" class="r5replay" data-step="play" aria-label="처음부터 다시 보기">다시 보기 <kbd>Space</kbd></button></div>';
+    var stepper = '<div class="r5steps" role="group" aria-label="단계">' + steps.map(function (st, i) { return '<button type="button" data-step="' + (i + 1) + '"><b><span class="num">' + (i + 1) + '</span>' + esc(st[0]) + '</b><small>' + esc(st[1]) + '</small></button>'; }).join("") + '<button type="button" class="r5replay" data-step="1" aria-label="첫 단계로">처음으로</button><span class="r5hint">다음 단계 <kbd>Space</kbd></span></div>';
 
-    var conf = "https://toyotasystem.atlassian.net/wiki/spaces/GSP/pages/";
-    var cmp = '<table class="tbl r5cmp"><thead><tr><th></th><th>TMKR께서 보시는 관점 (당사 이해)</th><th>당사 입장</th></tr></thead><tbody>' +
-      '<tr><td class="nw"><b>8 ~ 9월</b><br><span class="num">계약 ' + f1(P[0] + P[1]) + ' → 수행 ' + f1(A2[0] + A2[1]) + '</span></td><td>계약 인력 ' + f1(P[0] + P[1]) + ' MM은 계약 범위이고, 초과분 8.10 MM만 ACOS 추가 개발</td><td><b>같은 생각입니다.</b> 다만 계약 인력 ' + f1(P[0] + P[1]) + ' MM은 DVT가 아닌 ACOS 규격 변경에 따른 GS · e-Care 변경 개발에 쓰였습니다. 인력은 그대로, 업무만 바뀌었습니다.</td></tr>' +
-      '<tr><td class="nw"><b>10 ~ 11월</b><br><span class="num">계약 ' + f1(P[2] + P[3]) + ' → 수행 ' + f1(A2[2] + A2[3]) + '</span></td><td>8 ~ 9월 DVT가 뒤로 밀린 것(순연)이므로 계약 범위</td><td>DVT 업무는 밀렸지만, 이를 맡을 계약 인력은 8 ~ 9월에 이미 변경 개발에 투입되었습니다. E2E 최소 인력 ' + f1(P[2] + P[3]) + ' MM만 계획된 기간에 인력을 새로 투입했으므로 <b>순연이 아닌 추가 개발</b>입니다.</td></tr>' +
-      '<tr class="tot"><td>추가 공수</td><td class="num">8.10 MM</td><td class="num"><span data-sum="r5d0" data-sp="r5tot" data-v="8.10">8.10</span> + <span data-sum="r5d1" data-sp="r5tot" data-v="29.00">29.00</span> = <mark data-sum="r5tot">37.10 MM</mark></td></tr></tbody></table>';
-    var ev = function (href, t, ext) { return '<li><a href="' + href + '"' + (ext ? ' target="_blank" rel="noopener"' : ' class="more"') + '>' + esc(t) + '</a>' + (ext ? ' <small>TMKR Confluence · Jira</small>' : "") + '</li>'; };
-    var evid = '<div class="r5ev"><div><h4>① 8 ~ 9월 업무 변경 근거</h4><ul>' + ev("#chgdev", "A4 8 ~ 9월 변경 개발 12개 항목") + ev("#spec", "A3 ACOS 규격 배포 이력 및 개발 범위 영향") + ev("#history", "A1 경과 및 공유 이력") + ev("https://toyotasystem.atlassian.net/browse/CHGE-21", "CHGE-21 ACOS 규격 확정 지연 변경 건", 1) + ev(conf + "946667570", "07.21 PM 정례회의 (CCB 등재)", 1) + '</ul></div>' +
-      '<div><h4>② 10 ~ 11월 신규 투입 근거</h4><ul>' + ev("#dvt-run", "A10 DVT 수행 실적") + ev("#dvt-staff", "A11 DVT 투입 인력 및 공수 산정") + ev("#dvt", "A5 DVT 일정 변경 및 수행 일정") + ev("#sheet", "4장 월별 투입 공수 표") + ev(conf + "1066434606", "09.30 PM 정례회의 (DVT 일정 시프트)", 1) + ev(conf + "1121189948", "11.03 PM 정례회의 (CCB 실무 검토)", 1) + '</ul></div></div>';
+    var evb = function (n) { return '<button type="button" class="r5evb" data-panel="r5ev:' + n + '">근거 자료 <span aria-hidden="true">›</span></button>'; };
+    var box = '<div class="r5box"><table class="tbl r5cmp"><thead><tr><th>구간</th><th>TMKR이 보는 관점 (당사 이해)</th><th>당사 입장</th><th>근거</th></tr></thead><tbody>' +
+      '<tr><td class="nw"><b>8 ~ 9월</b><br><span class="num">계약 ' + f1(P[0] + P[1]) + ' → 수행 ' + f1(A2[0] + A2[1]) + '</span></td><td>계약 인력 ' + f1(P[0] + P[1]) + ' MM은 계약 범위이고, 초과분 8.10 MM만 ACOS 추가 개발</td><td><b>같은 생각입니다.</b> 다만 계약 인력 ' + f1(P[0] + P[1]) + ' MM은 DVT가 아닌 ACOS 규격에 따른 GS · e-Care 변경 개발 · 내부 테스트에 쓰였습니다. 인력은 그대로, 업무만 바뀌었습니다.</td><td>' + evb(0) + '</td></tr>' +
+      '<tr><td class="nw"><b>10 ~ 11월</b><br><span class="num">계약 ' + f1(P[2] + P[3]) + ' → 수행 ' + f1(A2[2] + A2[3]) + '</span></td><td>8 ~ 9월 DVT가 뒤로 밀린 것(순연)이므로 계약 범위</td><td>DVT 업무는 밀렸지만, 이를 맡을 계약 인력은 8 ~ 9월에 이미 변경 개발에 투입되었습니다. E2E 최소 인력 ' + f1(P[2] + P[3]) + ' MM만 계획된 기간에 인력을 새로 투입했으므로 <b>순연이 아닌 추가 개발</b>입니다.</td><td>' + evb(1) + '</td></tr>' +
+      '<tr class="tot r5big"><td>추가 공수</td><td class="num">8.10 MM</td><td class="num" colspan="2"><span data-sum="r5d0" data-sp="r5tot" data-v="8.10">8.10</span> + <span data-sum="r5d1" data-sp="r5tot" data-v="29.00">29.00</span> = <mark data-sum="r5tot">37.10 MM</mark></td></tr></tbody></table></div>';
 
     return '<section class="sheet" id="reading"><div class="sh-top"><span class="sheet-no"><span class="pill main">메인</span><b>5</b> / 5 · 양사 시각 정리</span></div>' +
       '<h2>8 ~ 9월은 같은 인력의 업무 변경, 10 ~ 11월은 계획에 없던 신규 투입입니다</h2>' +
-      '<p class="lede">TMKR께서는 8 ~ 9월 순증 8.10 MM만 추가 개발로 보신다고 이해합니다. 공수 숫자는 그대로이고, 당사가 같은 숫자를 읽는 방식을 정리했습니다.</p>' +
-      stepper + '<div class="r5stage st3" id="r5stage"><div class="c-legend"><span><i style="background:var(--plan-wash);border:1.5px solid var(--plan)"></i>계약 계획</span><span><i class="sw c-dev"></i>ACOS 변경 개발</span><span><i class="sw c-dvt"></i>품질</span><span><i class="sw c-ux"></i>기획</span><span><i style="background:#e6007e"></i>신규 투입 (DVT 개발)</span><span><i style="border-top:2px dashed var(--ink);height:0;width:16px;border-radius:0;vertical-align:3px"></i>계약 수준</span><span>단위 MM</span></div>' + svg + '</div>' +
-      '<div class="r5bottom">' + cmp + evid + '</div></section>';
+      '<p class="lede">TMKR은 8 ~ 9월 순증 8.10 MM만 추가 개발로 보는 것으로 이해합니다. 공수 숫자는 그대로이며, 같은 숫자를 당사가 어떻게 읽는지 정리했습니다.</p>' +
+      stepper + '<div class="r5stage st1" id="r5stage"><div class="c-legend"><span><i style="background:var(--plan-wash);border:1.5px solid var(--plan)"></i>계약 계획</span><span><i class="sw c-dev"></i>GS · e-Care 변경 개발 · 내부 테스트</span><span><i class="sw c-dvt"></i>품질</span><span><i class="sw c-ux"></i>기획</span><span><i style="background:#e6007e"></i>DVT 대응/개발 (신규 투입)</span><span><i style="border-top:2px dashed var(--ink);height:0;width:16px;border-radius:0;vertical-align:3px"></i>계약 수준</span><span>단위 MM</span></div>' + svg + '</div>' +
+      box + '</section>';
   }
+  var R5CONF = "https://toyotasystem.atlassian.net/wiki/spaces/GSP/pages/";
+  var R5EV = [
+    { title: "8 ~ 9월 업무 변경 근거", lead: "8 ~ 9월 계약 인력이 DVT 대신 ACOS 규격에 따른 GS · e-Care 변경 개발과 내부 테스트를 수행했음을 보여주는 자료입니다.", items: [
+      ["#chgdev", "A4 8 ~ 9월 변경 개발 12개 항목", "변경 개발 항목별 내용과 공수 (162 MD)"],
+      ["#spec", "A3 ACOS 규격 배포 이력 및 개발 범위 영향", "최종 규격 07.27 수신, 변경 API와 영향 범위"],
+      ["#history", "A1 경과 및 공유 이력", "규격 변경부터 CCB 협의까지 일자별 경과와 출처"],
+      ["#sheet", "4장 월별 투입 공수 표", "8 ~ 9월 계약 대비 실제 투입, 숫자별 수행 업무"],
+      ["https://toyotasystem.atlassian.net/browse/CHGE-21", "CHGE-21 ACOS 규격 확정 지연 변경 건", "Jira 변경 관리 등록 (07.21)", 1],
+      [R5CONF + "946667570", "07.21 PM 정례회의", "추가 공수 발생 건 CCB 등재", 1],
+    ] },
+    { title: "10 ~ 11월 신규 투입 근거", lead: "계약상 E2E 최소 인력만 계획된 10 ~ 11월에 DVT 대응 · 개발 인력을 새로 투입했음을 보여주는 자료입니다.", items: [
+      ["#dvt-run", "A10 DVT 수행 실적", "1 · 2차 DVT 시험 결과, 일별 실적, 이슈 대응"],
+      ["#dvt-staff", "A11 DVT 투입 인력 및 공수 산정", "참여 인력 23명 구성과 월별 공수"],
+      ["#dvt", "A5 DVT 일정 변경 및 수행 일정", "DVT 일정 이동과 차수별 일정"],
+      ["#sheet", "4장 월별 투입 공수 표", "10 ~ 11월 계약 대비 실제 투입"],
+      [R5CONF + "1066434606", "09.30 PM 정례회의", "DVT 재계획, 변경 관리 후보에 DVT 일정 시프트", 1],
+      [R5CONF + "1121189948", "11.03 PM 정례회의", "DVT 2차 결과와 CCB 실무 검토", 1],
+    ] },
+  ];
   var r5timer = [];
   function r5set(n) { var st = $("r5stage"); if (!st) return; st.className = "r5stage st" + n; Array.prototype.forEach.call(document.querySelectorAll(".r5steps [data-step]"), function (b) { b.classList.toggle("on", b.getAttribute("data-step") === String(n)); b.setAttribute("aria-pressed", b.getAttribute("data-step") === String(n)); }); }
   function r5play() { r5timer.forEach(clearTimeout); r5timer = []; if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) { r5set(3); return; } r5set(1); r5timer.push(setTimeout(function () { r5set(2); }, 900)); r5timer.push(setTimeout(function () { r5set(3); }, 3000)); }
-  function r5next() { r5timer.forEach(clearTimeout); var st = $("r5stage"), n = st ? +st.className.replace(/\D/g, "") : 3; if (n >= 3) r5play(); else r5set(n + 1); }
+  function r5next() { var st = $("r5stage"), n = st ? +((st.className.match(/st(\d)/) || [0, 3])[1]) : 3; r5set(n >= 3 ? 1 : n + 1); }
 
   /* ── shared blocks (used on the page and in the side panel) ── */
   function table(head, rows, opt) { opt = opt || {}; return '<div class="scroll"><table class="tbl ' + (opt.cls || "") + '"><thead><tr>' + head.map(function (h, i) { return '<th class="' + ((opt.right || []).indexOf(i) >= 0 ? "r" : "") + '">' + esc(h) + '</th>'; }).join("") + '</tr></thead><tbody>' + rows.map(function (r) { return '<tr class="' + (opt.rowCls ? opt.rowCls(r) : "") + '">' + r.map(function (c, i) { return '<td class="' + ((opt.right || []).indexOf(i) >= 0 ? "r " : "") + ((opt.nowrap || []).indexOf(i) >= 0 ? "nw" : "") + '">' + (opt.raw ? c : esc(c)) + '</td>'; }).join("") + '</tr>'; }).join("") + '</tbody></table></div>'; }
@@ -924,6 +963,7 @@ body.open .panel { transform: none; }
       pbody += '<button type="button" class="more" data-panel="ev:' + pr.act + ':' + pm + '">실제 수행 업무 근거 보기</button>';
       return { kicker: "계약 시점 공수 상세 · " + E.months[pm], title: pr.team + " · " + pr.role, html: pbody };
     }
+    if (k[0] === "r5ev") { var g = R5EV[+k[1]]; return { kicker: "5장 근거 자료", title: g.title, html: '<p>' + esc(g.lead) + '</p><ul class="r5evl">' + g.items.map(function (it) { return '<li><div><b>' + esc(it[1]) + '</b><small>' + esc(it[2]) + '</small></div>' + (it[3] ? '<a class="r5btn ext" href="' + it[0] + '" target="_blank" rel="noopener">Confluence · Jira에서 열기</a>' : '<a class="r5btn" href="' + it[0] + '">페이지로 이동</a>'); }).join("") + '</ul><p class="mut" style="font-size:12.5px;margin-top:10px">Confluence · Jira 자료는 TMKR 계정 로그인이 필요합니다. 페이지로 이동한 뒤 상단 "이전 화면"으로 5장에 돌아올 수 있습니다.</p>' }; }
     if (k[0] === "doc-history") return { kicker: "장표 정보", title: "이 장표의 변경 이력", html: '<p>공개 이후 바뀐 내용입니다. 최신 버전이 위에 있습니다.</p><ol class="clog">' + D.meta.changelog.map(function (c, i) { return '<li><div class="hd"><b>' + esc(c.v) + '</b><span>' + esc(c.at) + '</span>' + (i === 0 ? '<span class="now">현재</span>' : "") + '</div><ul>' + c.items.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join("") + '</ul></li>'; }).join("") + '</ol>' };
     if (k[0] === "notice") return { kicker: "A1 · 근거", title: "추가 공수와 일정 변경 공유 이력", html: '<p>' + esc(A.history.message) + '</p>' + bHistory(["공수", "일정"]) };
     if (k[0] === "effort-detail") return { kicker: "A2 · 근거", title: A.effortDetail.title, html: '<p>' + esc(A.effortDetail.message) + '</p>' + bEffortDetail() };
@@ -1019,7 +1059,7 @@ body.open .panel { transform: none; }
     $("pg-back").hidden = trail.length === 0;
     window.scrollTo(0, 0); fit(); pages[i].scrollTop = 0;
     if (!opt.keepHash) { try { history.replaceState(null, "", "#" + pages[i].id); } catch (e) { /* hash is optional */ } }
-    if (pages[i].id === "reading") r5play(); else { r5timer.forEach(clearTimeout); }
+    if (pages[i].id === "reading") r5set(1);
   }
   function goId(id, opt) { for (var k = 0; k < pages.length; k++) if (pages[k].id === id) { go(k, opt); return true; } return false; }
   $("prev").addEventListener("click", function () { go(cur - 1); });
@@ -1048,7 +1088,7 @@ body.open .panel { transform: none; }
   document.addEventListener("click", function (ev) {
     if (sumEl) { var hit = ev.target.closest("[data-sum]"), again = hit === sumEl; clearSum(); ev.preventDefault(); if (!again && hit && pages[cur].contains(hit)) showSum(hit); return; }
     var sm = ev.target.closest("[data-sum]"); if (sm && pages[cur].contains(sm) && !document.body.classList.contains("open")) { ev.preventDefault(); showSum(sm); return; }
-    var r5b = ev.target.closest(".r5steps [data-step]"); if (r5b) { r5timer.forEach(clearTimeout); if (r5b.getAttribute("data-step") === "play") r5play(); else r5set(+r5b.getAttribute("data-step")); return; }
+    var r5b = ev.target.closest(".r5steps [data-step]"); if (r5b) { r5set(+r5b.getAttribute("data-step")); return; }
     var m = ev.target.closest("[data-set]"); if (m) { setMode(m.getAttribute("data-set")); return; }
     var g = ev.target.closest("[data-go]"); if (g) { go(+g.getAttribute("data-go"), { push: true }); return; }
     var t = ev.target.closest("[data-panel]");
@@ -1141,7 +1181,7 @@ body.open .panel { transform: none; }
     svg.setAttribute("width", W); svg.setAttribute("height", H); svg.setAttribute("viewBox", "0 0 " + W + " " + H); svg.innerHTML = h;
     var clean = function (t) { return String(t).replace(/\s*(MM|MD)$/, "").trim(); };
     var terms = parts.map(function (p, i) { var t = clean(txtOf(p)), v = numOf(t); if (i === 0) return t; return v !== null && v < 0 ? " − " + t.replace(/^[-−]/, "") : " + " + t.replace(/^\+/, ""); }).join("");
-    f.innerHTML = esc(terms + " = " + clean(txtOf(el))) + '<small>아무 곳이나 누르면 닫힘</small>';
+    f.innerHTML = esc(terms + " = " + clean(txtOf(el)));
     // put the formula where it covers none of the highlighted numbers
     var fw = f.offsetWidth, fh = f.offsetHeight, all = ps.concat([tr]);
     var hits = function (x, y) { return all.some(function (r) { return x < r.x + r.w && x + fw > r.x && y < r.y + r.h && y + fh > r.y; }); };
