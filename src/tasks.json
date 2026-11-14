@@ -1,0 +1,1576 @@
+{
+ "oct": [
+  {
+   "no": "1.1",
+   "task": "TSC-GC API Request Mapping – 요청 필드 비교",
+   "type": "분석/설계",
+   "md": 2,
+   "area": "ACOS Core"
+  },
+  {
+   "no": "1.2",
+   "task": "TSC-GC API Request Mapping – 필수값 및 데이터 형식 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "ACOS Core"
+  },
+  {
+   "no": "1.3",
+   "task": "TSC-GC API Request Mapping – 데이터Mapping 변경사항 반영",
+   "type": "구현/수정",
+   "md": 2,
+   "area": "ACOS Core"
+  },
+  {
+   "no": "1.4",
+   "task": "TSC-GC API Request Mapping – API 재호출 및 로그 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "ACOS Core"
+  },
+  {
+   "no": "2.1",
+   "task": "TSC-GB API Response Mapping – 응답 필드 비교",
+   "type": "분석/설계",
+   "md": 2,
+   "area": "ACOS Core"
+  },
+  {
+   "no": "2.2",
+   "task": "TSC-GB API Response Mapping – 결과코드 및 오류 유형 분석",
+   "type": "분석/설계",
+   "md": 2,
+   "area": "ACOS Core"
+  },
+  {
+   "no": "2.3",
+   "task": "TSC-GB API Response Mapping – 응답 데이터Parsing 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "ACOS Core"
+  },
+  {
+   "no": "2.4",
+   "task": "TSC-GB API Response Mapping – 오류 응답 재현 및 분석",
+   "type": "분석/설계",
+   "md": 2,
+   "area": "ACOS Core"
+  },
+  {
+   "no": "3.1",
+   "task": "Upsert Administrator – Admin 등록 선행조건 확인",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "ACOS Core"
+  },
+  {
+   "no": "3.2",
+   "task": "Upsert Administrator – HTTP 409 오류 재현 및 분석",
+   "type": "오류 분석",
+   "md": 2,
+   "area": "ACOS Core"
+  },
+  {
+   "no": "3.3",
+   "task": "Upsert Administrator – Association 요청 처리 조건 검토",
+   "type": "분석/설계",
+   "md": 2,
+   "area": "ACOS Core"
+  },
+  {
+   "no": "3.4",
+   "task": "Upsert Administrator – 수정사항 적용 및 재시험",
+   "type": "구현/수정",
+   "md": 2,
+   "area": "ACOS Core"
+  },
+  {
+   "no": "4.1",
+   "task": "Upsert Share User – 공유 초대 선행조건 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "ACOS Core"
+  },
+  {
+   "no": "4.2",
+   "task": "Upsert Share User – 사용자 등록 요청 데이터 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "ACOS Core"
+  },
+  {
+   "no": "4.3",
+   "task": "Upsert Share User – 공유 사용자 등록 오류 원인 분석",
+   "type": "오류 분석",
+   "md": 2,
+   "area": "ACOS Core"
+  },
+  {
+   "no": "4.4",
+   "task": "Upsert Share User – 수정사항 재검증 및 시험 시나리오 확인",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "ACOS Core"
+  },
+  {
+   "no": "5.1",
+   "task": "MQTT Topic 처리 – VIN 기반 Topic 규칙 비교",
+   "type": "분석/설계",
+   "md": 2,
+   "area": "ACOS Core"
+  },
+  {
+   "no": "5.2",
+   "task": "MQTT Topic 처리 – Wildcard 설정 변경사항 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "ACOS Core"
+  },
+  {
+   "no": "5.3",
+   "task": "MQTT Topic 처리 – 메시지 구독 및 Routing 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "ACOS Core"
+  },
+  {
+   "no": "5.4",
+   "task": "MQTT Topic 처리 – CUST 메시지 송수신 재검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "ACOS Core"
+  },
+  {
+   "no": "6.1",
+   "task": "MQTT 이벤트 메시지 – SOS/ACN Topic 설정 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "ACOS Core"
+  },
+  {
+   "no": "6.2",
+   "task": "MQTT 이벤트 메시지 – VLS 메시지 송수신 검증",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "ACOS Core"
+  },
+  {
+   "no": "6.3",
+   "task": "MQTT 이벤트 메시지 – Payload Format Indicator 설정 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "ACOS Core"
+  },
+  {
+   "no": "6.4",
+   "task": "MQTT 이벤트 메시지 – 연동 로그 분석 및 오류 확인",
+   "type": "오류 분석",
+   "md": 3,
+   "area": "ACOS Core"
+  },
+  {
+   "no": "7.1",
+   "task": "ADF Result Notification – ADF 등록 로그 분석",
+   "type": "오류 분석",
+   "md": 2,
+   "area": "Provisioning"
+  },
+  {
+   "no": "7.2",
+   "task": "ADF Result Notification – Vehicle/HU 등록정보 비교",
+   "type": "분석/설계",
+   "md": 3,
+   "area": "Provisioning"
+  },
+  {
+   "no": "7.3",
+   "task": "ADF Result Notification – Notification 데이터 처리 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "Provisioning"
+  },
+  {
+   "no": "7.4",
+   "task": "ADF Result Notification – DCM 기반Provisioning 재검증",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "Provisioning"
+  },
+  {
+   "no": "8.1",
+   "task": "Get Capable Service Flag – Service Flag 응답값 비교",
+   "type": "분석/설계",
+   "md": 2,
+   "area": "Provisioning"
+  },
+  {
+   "no": "8.2",
+   "task": "Get Capable Service Flag – MM/VDP 관련 항목 검증",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "Provisioning"
+  },
+  {
+   "no": "8.3",
+   "task": "Get Capable Service Flag – Flag ON/OFF 처리 조건 검토",
+   "type": "분석/설계",
+   "md": 2,
+   "area": "Provisioning"
+  },
+  {
+   "no": "8.4",
+   "task": "Get Capable Service Flag – 응답 데이터 정합성 검증",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "Provisioning"
+  },
+  {
+   "no": "9.1",
+   "task": "Opt In-Out Request – 서비스 Flag 생성 로직 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "Provisioning"
+  },
+  {
+   "no": "9.2",
+   "task": "Opt In-Out Request – 가입 및 동의 상태에 따른 처리 조건 확인",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "Provisioning"
+  },
+  {
+   "no": "9.3",
+   "task": "Opt In-Out Request – Request JSON 데이터 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "Provisioning"
+  },
+  {
+   "no": "9.4",
+   "task": "Opt In-Out Request – API 재호출 및 처리 결과 확인",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "Provisioning"
+  },
+  {
+   "no": "10.1",
+   "task": "VDP Flag 모델별 분기 – DMS 차량정보 조회 조건 확인",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "Provisioning"
+  },
+  {
+   "no": "10.2",
+   "task": "VDP Flag 모델별 분기 – VIN 기반 24DCM/27CY SU#2 판별 검증",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "Provisioning"
+  },
+  {
+   "no": "10.3",
+   "task": "VDP Flag 모델별 분기 – Basic Safety 가입 상태 연동 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "Provisioning"
+  },
+  {
+   "no": "10.4",
+   "task": "VDP Flag 모델별 분기 – VDP Flag 전송 결과 검증",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "Provisioning"
+  },
+  {
+   "no": "11.1",
+   "task": "PGM Service Flag – VDP Flag ON 최초 요청 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "Provisioning"
+  },
+  {
+   "no": "11.2",
+   "task": "PGM Service Flag – VDP Flag ON 중복 요청 검증",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "Provisioning"
+  },
+  {
+   "no": "11.3",
+   "task": "PGM Service Flag – VDP Flag OFF 최초 요청 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "Provisioning"
+  },
+  {
+   "no": "11.4",
+   "task": "PGM Service Flag – VDP Flag OFF 중복 요청 검증",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "Provisioning"
+  },
+  {
+   "no": "12.1",
+   "task": "Vehicle/Admin 데이터 정합성 – 차량정보Mapping 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "DB / Data"
+  },
+  {
+   "no": "12.2",
+   "task": "Vehicle/Admin 데이터 정합성 – Admin 상태정보 검증",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "DB / Data"
+  },
+  {
+   "no": "12.3",
+   "task": "Vehicle/Admin 데이터 정합성 – 등록정보 및 이력 비교",
+   "type": "분석/설계",
+   "md": 2,
+   "area": "DB / Data"
+  },
+  {
+   "no": "12.4",
+   "task": "Vehicle/Admin 데이터 정합성 – 오류 데이터 재현 및 분석",
+   "type": "오류 분석",
+   "md": 3,
+   "area": "DB / Data"
+  },
+  {
+   "no": "13.1",
+   "task": "Subscription 데이터 – 서비스 가입 상태정보 비교",
+   "type": "분석/설계",
+   "md": 2,
+   "area": "DB / Data"
+  },
+  {
+   "no": "13.2",
+   "task": "Subscription 데이터 – 서비스 해지 및 상태 변경 이력 검증",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "DB / Data"
+  },
+  {
+   "no": "13.3",
+   "task": "Subscription 데이터 – 유료 전환 관련 데이터 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "DB / Data"
+  },
+  {
+   "no": "13.4",
+   "task": "Subscription 데이터 – DVT 시험 데이터 구성 및 정리",
+   "type": "데이터 보완",
+   "md": 3,
+   "area": "DB / Data"
+  },
+  {
+   "no": "14.1",
+   "task": "VDP CoCo API – Endpoint URL 변경사항 확인",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "e-Care"
+  },
+  {
+   "no": "14.2",
+   "task": "VDP CoCo API – HTTP 401 인증 오류 로그 분석",
+   "type": "오류 분석",
+   "md": 3,
+   "area": "e-Care"
+  },
+  {
+   "no": "14.3",
+   "task": "VDP CoCo API – API 인증 Header 설정 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "e-Care"
+  },
+  {
+   "no": "14.4",
+   "task": "VDP CoCo API – HTTP 200 정상 응답 재검증",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "e-Care"
+  },
+  {
+   "no": "15.1",
+   "task": "DTC Center Request – API Request Parameter 비교",
+   "type": "분석/설계",
+   "md": 2,
+   "area": "e-Care"
+  },
+  {
+   "no": "15.2",
+   "task": "DTC Center Request – VIN 미등록 오류 원인 분석",
+   "type": "오류 분석",
+   "md": 3,
+   "area": "e-Care"
+  },
+  {
+   "no": "15.3",
+   "task": "DTC Center Request – centerRequestType 파라미터 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "e-Care"
+  },
+  {
+   "no": "15.4",
+   "task": "DTC Center Request – API 호출 및 응답 결과 재검증",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "e-Care"
+  },
+  {
+   "no": "16.1",
+   "task": "VDP Diag WNG Callback – WNG 수신 데이터 필드 정의",
+   "type": "분석/설계",
+   "md": 2,
+   "area": "e-Care"
+  },
+  {
+   "no": "16.2",
+   "task": "VDP Diag WNG Callback – Callback Endpoint 처리 구조 설계",
+   "type": "분석/설계",
+   "md": 3,
+   "area": "e-Care"
+  },
+  {
+   "no": "16.3",
+   "task": "VDP Diag WNG Callback – Warning ID 생성 처리 설계",
+   "type": "분석/설계",
+   "md": 2,
+   "area": "e-Care"
+  },
+  {
+   "no": "16.4",
+   "task": "VDP Diag WNG Callback – 수신 데이터 단위 처리 검증",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "e-Care"
+  },
+  {
+   "no": "17.1",
+   "task": "VDP Diag DTC Callback – DTC 수신 필드Mapping 정의",
+   "type": "분석/설계",
+   "md": 2,
+   "area": "e-Care"
+  },
+  {
+   "no": "17.2",
+   "task": "VDP Diag DTC Callback – triggerType 처리 조건 검증",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "e-Care"
+  },
+  {
+   "no": "17.3",
+   "task": "VDP Diag DTC Callback – VIN/발생시각 기반 연관 처리 설계",
+   "type": "분석/설계",
+   "md": 2,
+   "area": "e-Care"
+  },
+  {
+   "no": "17.4",
+   "task": "VDP Diag DTC Callback – DTC 수신 데이터 처리 로직 검증",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "e-Care"
+  },
+  {
+   "no": "18.1",
+   "task": "VDP Diag LAST Callback – LAST 수신 데이터 필드 분석",
+   "type": "분석/설계",
+   "md": 2,
+   "area": "e-Care"
+  },
+  {
+   "no": "18.2",
+   "task": "VDP Diag LAST Callback – Warning 데이터 매칭 조건 설계",
+   "type": "분석/설계",
+   "md": 3,
+   "area": "e-Care"
+  },
+  {
+   "no": "18.3",
+   "task": "VDP Diag LAST Callback – Warning Group 완료 조건 정의",
+   "type": "분석/설계",
+   "md": 2,
+   "area": "e-Care"
+  },
+  {
+   "no": "18.4",
+   "task": "VDP Diag LAST Callback – LAST 수신 후 상태 처리 로직 검증",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "e-Care"
+  },
+  {
+   "no": "19.1",
+   "task": "Warning Grouping – Grouping Key 및 데이터 구조 정의",
+   "type": "분석/설계",
+   "md": 2,
+   "area": "e-Care"
+  },
+  {
+   "no": "19.2",
+   "task": "Warning Grouping – WNG 선행 및 예외 시나리오 분석",
+   "type": "분석/설계",
+   "md": 3,
+   "area": "e-Care"
+  },
+  {
+   "no": "19.3",
+   "task": "Warning Grouping – DTC 데이터 매칭 규칙 정의",
+   "type": "분석/설계",
+   "md": 2,
+   "area": "e-Care"
+  },
+  {
+   "no": "19.4",
+   "task": "Warning Grouping – LAST 수신에 따른Group 완료 처리 검토",
+   "type": "분석/설계",
+   "md": 3,
+   "area": "e-Care"
+  },
+  {
+   "no": "20.1",
+   "task": "DMS Warning/Event – WNG 우선 전송 처리 조건 확인",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "e-Care"
+  },
+  {
+   "no": "20.2",
+   "task": "DMS Warning/Event – 상담메모 전달 이벤트Mapping 검토",
+   "type": "분석/설계",
+   "md": 3,
+   "area": "e-Care"
+  },
+  {
+   "no": "20.3",
+   "task": "DMS Warning/Event – DMS Workflow 처리 조건 검토",
+   "type": "분석/설계",
+   "md": 2,
+   "area": "e-Care"
+  },
+  {
+   "no": "20.4",
+   "task": "DMS Warning/Event – DMS 연동 재시험 시나리오 구성",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "e-Care"
+  },
+  {
+   "no": "21.1",
+   "task": "GS 서비스 가입·해지 – 서비스 가입 API 오류 재현",
+   "type": "오류 분석",
+   "md": 2,
+   "area": "Global South"
+  },
+  {
+   "no": "21.2",
+   "task": "GS 서비스 가입·해지 – 서비스 해지 후 상태 변경 검증",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "Global South"
+  },
+  {
+   "no": "21.3",
+   "task": "GS 서비스 가입·해지 – 서비스 연장 처리 조건 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "Global South"
+  },
+  {
+   "no": "21.4",
+   "task": "GS 서비스 가입·해지 – 수정 기능 재시험 시나리오 검증",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "Global South"
+  },
+  {
+   "no": "22.1",
+   "task": "OTT/Wi-Fi 요금제 – 가입정보 조회 오류 분석",
+   "type": "오류 분석",
+   "md": 2,
+   "area": "Global South"
+  },
+  {
+   "no": "22.2",
+   "task": "OTT/Wi-Fi 요금제 – 가입정보 변경 API 응답 검증",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "Global South"
+  },
+  {
+   "no": "22.3",
+   "task": "OTT/Wi-Fi 요금제 – 서비스 상태 표시값 비교",
+   "type": "분석/설계",
+   "md": 2,
+   "area": "Global South"
+  },
+  {
+   "no": "22.4",
+   "task": "OTT/Wi-Fi 요금제 – Flag OFF 상태 처리 재검증",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "Global South"
+  },
+  {
+   "no": "23.1",
+   "task": "Local App–WAM – 서비스 상태 JSON 데이터 비교",
+   "type": "분석/설계",
+   "md": 2,
+   "area": "Global South"
+  },
+  {
+   "no": "23.2",
+   "task": "Local App–WAM – 서비스 상태별 화면 표시 조건 검증",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "Global South"
+  },
+  {
+   "no": "23.3",
+   "task": "Local App–WAM – 공유 초대 상태정보 연계 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "Global South"
+  },
+  {
+   "no": "23.4",
+   "task": "Local App–WAM – 수정 기능 재검증",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "Global South"
+  },
+  {
+   "no": "24.1",
+   "task": "Digital Key Opt In-Out – 서비스 이용기간 연동 조건 확인",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "Digital Key"
+  },
+  {
+   "no": "24.2",
+   "task": "Digital Key Opt In-Out – Service Flag 구성값 검증",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "Digital Key"
+  },
+  {
+   "no": "24.3",
+   "task": "Digital Key Opt In-Out – Opt In-Out 연동 처리 분석",
+   "type": "분석/설계",
+   "md": 2,
+   "area": "Digital Key"
+  },
+  {
+   "no": "24.4",
+   "task": "Digital Key Opt In-Out – 변경사항 및 처리 결과 검증",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "Digital Key"
+  },
+  {
+   "no": "25.1",
+   "task": "Pairing Password Notification – API Request 필드 정의",
+   "type": "분석/설계",
+   "md": 2,
+   "area": "Digital Key"
+  },
+  {
+   "no": "25.2",
+   "task": "Pairing Password Notification – 수신 API 처리 기능 구현",
+   "type": "신규 개발",
+   "md": 3,
+   "area": "Digital Key"
+  },
+  {
+   "no": "25.3",
+   "task": "Pairing Password Notification – x-api-key 인증 처리 구현",
+   "type": "신규 개발",
+   "md": 2,
+   "area": "Digital Key"
+  },
+  {
+   "no": "25.4",
+   "task": "Pairing Password Notification – SMS 발송 및 오류 처리 검증",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "Digital Key"
+  },
+  {
+   "no": "26.1",
+   "task": "DVT Fail/N/T – 결함 발생 조건 및 재현 시나리오 정리",
+   "type": "오류 분석",
+   "md": 2,
+   "area": "통합 Defect"
+  },
+  {
+   "no": "26.2",
+   "task": "DVT Fail/N/T – WAM/VEP 연동 로그 교차 분석",
+   "type": "오류 분석",
+   "md": 3,
+   "area": "통합 Defect"
+  },
+  {
+   "no": "26.3",
+   "task": "DVT Fail/N/T – 수정 영향 범위 검토",
+   "type": "분석/설계",
+   "md": 2,
+   "area": "통합 Defect"
+  },
+  {
+   "no": "26.4",
+   "task": "DVT Fail/N/T – 결함 재시험 및 결과 확인",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "통합 Defect"
+  },
+  {
+   "no": "27.1",
+   "task": "외부 Blocking Issue – HU 미구축 관련 차단 항목 분석",
+   "type": "오류 분석",
+   "md": 2,
+   "area": "통합 Defect"
+  },
+  {
+   "no": "27.2",
+   "task": "외부 Blocking Issue – DMS 데이터 불일치 원인 분석",
+   "type": "오류 분석",
+   "md": 3,
+   "area": "통합 Defect"
+  },
+  {
+   "no": "27.3",
+   "task": "외부 Blocking Issue – Digital Key 선행 기능 및 연동 조건 확인",
+   "type": "분석/설계",
+   "md": 2,
+   "area": "통합 Defect"
+  },
+  {
+   "no": "27.4",
+   "task": "외부 Blocking Issue – 일본 TMC 기술 질의 및 오류 대응",
+   "type": "기술 대응",
+   "md": 3,
+   "area": "통합 Defect"
+  }
+ ],
+ "nov": [
+  {
+   "no": "1.1",
+   "task": "TSC-GC/GB API – 잔여 오류 Request 샘플 분석",
+   "type": "오류 분석",
+   "md": 2,
+   "area": "ACOS Core / 진행·예정"
+  },
+  {
+   "no": "1.2",
+   "task": "TSC-GC/GB API – 결과코드 및 서비스 상태값 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "ACOS Core / 진행·예정"
+  },
+  {
+   "no": "1.3",
+   "task": "TSC-GC/GB API – 데이터 Mapping 및 예외 처리 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "ACOS Core / 진행·예정"
+  },
+  {
+   "no": "1.4",
+   "task": "TSC-GC/GB API – 오류 수정 후 연동 재검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "ACOS Core / 진행·예정"
+  },
+  {
+   "no": "2.1",
+   "task": "Upsert Admin/Share User – Admin 선행 등록상태 확인",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "ACOS Core / 진행·예정"
+  },
+  {
+   "no": "2.2",
+   "task": "Upsert Admin/Share User – HTTP 409 오류 재현 및 분석",
+   "type": "오류 분석",
+   "md": 2,
+   "area": "ACOS Core / 진행·예정"
+  },
+  {
+   "no": "2.3",
+   "task": "Upsert Admin/Share User – 공유 사용자 등록 처리 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "ACOS Core / 진행·예정"
+  },
+  {
+   "no": "2.4",
+   "task": "Upsert Admin/Share User – E2E 연동 재시험",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "ACOS Core / 예정"
+  },
+  {
+   "no": "3.1",
+   "task": "MQTT E2E – CUST 메시지 수신 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "ACOS Core / 예정"
+  },
+  {
+   "no": "3.2",
+   "task": "MQTT E2E – SOS/ACN/VLS Topic 처리 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "ACOS Core / 예정"
+  },
+  {
+   "no": "3.3",
+   "task": "MQTT E2E – DCM 이벤트 처리 시퀀스 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "ACOS Core / 예정"
+  },
+  {
+   "no": "3.4",
+   "task": "MQTT E2E – 메시지 재전송 및 오류 로그 분석",
+   "type": "오류 분석",
+   "md": 2,
+   "area": "ACOS Core / 예정"
+  },
+  {
+   "no": "4.1",
+   "task": "API 인증/네트워크 – API 인증 Header 설정 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "ACOS Core / 진행·예정"
+  },
+  {
+   "no": "4.2",
+   "task": "API 인증/네트워크 – 환경별 Endpoint 설정값 비교",
+   "type": "분석/설계",
+   "md": 2,
+   "area": "ACOS Core / 진행·예정"
+  },
+  {
+   "no": "4.3",
+   "task": "API 인증/네트워크 – 서버 간 API 통신 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "ACOS Core / 진행·예정"
+  },
+  {
+   "no": "4.4",
+   "task": "API 인증/네트워크 – 통신 오류 로그 분석",
+   "type": "오류 분석",
+   "md": 2,
+   "area": "ACOS Core / 진행·예정"
+  },
+  {
+   "no": "5.1",
+   "task": "MM Capable Flag – Get Capable Flags 응답 목록 분석",
+   "type": "오류 분석",
+   "md": 2,
+   "area": "Provisioning / 진행"
+  },
+  {
+   "no": "5.2",
+   "task": "MM Capable Flag – MM 관련 4개 Flag 미전달 원인 분석",
+   "type": "오류 분석",
+   "md": 2,
+   "area": "Provisioning / 진행"
+  },
+  {
+   "no": "5.3",
+   "task": "MM Capable Flag – 일본 TMC 확인사항 및 처리 조건 검토",
+   "type": "분석/설계",
+   "md": 2,
+   "area": "Provisioning / 진행"
+  },
+  {
+   "no": "5.4",
+   "task": "MM Capable Flag – Flag 재조회 및Provisioning 재검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "Provisioning / 예정"
+  },
+  {
+   "no": "6.1",
+   "task": "ADF DCM/HU – ADF 등록 로그 재분석",
+   "type": "오류 분석",
+   "md": 2,
+   "area": "Provisioning / 진행"
+  },
+  {
+   "no": "6.2",
+   "task": "ADF DCM/HU – DCM/HU 연결 상태 확인",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "Provisioning / 진행"
+  },
+  {
+   "no": "6.3",
+   "task": "ADF DCM/HU – HU 정보 포함 ADF 재업로드 조건 확인",
+   "type": "분석/설계",
+   "md": 2,
+   "area": "Provisioning / 진행"
+  },
+  {
+   "no": "6.4",
+   "task": "ADF DCM/HU – ADF 재수행 후Provisioning 검증",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "Provisioning / 예정"
+  },
+  {
+   "no": "7.1",
+   "task": "Opt In-Out VDP Flag – Request Flag 생성 데이터 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "Provisioning / 진행·예정"
+  },
+  {
+   "no": "7.2",
+   "task": "Opt In-Out VDP Flag – Basic Safety 가입 상태 연동 검증",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "Provisioning / 진행·예정"
+  },
+  {
+   "no": "7.3",
+   "task": "Opt In-Out VDP Flag – API Response 처리 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "Provisioning / 진행·예정"
+  },
+  {
+   "no": "7.4",
+   "task": "Opt In-Out VDP Flag – 중복 요청 및 서비스 해지 처리 검증",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "Provisioning / 예정"
+  },
+  {
+   "no": "8.1",
+   "task": "Serverpush – Telema ON 선행 조건 확인",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "Provisioning / 예정"
+  },
+  {
+   "no": "8.2",
+   "task": "Serverpush – DCM/HU 연결 조건 검증",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "Provisioning / 예정"
+  },
+  {
+   "no": "8.3",
+   "task": "Serverpush – MQTT 메시지 처리 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "Provisioning / 예정"
+  },
+  {
+   "no": "8.4",
+   "task": "Serverpush – 실패 응답 및 오류 원인 분석",
+   "type": "오류 분석",
+   "md": 3,
+   "area": "Provisioning / 예정"
+  },
+  {
+   "no": "9.1",
+   "task": "Vehicle/Admin 데이터– VIN 및 차량정보 정합성 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "DB / Data / 예정"
+  },
+  {
+   "no": "9.2",
+   "task": "Vehicle/Admin 데이터– Admin Association 상태 비교",
+   "type": "분석/설계",
+   "md": 3,
+   "area": "DB / Data / 예정"
+  },
+  {
+   "no": "9.3",
+   "task": "Vehicle/Admin 데이터– 서비스 계약정보 연계 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "DB / Data / 예정"
+  },
+  {
+   "no": "9.4",
+   "task": "Vehicle/Admin 데이터– 시험 데이터 오류 및 수정사항 반영",
+   "type": "데이터 보완",
+   "md": 3,
+   "area": "DB / Data / 예정"
+  },
+  {
+   "no": "10.1",
+   "task": "가입/요금제 데이터 – 서비스 가입 변경 이력 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "DB / Data / 예정"
+  },
+  {
+   "no": "10.2",
+   "task": "가입/요금제 데이터 – 해지 및 연장 상태정보 검증",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "DB / Data / 예정"
+  },
+  {
+   "no": "10.3",
+   "task": "가입/요금제 데이터 – OTT/Wi-Fi 계약 상태 비교",
+   "type": "분석/설계",
+   "md": 2,
+   "area": "DB / Data / 예정"
+  },
+  {
+   "no": "10.4",
+   "task": "가입/요금제 데이터 – E2E 시험 데이터 구성",
+   "type": "데이터 보완",
+   "md": 3,
+   "area": "DB / Data / 예정"
+  },
+  {
+   "no": "11.1",
+   "task": "DTC Center Request – HTTP 200 정상 응답 확인",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "e-Care / 진행"
+  },
+  {
+   "no": "11.2",
+   "task": "DTC Center Request – Callback 발생 조건 검증",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "e-Care / 예정"
+  },
+  {
+   "no": "11.3",
+   "task": "DTC Center Request – Collection Status 수신 조건 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "e-Care / 예정"
+  },
+  {
+   "no": "11.4",
+   "task": "DTC Center Request – 일본 TMC 시험 결과 비교",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "e-Care / 예정"
+  },
+  {
+   "no": "12.1",
+   "task": "Collection Status Notification – API 수신 필드 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "e-Care / 적용 완료·시험 대기"
+  },
+  {
+   "no": "12.2",
+   "task": "Collection Status Notification – 수신 데이터 처리 로직 점검",
+   "type": "기능 보완",
+   "md": 3,
+   "area": "e-Care / 적용 완료·시험 대기"
+  },
+  {
+   "no": "12.3",
+   "task": "Collection Status Notification – Callback Response 처리 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "e-Care / 시험 예정"
+  },
+  {
+   "no": "12.4",
+   "task": "Collection Status Notification – 실제 수신 시험 환경 준비",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "e-Care / 시험 예정"
+  },
+  {
+   "no": "13.1",
+   "task": "VDP Diag 네트워크 – 일본 VDP Diag 서버IP 확인",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "e-Care / 진행"
+  },
+  {
+   "no": "13.2",
+   "task": "VDP Diag 네트워크 – White List 적용 결과 확인",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "e-Care / 진행·예정"
+  },
+  {
+   "no": "13.3",
+   "task": "VDP Diag 네트워크 – 서버 간 TCP/HTTPS 연결 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "e-Care / 예정"
+  },
+  {
+   "no": "13.4",
+   "task": "VDP Diag 네트워크 – 통신 실패 및 오류 로그 분석",
+   "type": "오류 분석",
+   "md": 3,
+   "area": "e-Care / 예정"
+  },
+  {
+   "no": "14.1",
+   "task": "WNG Callback – WNG Payload 필드Mapping 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "e-Care / 예정"
+  },
+  {
+   "no": "14.2",
+   "task": "WNG Callback – Warning ID 생성 로직 검증",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "e-Care / 예정"
+  },
+  {
+   "no": "14.3",
+   "task": "WNG Callback – DMS Warning 전달 시점 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "e-Care / 예정"
+  },
+  {
+   "no": "14.4",
+   "task": "WNG Callback – WNG 수신 재시험 및 결과 확인",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "e-Care / 예정"
+  },
+  {
+   "no": "15.1",
+   "task": "DTC Callback – triggerType 처리 조건 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "e-Care / 예정"
+  },
+  {
+   "no": "15.2",
+   "task": "DTC Callback – VIN/발생시각 Matching 검증",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "e-Care / 예정"
+  },
+  {
+   "no": "15.3",
+   "task": "DTC Callback – Warning Group 연계 처리 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "e-Care / 예정"
+  },
+  {
+   "no": "15.4",
+   "task": "DTC Callback – DTC 수신 오류 로그 분석",
+   "type": "오류 분석",
+   "md": 3,
+   "area": "e-Care / 예정"
+  },
+  {
+   "no": "16.1",
+   "task": "LAST Callback – LAST 수신 필드 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "e-Care / 예정"
+  },
+  {
+   "no": "16.2",
+   "task": "LAST Callback – Warning Group 완료 처리 검증",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "e-Care / 예정"
+  },
+  {
+   "no": "16.3",
+   "task": "LAST Callback – DTC 누락 예외 처리 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "e-Care / 예정"
+  },
+  {
+   "no": "16.4",
+   "task": "LAST Callback – 재수신 및 중복 데이터 처리 검증",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "e-Care / 예정"
+  },
+  {
+   "no": "17.1",
+   "task": "DMS/CCW Warning 연동 – WNG 우선DMS 전달 처리 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "e-Care / 예정"
+  },
+  {
+   "no": "17.2",
+   "task": "DMS/CCW Warning 연동 – 상담메모 이벤트 연계 검증",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "e-Care / 예정"
+  },
+  {
+   "no": "17.3",
+   "task": "DMS/CCW Warning 연동 – CCW 전달 데이터 Mapping 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "e-Care / 예정"
+  },
+  {
+   "no": "17.4",
+   "task": "DMS/CCW Warning 연동 – E2E 연동 재검증",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "e-Care / 예정"
+  },
+  {
+   "no": "18.1",
+   "task": "uCube 가입정보 API – 가입정보 조회Request/Response 분석",
+   "type": "오류 분석",
+   "md": 2,
+   "area": "Global South / 진행"
+  },
+  {
+   "no": "18.2",
+   "task": "uCube 가입정보 API – 오류 코드 및 응답 데이터 분석",
+   "type": "오류 분석",
+   "md": 3,
+   "area": "Global South / 진행"
+  },
+  {
+   "no": "18.3",
+   "task": "uCube 가입정보 API – WAM 서비스 처리 영향 분석",
+   "type": "영향도 분석",
+   "md": 2,
+   "area": "Global South / 진행"
+  },
+  {
+   "no": "18.4",
+   "task": "uCube 가입정보 API – 오류 수정 후 재시험 조건 검토",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "Global South / 예정"
+  },
+  {
+   "no": "19.1",
+   "task": "OTT/Wi-Fi – 요금제 가입정보 조회 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "Global South / 예정"
+  },
+  {
+   "no": "19.2",
+   "task": "OTT/Wi-Fi – 서비스 상태 변경 처리 검증",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "Global South / 예정"
+  },
+  {
+   "no": "19.3",
+   "task": "OTT/Wi-Fi – 서비스 해지 및 연장 처리 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "Global South / 예정"
+  },
+  {
+   "no": "19.4",
+   "task": "OTT/Wi-Fi – GS E2E 연동 재시험",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "Global South / 예정"
+  },
+  {
+   "no": "20.1",
+   "task": "가입/공유 사용자 – 신규 가입 오류 재현",
+   "type": "오류 분석",
+   "md": 2,
+   "area": "Global South / 예정"
+  },
+  {
+   "no": "20.2",
+   "task": "가입/공유 사용자 – 공유 초대 선행조건 확인",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "Global South / 예정"
+  },
+  {
+   "no": "20.3",
+   "task": "가입/공유 사용자 – Admin Association 상태 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "Global South / 예정"
+  },
+  {
+   "no": "20.4",
+   "task": "가입/공유 사용자 – 수정 기능 재시험 및 로그 분석",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "Global South / 예정"
+  },
+  {
+   "no": "21.1",
+   "task": "TSC-DK Wrapper – 일본 Wrapper 서버 IP 확인",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "Digital Key / 진행"
+  },
+  {
+   "no": "21.2",
+   "task": "TSC-DK Wrapper – White List 적용 상태 확인",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "Digital Key / 진행·예정"
+  },
+  {
+   "no": "21.3",
+   "task": "TSC-DK Wrapper – API 수신 URL 및 인증정보 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "Digital Key / 진행·예정"
+  },
+  {
+   "no": "21.4",
+   "task": "TSC-DK Wrapper – 서버 간 통신 및 API 연동 시험",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "Digital Key / 예정"
+  },
+  {
+   "no": "22.1",
+   "task": "Pairing Password API – Notification Request 필드 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "Digital Key / 예정"
+  },
+  {
+   "no": "22.2",
+   "task": "Pairing Password API – x-api-key 인증 처리 검증",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "Digital Key / 예정"
+  },
+  {
+   "no": "22.3",
+   "task": "Pairing Password API – SMS 발송 처리 기능 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "Digital Key / 예정"
+  },
+  {
+   "no": "22.4",
+   "task": "Pairing Password API – 오류 응답 및 예외 처리 검증",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "Digital Key / 예정"
+  },
+  {
+   "no": "23.1",
+   "task": "Global App Auth0 – Global App 로그인 경로 확인",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "Global App / 진행"
+  },
+  {
+   "no": "23.2",
+   "task": "Global App Auth0 – 한국 Local App 인증 테넌트 비교",
+   "type": "오류 분석",
+   "md": 3,
+   "area": "Global App / 진행"
+  },
+  {
+   "no": "23.3",
+   "task": "Global App Auth0 – 인증 세션 불일치 및White Screen 원인 분석",
+   "type": "오류 분석",
+   "md": 2,
+   "area": "Global App / 진행"
+  },
+  {
+   "no": "23.4",
+   "task": "Global App Auth0 – 일본 TMC 적용 방향에 따른 영향도 검토",
+   "type": "영향도 분석",
+   "md": 3,
+   "area": "Global App / 진행"
+  },
+  {
+   "no": "24.1",
+   "task": "ONE ID 전환 – 임시 한국 Auth0 테넌트 적용 배경 분석",
+   "type": "분석/설계",
+   "md": 2,
+   "area": "Global App / 진행"
+  },
+  {
+   "no": "24.2",
+   "task": "ONE ID 전환 – 통합원장 적용 선행조건 검토",
+   "type": "분석/설계",
+   "md": 3,
+   "area": "Global App / 진행"
+  },
+  {
+   "no": "24.3",
+   "task": "ONE ID 전환 – ADF 재트리거 및 인증 연동 영향 검토",
+   "type": "영향도 분석",
+   "md": 2,
+   "area": "Global App / 진행"
+  },
+  {
+   "no": "24.4",
+   "task": "ONE ID 전환 – 인증 테넌트 변경 시나리오 검토",
+   "type": "분석/설계",
+   "md": 3,
+   "area": "Global App / 진행"
+  },
+  {
+   "no": "25.1",
+   "task": "DVT 잔여 결함 – Fail/N/T 항목 분류 및 원인 분석",
+   "type": "오류 분석",
+   "md": 2,
+   "area": "통합 Defect / 진행·예정"
+  },
+  {
+   "no": "25.2",
+   "task": "DVT 잔여 결함 – WAM/VEP/CCW 로그 교차 분석",
+   "type": "오류 분석",
+   "md": 3,
+   "area": "통합 Defect / 진행·예정"
+  },
+  {
+   "no": "25.3",
+   "task": "DVT 잔여 결함 – 개별 시스템 수정사항 통합 검증",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "통합 Defect / 예정"
+  },
+  {
+   "no": "25.4",
+   "task": "DVT 잔여 결함 – 결함 재시험 및 결과 정리",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "통합 Defect / 예정"
+  },
+  {
+   "no": "26.1",
+   "task": "Kensho E2E Blocking – MVNO/uCube 관련 차단 항목 분석",
+   "type": "오류 분석",
+   "md": 2,
+   "area": "통합 Defect / 진행"
+  },
+  {
+   "no": "26.2",
+   "task": "Kensho E2E Blocking – DCM 개통 및Provisioning 선행조건 분석",
+   "type": "분석/설계",
+   "md": 3,
+   "area": "통합 Defect / 진행"
+  },
+  {
+   "no": "26.3",
+   "task": "Kensho E2E Blocking – VDP Diag 연동 차단사항 분석",
+   "type": "오류 분석",
+   "md": 2,
+   "area": "통합 Defect / 진행"
+  },
+  {
+   "no": "26.4",
+   "task": "Kensho E2E Blocking – E2E 시험 진입 영향도 검토",
+   "type": "영향도 분석",
+   "md": 3,
+   "area": "통합 Defect / 진행"
+  },
+  {
+   "no": "27.1",
+   "task": "외부 시스템 결함 대응 – 일본 TMC 기술 질의사항 정리",
+   "type": "기술 대응",
+   "md": 2,
+   "area": "통합 Defect / 진행·예정"
+  },
+  {
+   "no": "27.2",
+   "task": "외부 시스템 결함 대응 – 외부 시스템 수정사항 반영 여부 확인",
+   "type": "시험/검증",
+   "md": 3,
+   "area": "통합 Defect / 진행·예정"
+  },
+  {
+   "no": "27.3",
+   "task": "외부 시스템 결함 대응 – 시스템별 재시험 조건 검토",
+   "type": "시험/검증",
+   "md": 2,
+   "area": "통합 Defect / 진행·예정"
+  },
+  {
+   "no": "27.4",
+   "task": "외부 시스템 결함 대응 – 미해결 연동 이슈 및 조치사항 정리",
+   "type": "기술 대응",
+   "md": 3,
+   "area": "통합 Defect / 진행·예정"
+  }
+ ],
+ "pages": [
+  {
+   "slide": 65,
+   "sub": "ACOS Core 영역 16개 세부 업무에 32 MD(1.60 MM)를 투입함"
+  },
+  {
+   "slide": 66,
+   "sub": "ACOS Core · Provisioning 영역 16개 세부 업무에 38 MD(1.90 MM)를 투입함"
+  },
+  {
+   "slide": 67,
+   "sub": "Provisioning · DB / Data 영역 16개 세부 업무에 40 MD(2.00 MM)를 투입함"
+  },
+  {
+   "slide": 68,
+   "sub": "DB / Data · e-Care 영역 16개 세부 업무에 40 MD(2.00 MM)를 투입함"
+  },
+  {
+   "slide": 69,
+   "sub": "e-Care 영역 16개 세부 업무에 40 MD(2.00 MM)를 투입함"
+  },
+  {
+   "slide": 70,
+   "sub": "Global South · Digital Key 영역 16개 세부 업무에 40 MD(2.00 MM)를 투입함"
+  },
+  {
+   "slide": 71,
+   "sub": "Digital Key · 통합 Defect 영역 12개 세부 업무에 30 MD(1.50 MM)를 투입함"
+  },
+  {
+   "slide": 72,
+   "sub": "ACOS Core 영역 16개 세부 업무에 32 MD(1.60 MM)를 투입 및 투입 예정임 (11.09 기준)"
+  },
+  {
+   "slide": 73,
+   "sub": "Provisioning 영역 16개 세부 업무에 38 MD(1.90 MM)를 투입 및 투입 예정임 (11.09 기준)"
+  },
+  {
+   "slide": 74,
+   "sub": "DB / Data · e-Care 영역 16개 세부 업무에 40 MD(2.00 MM)를 투입 및 투입 예정임 (11.09 기준)"
+  },
+  {
+   "slide": 75,
+   "sub": "e-Care 영역 16개 세부 업무에 40 MD(2.00 MM)를 투입 및 투입 예정임 (11.09 기준)"
+  },
+  {
+   "slide": 76,
+   "sub": "e-Care · Global South 영역 16개 세부 업무에 40 MD(2.00 MM)를 투입 및 투입 예정임 (11.09 기준)"
+  },
+  {
+   "slide": 77,
+   "sub": "Digital Key · Global App 영역 16개 세부 업무에 40 MD(2.00 MM)를 투입 및 투입 예정임 (11.09 기준)"
+  },
+  {
+   "slide": 78,
+   "sub": "통합 Defect 영역 12개 세부 업무에 30 MD(1.50 MM)를 투입 및 투입 예정임 (11.09 기준)"
+  }
+ ]
+}

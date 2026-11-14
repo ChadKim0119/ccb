@@ -1,2 +1,5 @@
 src
 HANDOFF.md
+package.json
+.gitignore
+.DS_Store

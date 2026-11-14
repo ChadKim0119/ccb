@@ -1,0 +1,9 @@
+{
+  "name": "acos-ccb",
+  "private": true,
+  "description": "ACOS 규격 지연 대응 추가 공수 협의 페이지 (정적 HTML 하나)",
+  "scripts": {
+    "build": "node src/content.js && node src/build_html.js",
+    "serve": "python3 -m http.server 8000"
+  }
+}
