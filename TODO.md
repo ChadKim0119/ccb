@@ -43,13 +43,12 @@ cp out/index.html ../index.html  # 루트 배포물 갱신
 - **저장에는 GitHub 토큰이 필요**하다. 사이트는 누구나 열 수 있고 편집 화면도 누구나 켤 수 있지만, 토큰이 없으면 저장되지 않는다.
   - 토큰: GitHub → Settings → Developer settings → Fine-grained tokens, 대상 저장소 `ChadKim0119/ccb`, 권한 **Contents: Read and write** 만.
   - 처음 [저장]을 누르면 입력창이 뜨고, 그 브라우저에만 저장된다. [토큰] 버튼으로 바꾸거나 지울 수 있다.
-- 수정은 `content.js`/`app.js` 를 고치지 않고 `edits.json` 에 쌓여 페이지를 열 때 덮어쓴다. **저장해도 배포는 따로** 해야 사이트에 보인다(자동 배포 미연결).
+- 수정은 `content.js`/`app.js` 를 고치지 않고 `edits.json` 에 쌓여 페이지를 열 때 덮어쓴다. 저장하면 커밋이 생기고 Vercel 자동 배포로 약 1분 뒤 사이트에 반영된다.
 - 수정은 "페이지 + 요소 위치 + 원문 글자"로 연결된다. `content.js`/`app.js` 를 고쳐 원문이 달라지면 그 수정은 적용되지 않고 툴바에 "적용 안 된 수정 N건"으로 표시된다(파일에는 남아 있음). 해당 부분을 다시 고치면 정리된다.
 - 한계: 표 숫자를 고쳐도 합계는 다시 계산되지 않는다. 도형 좌표는 발표 화면(1280×800 기준) 기준이라 모바일에서는 숨겨진다. 패널(오른쪽 상세) 안의 글자는 편집 대상이 아니다.
 - 두 사람이 동시에 저장하면 나중 사람에게 "덮어쓸까요?" 확인이 뜬다.
 
-- 이 브랜치는 Vercel 자동 배포에 **연결되어 있지 않음**. 푸시 후 Vercel에서 `gsp-dvt` 프로젝트로 배포를 직접 만들어야 함
-  (예: Vercel MCP `create_deployment` — project `gsp-dvt`, target `production`, gitSource github ChadKim0119/ccb, ref `dvt-board`, sha 최신 커밋)
+- 이 브랜치는 Vercel `gsp-dvt` 프로젝트에 **Git 연결됨**(Production Branch = `dvt-board`, 빌드 명령 없음). `dvt-board` 에 푸시하면(편집 화면의 [저장] 커밋 포함) 자동으로 production 배포된다. 수동 배포는 불필요
 - 배포 후 확인: https://gsp-dvt.vercel.app 로그인 없이 열림, `/src/content.js` 404
 - `content.js` 의 `meta.changelog` 맨 위에 버전 항목 추가(v2, 날짜, 변경 내용)
 
@@ -80,7 +79,7 @@ cp out/index.html ../index.html  # 루트 배포물 갱신
 
 ### 4. 운영
 - [ ] 공개 범위 재확인 — 실명·이슈 번호·TMKR 비용 의견(11/11 PM, 합의 아님) 포함. 외부 공유 전 TMKR 공유용 문구 검토
-- [ ] 필요 시 `dvt-board` 를 자동 배포로 연결(Vercel 프로젝트에 Git 연결 + production branch = dvt-board)
+- [x] `dvt-board` 자동 배포 연결(2026.11.14)
 - [ ] 갱신 결과를 GS_DB 프로젝트 문서 `claude/GSP_DVT_결과_통합_20261114.md` 에도 반영(날짜 붙여 새 판)
 
 ## 지켜야 할 원칙
