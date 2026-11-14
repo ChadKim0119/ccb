@@ -203,4 +203,5 @@
     Array.prototype.forEach.call(document.querySelectorAll("[data-set]"), function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-set") === m)); });
   }
   /*__ENGINE__*/
+  /*__EDITOR__*/
 })();
