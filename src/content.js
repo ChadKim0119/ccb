@@ -526,6 +526,67 @@ const appendix = {
   },
 };
 
+// ── CCB 자료 2026.11.16(PPT) 반영: 증적 이미지 연결 + 콜버튼 별도 건 ──
+const DECK = "CCB 자료 2026.11.16";
+const deckRef = { "2.1": "p.33–34", "2.2": "p.35–38", "2.3": "p.37–40", "2.4": "p.37–43", "2.5": "p.44–45", "2.6": "p.46–48", "2.7": "p.49–51", "2.8": "p.52–56", "2.9": "p.57–58", "2.10": "p.59–60", "2.11": "p.61–62", "2.12": "p.63–64" };
+const evidenceByItem = {
+  "2.4": [{ img: "evidence/ev-sf-product-flags.png", label: "상품(Safety Basic / Remote Package)별 ACOS Service Flag ON/OFF", slide: "p.43", note: "주황 표시는 ACOS 신규 Flag. 2026.09.02 기준 TMKR과 정리 진행 중이며 확정 시 판단 로직 Mapping에 반영" }],
+  "2.6": [{ img: "evidence/ev-update-notification-spec.png", label: "Update Notification Request 규격 비교 (ACOS-GC vs OneServer)", slide: "p.48", note: "좌: ACOS-GC(TSC-GC) URL · Header · Body 미정의로 개발 착수. 우: OneServer Body 29개 필드" }],
+  "2.7": [{ img: "evidence/ev-create-notification-spec.png", label: "Create Notification Request 규격 비교 (ACOS-GC vs OneServer)", slide: "p.51", note: "좌: ACOS-GC Header · Body 미정의(빈 표). 우: OneServer Header 및 Body 28개 필드. 7월 말 확정 규격으로 재개발" }],
+  "2.8": [{ img: "evidence/ev-vehicle-api-split.png", label: "Vehicle Information – API 분할 구조 (register-request 1개 → 6개)", slide: "p.54", note: "Region 측 Vehicle Management API 7개 호출이 register-request(5개 맥락) + search-request(1개)로 매핑" }],
+};
+appendix.chgdev.items.forEach((it) => { it.deck = deckRef[it.no]; it.ev = evidenceByItem[it.no] || []; });
+appendix.chgdev.items.find((x) => x.no === "2.8").verify = {
+  title: "LGU+ 확인 요청: 분석 누락 공수인가, 실제 사양 변경 공수인가",
+  lead: "Vehicle Information 35 MD는 최초 OneServer 분석의 오류가 아니라, 확정되지 않은 Spec을 따라가며 대응한 결과입니다.",
+  flow: [
+    ["① Excel Spec (2026.06)", "단일 API(register-request) 전제로 분석 및 공수 산정"],
+    ["② ACOS Portal 상세 Spec", "단일 처리 영역이 다수 API로 분리된 구조 확인, 호출 Flow 재설계"],
+    ["③ 최종 Spec (07.27)", "개발 진행 이후 추가 변경 발생, 재작업 반영"],
+  ],
+  evidence: [
+    ["01", "최초 공수 산정에 사용한 규격", "6월 분석 시점의 Specification 문서명 · Version"],
+    ["02", "API 다수 분리 구조를 최초 확인한 Spec Version", "단일 API 전제가 깨진 시점"],
+    ["03", "해당 Spec 수신일", "수신일과 개발 착수일의 선후 관계가 판단 기준"],
+    ["04", "07.27 최종 Spec과 직전 Spec의 차이", "개발 진행 이후 재변경분, 재작업 공수의 직접 근거"],
+  ],
+  status: "위 4건은 PPT에 제시 항목으로만 정리되어 있고 문서 원본은 첨부되어 있지 않음. 원본 확보 후 이 자리에 연결 필요",
+  slide: "p.55–56",
+};
+appendix.ux.timeline = { img: "evidence/ux-timeline-changes.png", label: "변경 반영일 · 화면 정의서 변경 내역 원본 (정책 확정 이후 57건)", slide: "p.19" };
+const uxImg = { "01": "ux-01-ccw-history", "02": "ux-02-ccw-status-rule", "03": "ux-03-app-signup-flow", "04": "ux-04-opw-service-flag", "05": "ux-05-opw-ott-service", "06": "ux-06-opw-wng-master", "07": "ux-07-opw-service-center", "08": "ux-08-opw-duplicate-filter" };
+appendix.ux.specs.forEach((x) => { x.img = "evidence/" + uxImg[x.no] + ".png"; x.slide = +x.no <= 4 ? "p.21" : "p.22"; });
+
+appendix.callbtn = {
+  id: "callbtn", code: "A12", title: "e-Care 콜버튼 추가 (별도 협의 건)",
+  message: "TMKR 신규 요청(08.28)으로 e-Care 메시지 화면에 콜버튼(CTA)을 추가하며, 3차 개발안(09.30 확정)으로 7개 영역 3.86 MM(77.2 MD)을 착수 후 2개월간 투입함",
+  source: "출처: " + DECK + " p.4–6. 위 37.10 MM과 합산하지 않고 별도로 협의",
+  flow: [["GSA", "CTA 버튼 선택"], ["GSA → TSP", "VIN 정보 전달"], ["TSP", "VIN 기준 WNG 우선순위(Case) 자체 판단"], ["결과", "Case A 콜센터 연결 · Case B/C 서비스센터 안내"]],
+  history: [
+    ["08.28", "고객사 요청 접수 (TMC 08.26 정례미팅 제안 기반)"],
+    ["09.04", "1차 예측 공수 86 MD 전달"],
+    ["09.09", "2차 개발안(Data label 방식) 검토"],
+    ["09.30", "3차 개발안 확정 (TMC · TMKR 합의). Data label 방식은 필수 요건에서 제외"],
+    ["10.07", "정례 미팅에서 TMC가 VIN 전송에 문제가 없다는 입장 전달"],
+    ["10.13", "최종 공수 3.86 MM 산정. 평가 공수 과다 의견으로 시험 공수 12 MD → 4.2 MD 조정"],
+  ],
+  areas: [
+    ["기획 / 디자인", "UX 기획서 (VIN 기반 A/B/C 분기 정책), 콜센터 · 서비스센터 화면 디자인", 0.5],
+    ["VEP / WAM", "VIN 기준 Active Warning 조회, A/B/C 등급 Mapping, 복수 Warning 우선순위 판단", 0.5],
+    ["WAM / Dealer", "선호 · 주변 Dealer 조회, Dealer 검색 · 상세 정보, DMS→WAM 데이터 정합성 검증", 0.7],
+    ["Local App B/E", "Case A 콜센터 연결 화면, Case B/C 서비스센터 화면, Dealer UI, 전화 연계", 0.8],
+    ["Naver Map", "지도 API/SDK 연계, 현재 위치 처리, Dealer Marker, 거리순 목록 연계", 0.65],
+    ["Local App (Hybrid)", "Global App Deep Link VIN 수신, WebView 호출, Native Bridge, 위치 권한, Dialer", 0.5],
+    ["통합 시험", "단위 · 내부/외부 연계 시험, Case A/B/C E2E 시험, 결함 수정 및 Regression", 0.21],
+  ],
+  notes: [
+    "합계 3.86 MM = 77.2 MD (20 MD/MM 기준). 착수(M) 후 2개월(M ~ M+1)",
+    "착수 시점은 계약 방식 확정 후 결정. TMC 시험 희망 시점은 2027.01 (목표일 2027.01.18)",
+    "TMC가 제시한 평가 공수 과다 의견을 반영해 시험 공수를 12 MD에서 4.2 MD로 낮춘 값",
+  ],
+};
+summary.separate = { tag: "별도 협의", title: "e-Care 콜버튼 추가", mm: "3.86", md: "77.2", body: "TMKR 신규 요청(08.28), 3차 개발안 확정(09.30). 위 37.10 MM과 별개의 신규 요청 건입니다", panel: "callbtn" };
+
 module.exports = {
   meta: {
     title: "ACOS 규격 확정 지연 대응 추가 공수 협의",
