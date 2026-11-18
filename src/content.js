@@ -526,6 +526,212 @@ const appendix = {
   },
 };
 
+// ── CCB 자료 2026.11.16(PPT) 반영: 증적 이미지 연결 + 콜버튼 별도 건 ──
+const DECK = "CCB 자료 2026.11.16";
+const deckRef = { "2.1": "p.33–34", "2.2": "p.35–38", "2.3": "p.37–40", "2.4": "p.37–43", "2.5": "p.44–45", "2.6": "p.46–48", "2.7": "p.49–51", "2.8": "p.52–56", "2.9": "p.57–58", "2.10": "p.59–60", "2.11": "p.61–62", "2.12": "p.63–64" };
+const evidenceByItem = {
+  "2.4": [{ img: "evidence/ev-sf-product-flags.png", label: "상품(Safety Basic / Remote Package)별 ACOS Service Flag ON/OFF", slide: "p.43", note: "주황 표시는 ACOS 신규 Flag. 2026.09.02 기준 TMKR과 정리 진행 중이며 확정 시 판단 로직 Mapping에 반영" }],
+  "2.6": [{ img: "evidence/ev-update-notification-spec.png", label: "Update Notification Request 규격 비교 (ACOS-GC vs OneServer)", slide: "p.48", note: "좌: ACOS-GC(TSC-GC) URL · Header · Body 미정의로 개발 착수. 우: OneServer Body 29개 필드" }],
+  "2.7": [{ img: "evidence/ev-create-notification-spec.png", label: "Create Notification Request 규격 비교 (ACOS-GC vs OneServer)", slide: "p.51", note: "좌: ACOS-GC Header · Body 미정의(빈 표). 우: OneServer Header 및 Body 28개 필드. 7월 말 확정 규격으로 재개발" }],
+  "2.8": [{ img: "evidence/ev-vehicle-api-split.png", label: "Vehicle Information – API 분할 구조 (register-request 1개 → 6개)", slide: "p.54", note: "Region 측 Vehicle Management API 7개 호출이 register-request(5개 맥락) + search-request(1개)로 매핑" }],
+};
+appendix.chgdev.items.forEach((it) => { it.deck = deckRef[it.no]; it.ev = evidenceByItem[it.no] || []; });
+appendix.chgdev.items.find((x) => x.no === "2.8").verify = {
+  title: "LGU+ 확인 요청: 분석 누락 공수인가, 실제 사양 변경 공수인가",
+  lead: "Vehicle Information 35 MD는 최초 OneServer 분석의 오류가 아니라, 확정되지 않은 Spec을 따라가며 대응한 결과입니다.",
+  flow: [
+    ["① Excel Spec (2026.06)", "단일 API(register-request) 전제로 분석 및 공수 산정"],
+    ["② ACOS Portal 상세 Spec", "단일 처리 영역이 다수 API로 분리된 구조 확인, 호출 Flow 재설계"],
+    ["③ 최종 Spec (07.27)", "개발 진행 이후 추가 변경 발생, 재작업 반영"],
+  ],
+  evidence: [
+    ["01", "최초 공수 산정에 사용한 규격", "6월 분석 시점의 Specification 문서명 · Version"],
+    ["02", "API 다수 분리 구조를 최초 확인한 Spec Version", "단일 API 전제가 깨진 시점"],
+    ["03", "해당 Spec 수신일", "수신일과 개발 착수일의 선후 관계가 판단 기준"],
+    ["04", "07.27 최종 Spec과 직전 Spec의 차이", "개발 진행 이후 재변경분, 재작업 공수의 직접 근거"],
+  ],
+  status: "위 4건은 PPT에 제시 항목으로만 정리되어 있고 문서 원본은 첨부되어 있지 않음. 원본 확보 후 이 자리에 연결 필요",
+  slide: "p.55–56",
+};
+appendix.ux.timeline = { img: "evidence/ux-timeline-changes.png", label: "변경 반영일 · 화면 정의서 변경 내역 원본 (정책 확정 이후 57건)", slide: "p.19" };
+const uxImg = { "01": "ux-01-ccw-history", "02": "ux-02-ccw-status-rule", "03": "ux-03-app-signup-flow", "04": "ux-04-opw-service-flag", "05": "ux-05-opw-ott-service", "06": "ux-06-opw-wng-master", "07": "ux-07-opw-service-center", "08": "ux-08-opw-duplicate-filter" };
+appendix.ux.specs.forEach((x) => { x.img = "evidence/" + uxImg[x.no] + ".png"; x.slide = +x.no <= 4 ? "p.21" : "p.22"; });
+
+appendix.callbtn = {
+  id: "callbtn", code: "A12", title: "e-Care 콜버튼 추가 (별도 협의 건)",
+  message: "TMKR 신규 요청(08.28)으로 e-Care 메시지 화면에 콜버튼(CTA)을 추가하며, 3차 개발안(09.30 확정)으로 7개 영역 3.86 MM(77.2 MD)을 착수 후 2개월간 투입함",
+  source: "출처: " + DECK + " p.4–6. 위 37.10 MM과 합산하지 않고 별도로 협의",
+  flow: [["GSA", "CTA 버튼 선택"], ["GSA → TSP", "VIN 정보 전달"], ["TSP", "VIN 기준 WNG 우선순위(Case) 자체 판단"], ["결과", "Case A 콜센터 연결 · Case B/C 서비스센터 안내"]],
+  history: [
+    ["08.28", "고객사 요청 접수 (TMC 08.26 정례미팅 제안 기반)"],
+    ["09.04", "1차 예측 공수 86 MD 전달"],
+    ["09.09", "2차 개발안(Data label 방식) 검토"],
+    ["09.30", "3차 개발안 확정 (TMC · TMKR 합의). Data label 방식은 필수 요건에서 제외"],
+    ["10.07", "정례 미팅에서 TMC가 VIN 전송에 문제가 없다는 입장 전달"],
+    ["10.13", "최종 공수 3.86 MM 산정. 평가 공수 과다 의견으로 시험 공수 12 MD → 4.2 MD 조정"],
+  ],
+  areas: [
+    ["기획 / 디자인", "UX 기획서 (VIN 기반 A/B/C 분기 정책), 콜센터 · 서비스센터 화면 디자인", 0.5],
+    ["VEP / WAM", "VIN 기준 Active Warning 조회, A/B/C 등급 Mapping, 복수 Warning 우선순위 판단", 0.5],
+    ["WAM / Dealer", "선호 · 주변 Dealer 조회, Dealer 검색 · 상세 정보, DMS→WAM 데이터 정합성 검증", 0.7],
+    ["Local App B/E", "Case A 콜센터 연결 화면, Case B/C 서비스센터 화면, Dealer UI, 전화 연계", 0.8],
+    ["Naver Map", "지도 API/SDK 연계, 현재 위치 처리, Dealer Marker, 거리순 목록 연계", 0.65],
+    ["Local App (Hybrid)", "Global App Deep Link VIN 수신, WebView 호출, Native Bridge, 위치 권한, Dialer", 0.5],
+    ["통합 시험", "단위 · 내부/외부 연계 시험, Case A/B/C E2E 시험, 결함 수정 및 Regression", 0.21],
+  ],
+  notes: [
+    "합계 3.86 MM = 77.2 MD (20 MD/MM 기준). 착수(M) 후 2개월(M ~ M+1)",
+    "착수 시점은 계약 방식 확정 후 결정. TMC 시험 희망 시점은 2027.01 (목표일 2027.01.18)",
+    "TMC가 제시한 평가 공수 과다 의견을 반영해 시험 공수를 12 MD에서 4.2 MD로 낮춘 값",
+  ],
+};
+summary.separate = { tag: "별도 협의", title: "e-Care 콜버튼 추가", mm: "3.86", md: "77.2", body: "TMKR 신규 요청(08.28), 3차 개발안 확정(09.30). 위 37.10 MM과 별개의 신규 요청 건입니다", panel: "callbtn" };
+
+// ── CCB 자료 2026.11.18 반영: 요청 23.01 MM(콜버튼 3.86 + ACOS 8.10 + DVT 변경·연동 11.05), 추가 DVT 26.95 MM 제안 ──
+const DECK2 = "CCB 자료 2026.11.18";
+summary.headline = "ACOS 규격 변경 추가 개발 8.10 MM, DVT 기간 변경 · 연동 대응 11.05 MM, 신규 요청 콜버튼 3.86 MM의 공수 인정을 요청드립니다";
+summary.ask = "요청 공수 합계 23.01 MM에 대한 검토 및 인정을 요청드립니다";
+summary.equation = [
+  { v: "3.86", unit: "MM", label: "① e-Care 콜버튼", desc: "TMKR 신규 요청 · 수행 예정" },
+  { v: "8.10", unit: "MM", label: "② ACOS 규격 변경 추가 개발", desc: "07.28 ~ 09.30 · 수행 완료" },
+  { v: "11.05", unit: "MM", label: "③ DVT 기간 변경 · 연동 대응", desc: "10.01 ~ 11.17 · 수행 완료" },
+  { v: "23.01", unit: "MM", label: "요청 공수 합계", desc: "3건 · Global South · e-Care" },
+];
+summary.steps = [
+  { n: 1, tag: "신규 요청", title: "e-Care 콜버튼 추가 3.86 MM", body: "TMKR 신규 요청(08.28), 3차 개발안 확정(09.30, TMC · TMKR 합의). 7개 영역, 착수 후 2개월. 수행 예정이며 TMC 시험 희망은 2027.01.18", panel: "callbtn", link: "콜버튼 상세" },
+  { n: 2, tag: "수행 완료", title: "ACOS 규격 변경 추가 개발 8.10 MM", body: "07.27 최종 규격까지 변경 규격이 2회 배포되어 Global South 개발 범위의 약 60%가 재검토 대상. 12개 항목을 07.28 ~ 09.30에 수정 · 추가 개발", panel: "chgdev", link: "변경 개발 12개 항목" },
+  { n: 3, tag: "수행 완료", title: "DVT 기간 변경 · 연동 대응 11.05 MM", body: "7/27 이후에도 TMC · TMKR의 변경 · 정정이 4개월간 이어져 DVT 기간(10.01 ~ 11.17)에 분석 · 개발 · 재검증이 발생. 10 ~ 11월 실투입 29.00 MM 중 이 11.05 MM만 정산 요청, 나머지 17.95 MM은 인지 요청", panel: "dvtchg", link: "변경 · 정정별 업무와 공수" },
+];
+summary.principle = {
+  title: "산정 원칙",
+  lead: "수행한 업무만 산정했고, 요청(정산)과 인지를 구분했습니다",
+  items: [
+    { k: "정산 요청과 인지 요청 구분", v: "10 ~ 11월 실투입 29.00 MM 중 7/28 이후 규격 변경 · 이슈 대응 11.05 MM만 정산 요청. DVT 시험 · 결함 대응 17.95 MM은 인지 요청" },
+    { k: "ACOS 개발분 제외", v: "ACOS는 별도 턴키 계약. Global South · e-Care 영향분에 한정" },
+    { k: "LGU+ 자체 감수", v: "ACOS 전환 · e-Care 규격 대응은 일정 · 인력 변경 없이 자체 감수" },
+    { k: "추가 DVT 기간은 별도 제안", v: "11.18 ~ 2027.01.29 예측 공수 26.95 MM은 본 합계(23.01 MM)에 포함하지 않음" },
+    { k: "향후 인정 기준 동일 적용", v: "이번 정리의 DVT 시험 대응 공수 인정 기준을 추가 DVT 기간 예측 공수에도 동일하게 적용" },
+  ],
+};
+summary.status = summary.status.map((x) => (x.k === "11월분은 실적으로 확정" ? { k: "투입 공수는 11.17 기준", v: "10 ~ 11월 투입은 11.17까지의 기투입 공수입니다. 3차 DVT 종료 이후 실적은 추가 DVT 기간(11.18 ~) 예측 공수로 구분합니다" } : x));
+delete summary.separate;
+
+appendix.callbtn.history = appendix.callbtn.history.map((r) => (r[0] === "09.04" ? ["09.04", "1차 예측 공수 4.30 MM 전달"] : r[0] === "10.13" ? ["10.13", "최종 공수 3.86 MM 산정. 평가 공수 과다 의견으로 시험 공수를 0.60 MM에서 0.21 MM로 조정"] : r));
+appendix.callbtn.notes = ["합계 3.86 MM. 착수(M) 후 2개월(M ~ M+1)", "착수 시점은 계약 방식 확정 후 결정. TMC 시험 희망 시점은 2027.01 (목표일 2027.01.18)", "TMC의 평가 공수 과다 의견을 반영해 통합 시험 공수를 0.60 MM에서 0.21 MM로 낮춘 값"];
+appendix.callbtn.message = "TMKR 신규 요청(08.28)으로 e-Care 메시지 화면에 콜버튼(CTA)을 추가하며, 3차 개발안(09.30 확정)으로 7개 영역 3.86 MM을 착수 후 2개월간 투입 예정";
+appendix.callbtn.source = "출처: " + DECK2 + " p.3~5. 요청 공수 합계 23.01 MM의 ① 항목";
+
+appendix.dvtChg = {
+  id: "dvt-chg", code: "A13", title: "DVT 기간 변경 · 정정별 수행 업무와 공수 (10.01 ~ 11.17)",
+  message: "DVT 기간 중 외부 시스템 연동 규격 변경과 이슈에 대한 분석 · 설계 · 개발 · 재검증에 11.05 MM이 투입되었고, 이 전체를 요청에 반영함",
+  source: "출처: " + DECK2 + " p.14, p.71~72 (발생 시점은 Jira · 주간보고 · 메일 이력 기준)",
+  head: ["분류", "영역", "귀책", "주요 발생 사유 · 확인 오류", "추가 · 변경 업무", "MM"],
+  rows: [
+    ["VDP", "VDP Diag", "TMC", "Diag 서버 미연동, x-api-key · 필드 조건 불일치, resultCd 기대값 차이", "WNG/DTC/LAST 수신 IF 분석, 유효성 검증 보완, TC 재시험", 1.40],
+    ["VDP", "VDP CoCo", "TMC", "Endpoint 재확인, HTTP 401 인증 오류, Collection Status 신규", "Endpoint · API Key 재설정, 인증 보완, Notification 처리 추가", 1.00],
+    ["ACOS", "ACOS API", "TMC", "본사 API 규격과 Request/Response 차이, Share User 409 오류", "필드 매핑 · 응답코드 처리 보완, 호출 순서 수정, 재시험", 1.25],
+    ["ACOS", "ACOS Provisioning", "TMC", "Capable Partial 응답, MM Flag 미반환, DCM/MM/VDP Flag 조건 변경", "Flag 매핑 · 활성화 조건 분석, Opt-in/out 처리 보완", 1.35],
+    ["외부 시스템", "MM/HU · DCM/ADF", "TMC", "Root CA 불일치 · ADF 등록 실패, H/U SU#1 버전, SubMCU 업데이트 오류", "인증서 · ADF 재등록, B Case 업데이트 · Key Writing, 오류 재현", 1.85],
+    ["외부 시스템", "CTI/TCK", "TMKR", "24DCM 중계서버 영향으로 환경 분리, e-Care REST · CTN 연계 추가", "중계서버 분리 설계, REST API · CTN 처리 및 CCW 연동 검토", 0.90],
+    ["외부 시스템", "Global/Local App", "TMKR", "Global App 일본 Auth0와 KR 테넌트 불일치, DeepLink 세션 오류", "Auth0 Tenant · Redirect 분석, 토큰 · 세션 처리 및 연계 검증", 0.55],
+    ["외부 시스템", "DMS · Digital Key", "TMKR · TMC", "DMS 데이터 불일치, Warning Clear · Workflow 변경, DK White List", "DMS 매핑 · Workflow 보완, Platform Code 분기, DK 연동 시험", 1.30],
+    ["외부 시스템", "uCUBE", "LGU+", "선개통 Callback 24DCM 환경 전달, svcEntr/chgsp 오류, 상태 정합성", "Callback 라우팅 수정, API 매핑 보완, 가입 · 해지 연계 수정", 0.95],
+    ["DVT 수행", "DVT 영향 분석", "TMKR · TMC · LGU+", "API · IF 변경으로 TC 예상 결과 변경, 외부 환경 미구축 Blocked/N/T", "TC 영향 분석 · 예상 결과 수정, N/T 원인 분류 후 재수행", 0.50],
+  ],
+  detailHead: ["영역 (공수 · 귀책)", "세부 항목", "변경 유형", "발생 사유 · 확인 오류", "추가 · 변경 업무"],
+  detail: [
+    ["ACOS API 1.25 MM · TMC", "TSC-GC/GB API 규격 변경", "사양 변경", "본사 API와 Request/Response 구조 · 필드 차이", "필드 분석 · 매핑 수정, 처리 로직 보완, 재시험"],
+    ["", "Upsert Share User 오류", "오류 대응", "등록 시 HTTP 409 · ReturnCode 130000 발생", "선행조건 분석, 호출 순서 · 오류 처리 보완"],
+    ["", "API 응답코드 · 오류 처리", "사양 변경/오류", "API별 ReturnCode · 오류 처리조건 차이", "응답코드 매핑, 예외 처리 보완 · 검증"],
+    ["ACOS Provisioning 1.35 MM · TMC", "Capable API Partial 오류", "오류 대응", "Capable 조회 시 000002(Partial) 응답", "원인 분석, 응답 비교, 환경 전환 후 재검증"],
+    ["", "MM Provisioning Flag 오류", "오류 대응", "MM Flag 4개 미반환, Opt-in/out 오류", "DCM/MM Flag 조건 분석, 요청 구조 보완"],
+    ["", "DCM/MM/VDP Flag 조건 변경", "사양 변경", "Flag 29 · 4 · 2개 구분, H/U 등록 여부별 조건", "Flag 매핑 · 활성화 조건 보완, 조합별 시험"],
+    ["DCM/ADF 0.85 MM · TMC", "Root CA · 인증서 오류", "환경/오류", "인증서 · Root CA 불일치로 ADF 등록 실패", "인증서 분석, DCM 교체 지원, ADF 재시험"],
+    ["", "H/U–DCM ADF 등록 오류", "오류 대응", "H/U 정보 ADF 미반영, MM 선행조건 미충족", "연결 상태 확인, CANoe ADF 재수행"],
+    ["MM/HU 1.00 MM · TMC", "H/U SW 버전 불일치", "환경 변경", "보유 H/U가 SU#1, SU#2 Provisioning 불가", "버전 분석, B Case 업데이트 절차 검토"],
+    ["", "Factory Backup · Key Writing", "추가 작업", "매뉴얼에 없는 Key Writing 작업 추가", "백업 수행, Key Writing 적용 · 결과 확인"],
+    ["", "SubMCU 업데이트 오류", "오류 대응", "5회 수행에도 성공 확인 파일 미생성", "로그 · USB 확인, 재현, 일본 개발팀 질의"],
+    ["VDP CoCo 1.00 MM · TMC", "Endpoint · API Key 변경", "환경 변경", "초기 IP가 Diag 서버, 요청 시 HTTP 401", "Endpoint 재설정, API Key 확인, 연결시험"],
+    ["", "Center Request 인증 오류", "오류 대응", "HTTP 401 발생, 인증정보 수정 후 200 정상", "인증정보 · 호출 설정 보완, 재시험"],
+    ["", "Collection Status 알림", "기능 추가", "기존 시험 범위 외 Notification 처리 필요", "수신 API 분석, 처리 로직 추가 개발"],
+    ["VDP Diag 1.40 MM · TMC", "WNG/DTC/LAST 수신 IF", "신규 연계", "Diag 서버 미연동, 메시지 구조 확인 필요", "IF 분석, 수신 필드 · 검증 로직 보완"],
+    ["", "WNG TC 1-1-1/1-1-2 오류", "오류 대응", "x-api-key 불일치, 필드 · odometer 데이터 오류", "유효성 검증 보완, TC 재시험"],
+    ["", "WNG TC 1-1-3 응답 불일치", "사양 불일치", "details=[]에 KR 90 반환, JP 기대값 0", "빈 배열 허용조건 분석, TMC 사양 협의"],
+    ["CTI/TCK 0.90 MM · TCK(TMKR)", "27CY SU#2 중계서버 분리", "요구사항 변경", "기존 24DCM 서버 사용 시 서비스 영향", "서버 확장 검토, Pre-PROD 라우팅 분리 설계"],
+    ["", "e-Care REST API · CTN 연계", "IF 변경", "MQTT→REST 전환, CTN 연계조건 추가", "REST 구조 분석, CTN Request · CCW 연동 검토"],
+    ["DMS 1.05 MM · DMS(TMKR)", "DMS API 데이터 정합성", "오류 대응", "DMS-WAM 요청 · 응답 데이터 불일치", "데이터 매핑 분석, 응답 · 오류 검증 보완"],
+    ["", "Warning Clear · 상담 Workflow", "요구사항 변경", "Warning Clear · Workflow 종료 조건 추가", "Warning Clear 연계, 상담 상태 로직 보완"],
+    ["", "차량정보 · Platform Code", "기능 변경", "24DCM · 27CY SU#2 차량 구분 조건 필요", "차량정보 분기 확인, 환경별 처리 검증"],
+    ["uCUBE 0.95 MM · LGU+", "선개통 Callback 환경 오류", "오류 대응", "선개통 결과가 24DCM 검증환경으로 전달", "Callback URL · 라우팅 분석, 경로 수정"],
+    ["", "svcEntr/chgsp API 오류", "오류 대응", "서비스 조회 · 변경 API 응답 처리 오류", "필드 매핑 · 오류 처리 보완, 재시험"],
+    ["", "서비스 상태 · 해지 연계", "연동/기능 보완", "가입 · 해지 상태와 WAM/ACOS 정합성 확인", "상태값 분석, 변경 · 해지 연계 로직 보완"],
+    ["Global/Local App 0.55 MM · TMKR", "Auth0 테넌트 불일치", "환경/오류", "일본 Auth0와 KR 테넌트 상이, 연결 불가", "Tenant · Redirect 분석, 인증환경 분리 검토"],
+    ["", "DeepLink 인증 세션 오류", "오류 대응", "Local App 전환 시 login_required 발생", "인증 흐름 분석, 토큰 · 세션 처리 검증"],
+    ["Digital Key 0.25 MM · TMC", "TSC-DK Wrapper 신규 연계", "환경 변경", "송신 IP · 신규 Endpoint White List 필요", "Notification API 설정, 네트워크 구성 · 시험"],
+    ["DVT 영향 분석 0.50 MM · LGU+", "변경 사양에 따른 TC 수정", "테스트 변경", "API · IF 변경으로 TC 예상 결과 상이", "TC 영향 분석, 예상 결과 수정, 재시험"],
+    ["", "Blocked/N/T 재시험 대응", "테스트 추가", "외부 환경 미구축 · 선행조건 미충족", "N/T 원인 분류, 환경 변경 후 재수행"],
+  ],
+  notes: [
+    "8.10 MM과의 구분: Upsert Administrator · Capable API는 7/27 규격 기준으로 개발 완료 후, 10월 TMC가 정책(SkipVehicleAuthentication)과 응답 구조를 다시 변경하여 발생한 재작업임",
+    "산정 기준: DVT 기간 추가 · 변경 업무 11.05 MM 전체를 요청에 반영함 (LGU+ 연계 시스템 uCUBE 대응 0.95 MM 포함). 1 MM = 20 근무일",
+    "Digital Key 발생 일자는 개발팀 확인 후 갱신 예정",
+  ],
+  split: [["29.00 MM", "10 ~ 11월 실투입 (계약상 6 MM 대비 실제 35 MM)", "인지"], ["11.05 MM", "TMC · TMKR 7/27 이후 변경 · 정정 · 연동 대응 (10.01 ~ 11.17)", "정산 요청"], ["17.95 MM", "DVT 시험 · 결함 분석 · 수정 · 재시험 (기타 연계 포함)", "인지"]],
+};
+
+appendix.changeLog = {
+  id: "change-log", code: "A14", title: "7/27 최종 규격 이후 변경 · 정정 이력",
+  message: "8월 TMC 규격 확정 지연, 9월 일정 변경, 10월 Endpoint · API 규격 정정, 11월 Provisioning · CTI · 인증 연계 이슈로 이어짐",
+  source: "출처: " + DECK2 + " p.15, p.85 (메일 이력 1차 정리. 월 단위 표기는 수신일 확인 후 갱신 예정. LGU+ 연계 시스템 항목 제외)",
+  head: ["발생일", "주체", "변경 내용", "LGU+ · 개발팀 수행 업무", "관련 영역 (A13)"],
+  rows: [
+    ["08.26", "TMC", "VDP CoCo / Diag 담당자 및 인터페이스 사양 협의 시작, 일부 사양 확정 지연 통보", "인터페이스 분석 및 연계 설계 착수", "VDP Diag"],
+    ["08 ~ 09월", "TMC", "대만 계정 공유 문제로 VDP 사양 확정 일정 연기 (8월 → 9/4)", "개발 일정 재조정, 사양 미확정 상태 선행 분석", "VDP Diag"],
+    ["09월 초", "TMC · TMKR", "프로젝트 일정 변경 및 DVT 일정 재조정 요구", "개발 인력 계획 수정, 추가 공수 산정", "DVT 일정"],
+    ["09월 초", "TMC · TMKR", "Pre-Prod Regression Test 추가 요구", "시험 범위 확대 및 대응 계획 수립", "DVT 영향 분석"],
+    ["09월 중", "TMC · TMKR", "계약 시점 → 6/30 → 9/15 일정으로 변경 반영 요구", "일정표 및 인력계획 재작성", "DVT 일정"],
+    ["10.06", "TMC", "VDP 접속용 IP 제공", "네트워크 연결 시험 수행", "VDP Diag"],
+    ["10.06 ~ 10", "TMC", "제공 IP · 접속정보가 실제 대상이 아닌 것으로 확인, Endpoint 정보 정정", "로그 분석, 재시험, 환경 재설정", "VDP Diag · CoCo"],
+    ["10.15", "TMC", "Notify Vehicle Registration Status Change API 변경 (DeRegistered 제거)", "WAM 영향도 분석 및 수정 검토", "ACOS API"],
+    ["10월", "TMC", "x-api-key 인증 방식 적용 요구", "인증 모듈 수정 및 검증", "VDP CoCo · Diag"],
+    ["10월", "TMC", "Upsert Vehicle Administrator API 처리 정책 변경 (SkipVehicleAuthentication=True)", "한국향 적용 검토 및 재시험", "ACOS API"],
+    ["10월", "TMC", "TSC-GC Migration 이후 Capable API 응답 변경", "로그 분석 및 재검증", "ACOS Provisioning"],
+    ["10 ~ 11월", "TMC", "Provisioning Flag / Capable API 동작 변경", "Flag 조합 분석 및 재시험", "ACOS Provisioning"],
+    ["10 ~ 11월", "TMC", "MM Flag 처리 및 MM Provisioning 요구 발생", "MM Upgrade, ADF 재등록, 검증", "MM/HU · DCM/ADF"],
+    ["10 ~ 11월", "TMC", "Collection Status Notification 추가 요구", "신규 개발 및 검증", "VDP CoCo"],
+    ["11월", "TMKR · TMC", "CTI 연동 프로토콜 변경 및 신규 연계 요구", "CTI/TCK 연계 개발", "CTI/TCK"],
+    ["11월", "TMC · TMKR", "Auth0 Tenant 불일치 이슈 확인", "인증 연계 영향도 분석", "Global/Local App"],
+  ],
+};
+
+appendix.extraDvt = {
+  id: "extra-dvt", code: "A15", title: "추가 DVT 기간 예측 공수 (2026.11.18 ~ 2027.01.29)",
+  message: "TMC 측 선행 조건이 해소되지 않아 잔여 N/T 352건이 남아 있고, DVT 실질 종료(2027.01)까지 26.95 MM이 필요할 것으로 예측함. 본 요청 합계 23.01 MM에는 포함하지 않음",
+  source: "출처: " + DECK2 + " p.12, p.19~20, p.73~74. 11.18 이후 계약된 개발 인력은 없는 상태",
+  issues: [
+    ["MM/HU · ACOS Provisioning", "TMC", "SU#1 H/U, SubMCU 업데이트 5회 완료 확인 불가. MM Capable 4개 항목 미반환, Flag 조합별 Opt-in/out 추가 검증 필요"],
+    ["VDP Diag", "TMC", "11/13 최초 실연동, 24 TC 중 2건 완료 · 1건 보류 · 21건 미수행. x-api-key 불일치, WNG 필드 조건, odometer · resultCd 처리 이슈"],
+    ["CTI/TCK 중계 연동", "TMKR · TMC", "27CY SU#2 전용 연계환경 구성 필요. e-Care REST API · CTN 전달, CCW 통화 E2E 미수행"],
+    ["DMS 연동", "TMKR", "VDP 실데이터 미수신으로 시뮬레이터 대체 시험. Warning Clear · 상담 Workflow 처리 조건 추가 검토"],
+    ["ACOS API 사양", "TMC", "TSC-GC/GB Request/Response 변경 영향 지속. Redoc 사양 변경 · Pre-PROD 반영 일정에 따른 추가 개발 가능성"],
+  ],
+  result: { head: ["구분", "전체 TC", "Pass", "Fail", "NT", "Pass 비율"], rows: [["GS (11/17)", "326", "264", "3", "59", "81.0%"], ["e-Care (11/17)", "528", "269", "0", "259", "50.9%"], ["DMS (11/17)", "114", "78", "2", "34", "68.4%"], ["합계", "968", "611", "5", "352", "63.1%"]] },
+  resultNotes: ["e-Care NT 259건: CCW 236건 전량 CTI 내선번호 · CAN Configuration 파일 미확보, OPW 23건은 CAN Config 미확보 · 실패 환경 미구성", "GS NT 59건: HU 구성 후 검증 22건, 선행 이슈 Blocked 17건, 기간 설정 필요 12건, DCM · DK 서버 등 기타 8건", "DMS NT 34건: 선행 이슈 Blocked 17건, CTI 연결 7건, HU 연결 4건, 기타 6건", "잔여 Fail 5건: GS 3건(프로비저닝 플래그 2, CCW 해지 오류 1), DMS 2건(WNG Symbol 덮어쓰기, CCW 위치 라벨)"],
+  head: ["영역", "주요 업무", "MM"],
+  areas: [
+    ["VDP Diag", "WNG/DTC/LAST/Notification 잔여 TC 검증 · 오류 수정", 4.20], ["ACOS Provisioning", "MM Flag · Opt-in/out · DCM/VDP Flag 처리 보완", 2.65], ["e-Care", "Warning Grouping · Clear Event · Workflow 검증", 2.65],
+    ["DVT / QA", "잔여 N/T 재수행 · 전체 E2E · 회귀시험 · 종료 검증", 2.55], ["CTI/TCK", "중계서버 연계 · CCW 통화 E2E 검증", 2.45], ["ACOS API", "TSC-GC/GB · Upsert · Consent 오류 수정 · 검증", 2.30],
+    ["VDP CoCo", "Callback · Center Request · Collection Status 연동", 2.20], ["uCUBE", "선개통 · 가입/변경/해지 · 정합성 검증", 2.00], ["DMS", "차량 · 예약 · 상담 API 및 Warning 연계 수정 · 검증", 1.95],
+    ["Global/Local App", "Auth0 · DeepLink · 서비스 가입 E2E 검증", 1.85], ["MM/HU", "B Case 업데이트 정상화 · ADF 재등록 · MM Capable 확인", 1.45], ["Digital Key / 인프라", "TSC-DK 연계 및 환경 변경 추가 검증", 0.70],
+  ],
+  periods: [["11/18 ~ 11/30", "연동 장애 해소, 환경 정상화, E2E 진입 대응", 4.60], ["12/01 ~ 12/31", "잔여 기능 수정, 외부 연동시험, E2E 진입 대응", 11.75], ["2027.01.01 ~ 01.29", "잔여 N/T 해소, 결함 수정, 최종 회귀시험", 10.60]],
+  schedule: { head: ["구분", "2026년 12월 말 완료", "2027년 1월 말 완료"], rows: [["목표", "잔여 N/T 0건, 주요 결함 수정 완료", "잔여 N/T 0건, 주요 결함 수정 완료"], ["외부 연계 선행 조건", "11월 중 TMC 측 주요 선행 조건 해소 필요", "12월 중 단계적 해소 가능"], ["개발 · QA 투입", "집중적인 병렬 투입 필요", "단계별 투입 및 반복 검증"], ["일정 위험 / 의견", "현실적으로 불가 예상 · 조건부 단축 협의 필요", "현실적인 일정으로 예상"]] },
+  notes: ["분석 5.40 · 설계 4.15 · 개발 7.25 · 테스트 10.15 = 26.95 MM", "각 서비스 모듈 담당자는 변경 및 이슈 대응을 위해 검증 기간 중 유지되어야 함", "본사 API 사양 변경 · Pre-PROD 반영이 2027년 2월 이후 확정될 경우, 별도 일정 · 공수로 관리하거나 DVT 종료 기준 재협의 필요"],
+};
+// DVT 수행 실적: 11.17 기준 결과 행 추가
+appendix.dvtRun.result.rows.push(["GS (11/17)", "326", "264", "3", "59", "81.0%"], ["e-Care (11/17)", "528", "269", "0", "259", "50.9%"], ["DMS (11/17)", "114", "78", "2", "34", "68.4%"]);
+appendix.dvtRun.result.notes.push("11.17 기준 3개 구분 합계 968건: Pass 611, Fail 5, NT 352. 상세는 A15 참조");
+
 module.exports = {
   meta: {
     title: "ACOS 규격 확정 지연 대응 추가 공수 협의",

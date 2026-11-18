@@ -42,6 +42,9 @@ button { font: inherit; color: inherit; }
 .brand { font-weight: 700; font-size: 14px; white-space: nowrap; }
 .brand span { color: var(--ink-3); font-weight: 500; }
 .nav { display: flex; gap: 2px; flex-wrap: wrap; margin-right: auto; }
+.bar-in .brand { margin-right: auto; }
+.bar-in .nav { order: 3; flex-basis: 100%; margin-right: 0; } /* 전체 화면 · 편집 버튼을 상단 첫 줄 오른쪽에 두고 메뉴는 아래 줄 */
+.bar-in #ed-toggle, .bar-in #fs { order: 2; }
 .nav a { padding: 6px 10px; border-radius: 4px; color: var(--ink-2); text-decoration: none; font-size: 13.5px; font-weight: 500; white-space: nowrap; }
 .nav a:hover { background: var(--wash); color: var(--ink); }
 .nav a.on { color: var(--ink); font-weight: 700; box-shadow: inset 0 -2px 0 var(--ink); border-radius: 0; }
@@ -248,6 +251,18 @@ button.g-bar:hover { filter: brightness(1.15); }
 .mbtn { border: 0; background: none; padding: 0; font-weight: 600; font-size: 12.5px; color: var(--ink-2); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
 .mbtn:hover { color: var(--accent-deep); }
 .eff-table { margin-top: 26px; }
+.evg { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; margin-top: 8px; }
+.evg.one { grid-template-columns: 1fr; }
+.evf { margin: 0; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--paper); }
+.evf a { display: block; color: inherit; text-decoration: none; }
+.evf img { display: block; width: 100%; max-height: 260px; object-fit: cover; object-position: top; background: var(--wash); border-bottom: 1px solid var(--line); }
+.evf figcaption { padding: 8px 10px 10px; font-size: 12.5px; line-height: 1.5; color: var(--ink-2); }
+.evf figcaption b { display: block; color: var(--ink); font-size: 13px; }
+.evf .open { display: inline-block; margin-top: 4px; color: var(--accent-deep); font-weight: 600; text-decoration: underline; }
+.evtag { display: inline-block; margin-right: 6px; padding: 1px 6px; border-radius: 10px; background: var(--wash); color: var(--accent-deep); font-size: 11.5px; font-weight: 600; white-space: nowrap; }
+.sep-band { margin-top: 18px; padding: 14px 16px; border: 1px dashed var(--accent); border-radius: 10px; display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.sep-band .mm { font-size: 26px; font-weight: 700; color: var(--accent-deep); }
+.sep-band p { margin: 2px 0 0; font-size: 13px; color: var(--ink-2); }
 .notes { margin: 14px 0 0; padding: 0; list-style: none; font-size: 12.5px; color: var(--ink-2); }
 .notes li { padding-left: 12px; position: relative; }
 .notes li::before { content: "※"; position: absolute; left: -2px; }
@@ -667,7 +682,7 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
 (function () {
   "use strict";
   var D = JSON.parse(document.getElementById("data").textContent);
-  var S = D.summary, G = D.schedule, E = D.effort, A = D.appendix;
+  var S = D.summary, G = D.schedule, E = D.effort, A = D.appendix, DECK = "CCB 자료 2026.11.16";
   var $ = function (id) { return document.getElementById(id); };
   var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
   var f1 = function (v) { return (Math.round(v * 10) / 10).toFixed(1); };
@@ -693,6 +708,7 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
       '<div class="scale-bar num" role="img" aria-label="8 ~ 9월 8.10 MM, 10 ~ 11월 29.00 MM, 합계 37.10 MM"><div class="s1" data-sp="p1tot" data-v="' + e[0].v + '" style="width:' + w1.toFixed(2) + '%">' + e[0].v + '</div><div class="s2" data-sp="p1tot" data-v="' + e[1].v + '" style="flex:1">' + e[1].v + '</div></div>' +
       '<div class="scale-cap"><div style="width:' + w1.toFixed(2) + '%"><b>' + esc(e[0].label) + '</b><span>' + esc(e[0].desc) + '</span></div><div style="flex:1"><b>' + esc(e[1].label) + '</b><span>' + esc(e[1].desc) + '</span></div></div></div>' +
       '<ol class="chain">' + S.steps.map(function (s) { return '<li><span class="tag">' + s.n + ' · ' + esc(s.tag) + '</span><h3>' + esc(s.title) + '</h3><p>' + esc(s.body) + '</p><button type="button" class="more" data-panel="' + s.panel + '">' + esc(s.link) + '</button></li>'; }).join("") + '</ol>' +
+      '<div class="sep-band"><span class="pill">' + esc(S.separate.tag) + '</span><div class="mm num">' + S.separate.mm + '<small> MM</small></div><div><b>' + esc(S.separate.title) + '</b> (' + S.separate.md + ' MD)<p>' + esc(S.separate.body) + '</p></div><a href="#callbtn" class="more">A12 콜버튼 상세 보기</a></div>' +
       '<div class="stat3">' + S.status.map(function (p) { return '<div><h3>' + esc(p.k) + '</h3><p>' + esc(p.v) + '</p>' + (p.facts ? '<dl class="facts">' + p.facts.map(function (f) { return '<dt>' + esc(f[0]) + '</dt><dd>' + esc(f[1]) + '</dd>'; }).join("") + '</dl>' : "") + (p.panel ? '<button type="button" class="more" data-panel="' + p.panel + '">' + esc(p.link) + '</button>' : "") + '</div>'; }).join("") + '</div></section>';
   }
 
@@ -880,10 +896,16 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
       '<h4>검토 결과</h4><ul class="plain">' + s.result.map(function (r) { return '<li>' + esc(r) + '</li>'; }).join("") + '</ul>';
   }
   function bSpecHistory() { return '<h4>규격 배포 이력</h4>' + table(["일자", "내용"], A.history.rows.filter(function (r) { return r[1] === "규격"; }).map(function (r) { return [r[0], r[2]]; }), { nowrap: [0] }); }
+  function evFigs(list, one) {
+    if (!list || !list.length) return "";
+    return '<div class="evg' + (one || list.length === 1 ? " one" : "") + '">' + list.map(function (e) {
+      return '<figure class="evf"><a href="' + esc(e.img) + '" target="_blank" rel="noopener"><img loading="lazy" src="' + esc(e.img) + '" alt="' + esc(e.label) + '"></a><figcaption><b>' + esc(e.label) + '</b>' + (e.note ? esc(e.note) + '<br>' : "") + '<a class="open" href="' + esc(e.img) + '" target="_blank" rel="noopener">원본 열기 · PPT ' + esc(e.slide) + '</a></figcaption></figure>';
+    }).join("") + '</div>';
+  }
   function bChgdev() {
     var c = A.chgdev;
     return '<div class="scroll"><table class="tbl"><thead><tr><th>항목</th><th>개발 항목</th><th>변경 유형</th><th class="r">공수</th><th></th></tr></thead><tbody>' +
-      c.items.map(function (it) { return '<tr class="click" data-panel="item:' + it.no + '"><td class="nw">' + it.no + '</td><td>' + esc(it.name) + '</td><td class="nw"><span class="kind">' + esc(it.type) + '</span></td><td class="r">' + it.md + ' MD</td><td class="r"><button type="button" class="more" data-panel="item:' + it.no + '">변경 내용</button></td></tr>'; }).join("") +
+      c.items.map(function (it) { return '<tr class="click" data-panel="item:' + it.no + '"><td class="nw">' + it.no + '</td><td>' + esc(it.name) + '</td><td class="nw"><span class="kind">' + esc(it.type) + '</span></td><td class="r">' + it.md + ' MD</td><td class="r">' + (it.ev.length ? '<span class="evtag">증적 ' + it.ev.length + '</span>' : "") + '<button type="button" class="more" data-panel="item:' + it.no + '">변경 내용</button></td></tr>'; }).join("") +
       '<tr class="tot"><td>합계</td><td>12개 항목</td><td></td><td class="r">162 MD</td><td class="r">8.10 MM</td></tr></tbody></table></div>' +
       '<p style="margin-top:10px;font-size:13px;color:var(--ink-2)">변경 유형별 공수: ' + esc(c.byType) + '</p><ul class="notes">' + c.notes.map(function (n) { return '<li>' + esc(n) + '</li>'; }).join("") + '</ul>';
   }
@@ -925,13 +947,22 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
       '<div class="cols2" style="margin-top:22px">' + tasksBlock("oct") + tasksBlock("nov") + '</div>';
   }
   function bVdp() { var v = A.vdp; return table(["일자", "경과", "결과"], v.rows, { nowrap: [0] }) + '<div class="cols3" style="margin-top:16px">' + v.cards.map(function (c) { return '<div class="card"><h5>' + esc(c.k) + '</h5><ul class="plain">' + c.v.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join("") + '</ul></div>'; }).join("") + '</div>'; }
+  function bCallbtn() {
+    var c = A.callbtn, tot = c.areas.reduce(function (a, r) { return a + r[2]; }, 0);
+    return '<h4>확정 개발안 (3차, 2026.09.30)</h4>' + table(["단계", "내용"], c.flow, { nowrap: [0] }) +
+      '<h4>검토 경과</h4>' + table(["일자", "내용"], c.history, { nowrap: [0] }) +
+      '<h4>업무 내용 및 투입 공수 (7개 영역)</h4>' + table(["영역", "주요 업무", "공수 (MM)"], c.areas.map(function (r) { return [r[0], r[1], f2(r[2])]; }).concat([["합계", "7개 영역 · 착수 후 2개월", '<b>' + f2(tot) + ' MM</b> (77.2 MD)']]), { right: [2], nowrap: [0] }) +
+      '<ul class="notes">' + c.notes.map(function (n) { return '<li>' + esc(n) + '</li>'; }).join("") + '</ul>' + srcLine(c.source);
+  }
   function bUx(short) {
     var u = A.ux, mx = 28;
     var out = '<div class="cols2"><div><h4>월별 변경 건수 (57건)</h4><div class="mini num">' + u.monthly.map(function (m) { return '<div class="' + (m[1] >= 16 ? "hot" : "") + '" style="height:' + m[1] / mx * 100 + '%"><span>' + m[1] + '건</span></div>'; }).join("") + '</div><div class="mini-x">' + u.monthly.map(function (m) { return '<span>' + m[0] + '</span>'; }).join("") + '</div><p style="font-size:12.5px;color:var(--ink-2);margin-top:8px">' + esc(u.monthlyNote) + '</p></div>' +
       '<div><h4>시기별 반영 이력 (18회)</h4>' + table(["시기", "반영", "주요 변경 영역"], u.byMonth, { nowrap: [0, 1] }) + '</div></div>' +
       '<h4>번복 사례</h4>' + table(["항목", "반영일", "변경 내용"], u.reversals, { nowrap: [0, 1] }) +
-      '<p style="margin-top:10px;font-size:13.5px;font-weight:600">' + esc(u.effect) + '</p><ul class="notes"><li>' + esc(u.note) + '</li></ul>';
-    if (!short) out += '<h4>UI 규격서 / GUI 가이드라인 주요 변경 8건 (~ 2026.11.04)</h4>' + table(["No", "영역", "화면", "변경 사유", "AS-IS", "TO-BE"], u.specs.map(function (s) { return [s.no, s.area, s.screen, s.reason, s.as, s.to]; }), { nowrap: [0, 1] });
+      '<p style="margin-top:10px;font-size:13.5px;font-weight:600">' + esc(u.effect) + '</p><ul class="notes"><li>' + esc(u.note) + '</li></ul>' +
+      '<h4>증적: 변경 이력 원본</h4>' + evFigs([u.timeline], true);
+    if (!short) out += '<h4>UI 규격서 / GUI 가이드라인 주요 변경 8건 (~ 2026.11.04)</h4>' + table(["No", "영역", "화면", "변경 사유", "AS-IS", "TO-BE", "증적"], u.specs.map(function (s) { return [s.no, s.area, s.screen, s.reason, s.as, s.to, '<a href="' + esc(s.img) + '" target="_blank" rel="noopener">화면 ' + esc(s.slide) + '</a>']; }), { nowrap: [0, 1, 6] }) +
+      '<h4>GUI 변경 화면 (이미지를 누르면 원본, ' + DECK + ' p.21–22)</h4>' + evFigs(u.specs.map(function (s) { return { img: s.img, label: s.no + " · " + s.area + " " + s.screen, slide: s.slide, note: s.reason }; }));
     return out;
   }
   function bOthers() {
@@ -993,7 +1024,7 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
   /* ── appendix ── */
   var APX = [
     [A.history, function () { return bHistory(); }], [A.effortDetail, bEffortDetail], [A.spec, function () { return bSpec(); }], [A.chgdev, bChgdev], [A.dvt, bDvt],
-    [A.dvtEffort, bDvtEffort], [A.vdp, bVdp], [A.ux, function () { return bUx(false); }], [A.others, bOthers], [A.dvtRun, bDvtRun], [A.dvtStaff, bDvtStaff]
+    [A.dvtEffort, bDvtEffort], [A.vdp, bVdp], [A.ux, function () { return bUx(false); }], [A.others, bOthers], [A.dvtRun, bDvtRun], [A.dvtStaff, bDvtStaff], [A.callbtn, bCallbtn]
   ];
   function T(o, opt) { opt = opt || {}; var right = []; o.head.forEach(function (h, i) { if (i > 0 && /TC|Pass|Fail|NT|미분류|Total|Planned|Acted|비율|공수|근무일|인원|합계|20\d\d\./.test(h)) right.push(i); }); return table(o.head, o.rows, { right: opt.right || right, nowrap: opt.nowrap || [0], cls: "num", rowCls: function (r) { return r[0] === "합계" ? "tot" : ""; } }); }
   function srcLine(t) { return '<p style="font-size:12.5px;color:var(--ink-3);margin-top:14px">' + esc(t) + '</p>'; }
@@ -1077,7 +1108,10 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
     if (k[0] === "delay") return { kicker: "일정 변경 경과", title: G.delay.title, html: table(["시점", "내용"], G.delay.items, { nowrap: [0] }) + '<h4>VDP 연계 경과</h4><p>' + esc(A.vdp.message) + '</p>' + table(["일자", "경과", "결과"], A.vdp.rows, { nowrap: [0] }) };
     if (k[0] === "item") {
       var it = A.chgdev.items.filter(function (x) { return x.no === k[1]; })[0];
-      return { kicker: "변경 개발 " + it.no + " · " + it.type + " · " + it.md + " MD", title: it.name, html: '<dl class="asto"><dt>기존</dt><dd>' + esc(it.as) + '</dd><dt class="to">변경</dt><dd>' + esc(it.to) + '</dd><dt>개발 영향</dt><dd>' + esc(it.impact) + '</dd></dl>' };
+      return { kicker: "변경 개발 " + it.no + " · " + it.type + " · " + it.md + " MD", title: it.name, html: '<dl class="asto"><dt>기존</dt><dd>' + esc(it.as) + '</dd><dt class="to">변경</dt><dd>' + esc(it.to) + '</dd><dt>개발 영향</dt><dd>' + esc(it.impact) + '</dd></dl>' +
+        '<p style="font-size:12.5px;color:var(--ink-3)">상세 근거: ' + DECK + ' ' + esc(it.deck) + '</p>' +
+        (it.ev.length ? '<h4>증적 자료 (이미지를 누르면 원본)</h4>' + evFigs(it.ev) : "") +
+        (it.verify ? '<h4>' + esc(it.verify.title) + '</h4><p>' + esc(it.verify.lead) + '</p>' + table(["단계", "내용"], it.verify.flow, { nowrap: [0] }) + '<h4>제시할 Evidence 4건</h4>' + table(["No", "Evidence", "판단 기준"], it.verify.evidence, { nowrap: [0] }) + '<p class="mut" style="font-size:12.5px"><b>상태</b> ' + esc(it.verify.status) + ' (' + DECK + ' ' + esc(it.verify.slide) + ')</p>' : "") };
     }
     if (k[0] === "month") {
       var i = +k[1], nz = function (r) { return r.v[i] !== 0; };
