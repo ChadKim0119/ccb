@@ -265,6 +265,15 @@ button.g-bar:hover { filter: brightness(1.15); }
 .sep-band { margin-top: 18px; padding: 14px 16px; border: 1px dashed var(--accent); border-radius: 10px; display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
 .sep-band .mm { font-size: 26px; font-weight: 700; color: var(--accent-deep); }
 .sep-band p { margin: 2px 0 0; font-size: 13px; color: var(--ink-2); }
+.story { margin: 14px 0 6px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 10px; background: var(--wash); }
+.story .bar3 { display: flex; height: 34px; gap: 3px; margin-top: 8px; }
+.story .bar3 div { display: flex; align-items: center; padding: 0 12px; color: #fff; font-weight: 700; font-size: 15px; white-space: nowrap; overflow: hidden; }
+.story .bar3 .k { background: var(--plan); color: var(--ink); border-radius: 5px 0 0 5px; }
+.story .bar3 .r { background: var(--accent); border-radius: 0 5px 5px 0; }
+.story .cap3 { display: flex; gap: 3px; margin-top: 6px; font-size: 12.5px; color: var(--ink-2); }
+.story p { margin: 0; font-size: 14px; font-weight: 600; }
+.evl { display: inline-block; margin: 0 6px 2px 0; padding: 1px 7px; border-radius: 10px; background: var(--wash); color: var(--accent-deep); font-size: 11.5px; font-weight: 600; text-decoration: none; white-space: nowrap; }
+.evl:hover { background: var(--accent); color: #fff; }
 .notes { margin: 14px 0 0; padding: 0; list-style: none; font-size: 12.5px; color: var(--ink-2); }
 .notes li { padding-left: 12px; position: relative; }
 .notes li::before { content: "※"; position: absolute; left: -2px; }
@@ -684,7 +693,7 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
 (function () {
   "use strict";
   var D = JSON.parse(document.getElementById("data").textContent);
-  var S = D.summary, G = D.schedule, E = D.effort, A = D.appendix, DECK = "CCB 자료 2026.11.16";
+  var S = D.summary, G = D.schedule, E = D.effort, A = D.appendix, DECK = "CCB 자료 2026.11.16", DECK2 = "CCB 자료 2026.11.18";
   var $ = function (id) { return document.getElementById(id); };
   var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
   var f1 = function (v) { return (Math.round(v * 10) / 10).toFixed(1); };
@@ -768,7 +777,7 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
     }).join("");
     var sp = E.split, w1 = sp.parts[0].v / (sp.parts[0].v + sp.parts[1].v) * 100;
     return '<section class="sheet" id="effort"><div class="sh-top"><span class="sheet-no"><span class="pill main">메인</span><b>3</b> / 5 · 월별 투입 공수</span>' + seg() + '</div>' +
-      '<h2>계약 대비 순증은 8&nbsp;~&nbsp;9월 8.10&nbsp;MM, 10&nbsp;~&nbsp;11월 29.00&nbsp;MM으로 합계 37.10&nbsp;MM입니다. 이 중 정산 요청은 8.10&nbsp;+&nbsp;11.05&nbsp;MM입니다</h2>' +
+      '<h2>계약 대비 순증은 8&nbsp;~&nbsp;9월 8.10&nbsp;MM, 10&nbsp;~&nbsp;11월 29.00&nbsp;MM으로 합계 37.10&nbsp;MM입니다. 이 중 정산 요청은 8.10&nbsp;+&nbsp;11.05&nbsp;MM입니다</h2>' + storyBar() +
       '<p class="lede">8 ~ 9월은 계획 인력이 변경 개발로 전환되어 순증이 작고, DVT가 이동한 10 ~ 11월에 순증이 집중됩니다. 월을 누르면 계획과 실제 구성이 열립니다. 항목별 숫자는 <a href="#sheet" class="more" style="font-size:inherit">4장 월별 투입 공수 표</a>에 있습니다.</p>' +
       '<div class="eff"><div class="chart"><div class="c-legend"><span><i style="background:var(--plan)"></i>계획 (계약 시점)</span><span><i style="background:var(--ink)"></i>실제 투입</span><span><i style="background:var(--accent)"></i>계약 대비 순증</span><span>단위 MM</span></div>' +
       '<div class="plot" id="plot">' + grid + '<div class="cols">' + cols + '</div><div class="tip" id="tip"></div></div>' +
@@ -948,18 +957,28 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
       '<div class="cols2" style="margin-top:22px">' + tasksBlock("oct") + tasksBlock("nov") + '</div>';
   }
   function bVdp() { var v = A.vdp; return table(["일자", "경과", "결과"], v.rows, { nowrap: [0] }) + '<div class="cols3" style="margin-top:16px">' + v.cards.map(function (c) { return '<div class="card"><h5>' + esc(c.k) + '</h5><ul class="plain">' + c.v.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join("") + '</ul></div>'; }).join("") + '</div>'; }
+  function storyBar() {
+    var t = A.dvtChg.story, k = (+t.ack / +t.total * 100).toFixed(2);
+    return '<div class="story"><p>' + esc(t.lead) + '</p><div class="bar3 num"><div class="k" style="width:' + k + '%">인지 ' + t.ack + '</div><div class="r" style="flex:1">요청 ' + t.ask + '</div></div><div class="cap3"><span style="width:' + k + '%">DVT 시험 · 결함 대응 (인지 요청)</span><span style="flex:1">변경 · 정정 · 연동 대응 (정산 요청) · <a href="#dvt-chg">A13 증적 보기</a></span></div></div>';
+  }
+  function chgEvCell(r) {
+    var e = A.dvtChg.ev[r[1]] || { log: [], deck: "", more: [] };
+    return e.log.map(function (n) { return '<a class="evl" href="#cl-' + n + '">A14 #' + n + ' ' + esc(A.changeLog.rows[n - 1][0]) + '</a>'; }).join("") +
+      e.more.map(function (m) { return '<a class="evl" href="#' + m[0] + '">' + esc(m[1]) + '</a>'; }).join("") +
+      '<span class="evl" style="background:none;color:var(--ink-3)">' + DECK2 + ' ' + esc(e.deck) + '</span>';
+  }
   function bDvtChg() {
     var d = A.dvtChg, tot = d.rows.reduce(function (a, r) { return a + r[5]; }, 0);
-    return '<div class="wl-kpi num">' + d.split.map(function (x) { return '<div><small>' + esc(x[2]) + '</small><b>' + esc(x[0]) + '</b></div>'; }).join("") + '</div>' +
+    return storyBar() + '<div class="wl-kpi num">' + d.split.map(function (x) { return '<div><small>' + esc(x[2]) + '</small><b>' + esc(x[0]) + '</b></div>'; }).join("") + '</div>' +
       '<ul class="notes">' + d.split.map(function (x) { return '<li>' + esc(x[0]) + ' · ' + esc(x[1]) + ' (' + esc(x[2]) + ')</li>'; }).join("") + '</ul>' +
-      '<h4>변경 · 정정별 수행 업무와 공수 (11.05 MM)</h4>' + table(d.head, d.rows.map(function (r) { return [r[0], r[1], r[2], r[3], r[4], f2(r[5])]; }).concat([["합계", "변경 · 정정 · 연동 대응", "", "", "", '<b>' + f2(tot) + ' MM</b>']]), { right: [5], nowrap: [0, 1, 2] }) +
+      '<h4>변경 · 정정별 수행 업무와 공수 (11.05 MM)</h4>' + table(d.head.concat(["증적"]), d.rows.map(function (r) { return [r[0], r[1], r[2], r[3], r[4], f2(r[5]), chgEvCell(r)]; }).concat([["합계", "변경 · 정정 · 연동 대응", "", "", "", '<b>' + f2(tot) + ' MM</b>', ""]]), { right: [5], nowrap: [0, 1, 2] }) +
       '<h4>세부 항목 (A4-1)</h4>' + table(d.detailHead, d.detail, { nowrap: [0, 2] }) +
       '<ul class="notes">' + d.notes.map(function (n) { return '<li>' + esc(n) + '</li>'; }).join("") + '</ul>' +
       '<p style="margin-top:14px"><a href="#change-log" class="more">A14 변경 · 정정 이력</a> <a href="#extra-dvt" class="more" style="margin-left:14px">A15 추가 DVT 예측</a></p>' + srcLine(d.source);
   }
   function bChangeLog() {
     var d = A.changeLog;
-    return table(d.head, d.rows, { nowrap: [0, 1] }) + '<p style="margin-top:14px"><a href="#dvt-chg" class="more">A13 변경 · 정정별 수행 업무와 공수</a></p>' + srcLine(d.source);
+    return table(d.head, d.rows.map(function (r, i) { return ['<span id="cl-' + (i + 1) + '"></span>' + esc(r[0])].concat(r.slice(1)); }), { nowrap: [0, 1] }) + '<p style="margin-top:14px"><a href="#dvt-chg" class="more">A13 변경 · 정정별 수행 업무와 공수</a></p>' + srcLine(d.source);
   }
   function bExtraDvt() {
     var d = A.extraDvt, tot = d.areas.reduce(function (a, r) { return a + r[2]; }, 0);
