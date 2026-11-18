@@ -274,6 +274,10 @@ button.g-bar:hover { filter: brightness(1.15); }
 .story p { margin: 0; font-size: 14px; font-weight: 600; }
 .evl { display: inline-block; margin: 0 6px 2px 0; padding: 1px 7px; border-radius: 10px; background: var(--wash); color: var(--accent-deep); font-size: 11.5px; font-weight: 600; text-decoration: none; white-space: nowrap; }
 .evl:hover { background: var(--accent); color: #fff; }
+.narr { margin-top: 22px; max-width: 980px; }
+.narr h2 { font-size: 17px; margin: 0 0 4px; }
+.narr h3 { font-size: 13.5px; margin: 14px 0 3px; color: var(--accent-deep); }
+.narr p { margin: 0; font-size: 14px; line-height: 1.75; color: var(--ink); word-break: keep-all; }
 .notes { margin: 14px 0 0; padding: 0; list-style: none; font-size: 12.5px; color: var(--ink-2); }
 .notes li { padding-left: 12px; position: relative; }
 .notes li::before { content: "※"; position: absolute; left: -2px; }
@@ -718,6 +722,7 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
       '<div class="scale"><div class="scale-top"><span class="cap">' + esc(e[3].label) + ' · ' + esc(e[3].desc) + '</span><span class="tot num" data-sum="p1tot">' + e[3].v + '<small>MM</small></span></div>' +
       '<div class="scale-bar num" role="img" aria-label="콜버튼 3.86 MM, ACOS 규격 변경 8.10 MM, DVT 변경 · 연동 대응 11.05 MM, 합계 23.01 MM"><div class="s0" data-sp="p1tot" data-v="' + e[0].v + '" style="width:' + w[0] + '%">' + e[0].v + '</div><div class="s1" data-sp="p1tot" data-v="' + e[1].v + '" style="width:' + w[1] + '%">' + e[1].v + '</div><div class="s2" data-sp="p1tot" data-v="' + e[2].v + '" style="flex:1">' + e[2].v + '</div></div>' +
       '<div class="scale-cap"><div style="width:' + w[0] + '%"><b>' + esc(e[0].label) + '</b><span>' + esc(e[0].desc) + '</span></div><div style="width:' + w[1] + '%"><b>' + esc(e[1].label) + '</b><span>' + esc(e[1].desc) + '</span></div><div style="flex:1"><b>' + esc(e[2].label) + '</b><span>' + esc(e[2].desc) + '</span></div></div></div>' +
+      '<div class="narr"><h2>' + esc(S.narrative.title) + '</h2>' + S.narrative.paras.map(function (x) { return '<h3>' + esc(x[0]) + '</h3><p>' + esc(x[1]) + '</p>'; }).join("") + '</div>' +
       '<ol class="chain">' + S.steps.map(function (s) { return '<li><span class="tag">' + s.n + ' · ' + esc(s.tag) + '</span><h3>' + esc(s.title) + '</h3><p>' + esc(s.body) + '</p><button type="button" class="more" data-panel="' + s.panel + '">' + esc(s.link) + '</button></li>'; }).join("") + '</ol>' +
       '<div class="stat3">' + S.status.map(function (p) { return '<div><h3>' + esc(p.k) + '</h3><p>' + esc(p.v) + '</p>' + (p.facts ? '<dl class="facts">' + p.facts.map(function (f) { return '<dt>' + esc(f[0]) + '</dt><dd>' + esc(f[1]) + '</dd>'; }).join("") + '</dl>' : "") + (p.panel ? '<button type="button" class="more" data-panel="' + p.panel + '">' + esc(p.link) + '</button>' : "") + '</div>'; }).join("") + '</div></section>';
   }
