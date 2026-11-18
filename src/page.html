@@ -274,10 +274,15 @@ button.g-bar:hover { filter: brightness(1.15); }
 .story p { margin: 0; font-size: 14px; font-weight: 600; }
 .evl { display: inline-block; margin: 0 6px 2px 0; padding: 1px 7px; border-radius: 10px; background: var(--wash); color: var(--accent-deep); font-size: 11.5px; font-weight: 600; text-decoration: none; white-space: nowrap; }
 .evl:hover { background: var(--accent); color: #fff; }
-.narr { margin-top: 22px; max-width: 980px; }
-.narr h2 { font-size: 17px; margin: 0 0 4px; }
-.narr h3 { font-size: 13.5px; margin: 14px 0 3px; color: var(--accent-deep); }
-.narr p { margin: 0; font-size: 14px; line-height: 1.75; color: var(--ink); word-break: keep-all; }
+/* 첫 장 한 장 구성 */
+.narr { margin-top: 18px; }
+.narr h2 { font-size: 16px; margin: 0 0 8px; }
+.nl { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.nl li { display: grid; grid-template-columns: 150px 1fr auto; gap: 14px; align-items: baseline; padding: 9px 0; border-bottom: 1px solid var(--line); }
+.nl b { font-size: 13px; color: var(--accent-deep); }
+.nl p { margin: 0; font-size: 14px; line-height: 1.6; word-break: keep-all; }
+.nl .more { white-space: nowrap; }
+.narr-foot { margin: 10px 0 0; display: flex; gap: 18px; }
 .notes { margin: 14px 0 0; padding: 0; list-style: none; font-size: 12.5px; color: var(--ink-2); }
 .notes li { padding-left: 12px; position: relative; }
 .notes li::before { content: "※"; position: absolute; left: -2px; }
@@ -722,9 +727,8 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
       '<div class="scale"><div class="scale-top"><span class="cap">' + esc(e[3].label) + ' · ' + esc(e[3].desc) + '</span><span class="tot num" data-sum="p1tot">' + e[3].v + '<small>MM</small></span></div>' +
       '<div class="scale-bar num" role="img" aria-label="콜버튼 3.86 MM, ACOS 규격 변경 8.10 MM, DVT 변경 · 연동 대응 11.05 MM, 합계 23.01 MM"><div class="s0" data-sp="p1tot" data-v="' + e[0].v + '" style="width:' + w[0] + '%">' + e[0].v + '</div><div class="s1" data-sp="p1tot" data-v="' + e[1].v + '" style="width:' + w[1] + '%">' + e[1].v + '</div><div class="s2" data-sp="p1tot" data-v="' + e[2].v + '" style="flex:1">' + e[2].v + '</div></div>' +
       '<div class="scale-cap"><div style="width:' + w[0] + '%"><b>' + esc(e[0].label) + '</b><span>' + esc(e[0].desc) + '</span></div><div style="width:' + w[1] + '%"><b>' + esc(e[1].label) + '</b><span>' + esc(e[1].desc) + '</span></div><div style="flex:1"><b>' + esc(e[2].label) + '</b><span>' + esc(e[2].desc) + '</span></div></div></div>' +
-      '<div class="narr"><h2>' + esc(S.narrative.title) + '</h2>' + S.narrative.paras.map(function (x) { return '<h3>' + esc(x[0]) + '</h3><p>' + esc(x[1]) + '</p>'; }).join("") + '</div>' +
-      '<ol class="chain">' + S.steps.map(function (s) { return '<li><span class="tag">' + s.n + ' · ' + esc(s.tag) + '</span><h3>' + esc(s.title) + '</h3><p>' + esc(s.body) + '</p><button type="button" class="more" data-panel="' + s.panel + '">' + esc(s.link) + '</button></li>'; }).join("") + '</ol>' +
-      '<div class="stat3">' + S.status.map(function (p) { return '<div><h3>' + esc(p.k) + '</h3><p>' + esc(p.v) + '</p>' + (p.facts ? '<dl class="facts">' + p.facts.map(function (f) { return '<dt>' + esc(f[0]) + '</dt><dd>' + esc(f[1]) + '</dd>'; }).join("") + '</dl>' : "") + (p.panel ? '<button type="button" class="more" data-panel="' + p.panel + '">' + esc(p.link) + '</button>' : "") + '</div>'; }).join("") + '</div></section>';
+      '<div class="narr"><h2>' + esc(S.narrative.title) + '</h2><ol class="nl">' + S.narrative.paras.map(function (x, i) { return '<li><b>' + esc(x[0]) + '</b><p>' + esc(x[2]) + '</p><button type="button" class="more" data-panel="nar:' + i + '">상세 보기</button></li>'; }).join("") + '</ol>' +
+      '<p class="narr-foot"><button type="button" class="more" data-panel="principle">산정 원칙</button><button type="button" class="more" data-panel="notice">공유 이력과 출처</button></p></div></section>';
   }
 
   /* ── 2 schedule ── */
@@ -1150,6 +1154,16 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
     if (k[0] === "spec") return { kicker: "A3 · 근거", title: A.spec.title, html: '<p>' + esc(A.spec.message) + '</p>' + bSpec() + bSpecHistory() };
     if (k[0] === "chgdev") return { kicker: "A4 · 근거", title: A.chgdev.title, html: '<p>' + esc(A.chgdev.message) + '</p>' + bChgdev() };
     if (k[0] === "dvt") return { kicker: "A5 · 근거", title: A.dvt.title, html: '<p>' + esc(A.dvt.background) + '</p>' + bDvt() };
+    if (k[0] === "nar") {
+      var ni = +k[1], np = S.narrative.paras[ni], nb = '<p style="line-height:1.8">' + esc(np[1]) + '</p>';
+      if (ni === 0) nb += '<h4>ACOS 규격 배포 이력과 개발 범위 영향</h4>' + bSpec() + bSpecHistory();
+      else if (ni === 1) nb += '<h4>변경 개발 12개 항목 (항목을 누르면 변경 내용)</h4>' + bChgdev() + '<h4>내부 테스트와 DVT 일정 조율 경과</h4>' + table(["시점", "내용"], G.delay.items, { nowrap: [0] });
+      else if (ni === 2) nb += '<h4>DVT 수행 일정 (2026.10.06 ~ 11.17)</h4>' + bDvtStages() + '<p style="margin-top:10px"><a href="#dvt-effort" class="more">A6 10 ~ 11월 DVT 투입 공수</a> <a href="#dvt-run" class="more" style="margin-left:14px">A10 DVT 수행 실적</a></p>';
+      else if (ni === 3) nb += bDvtChg();
+      else nb += '<h4>요청 공수 구성</h4>' + table(["구분", "내용", "MM"], [["① e-Care 콜버튼", "TMKR 신규 요청 · 수행 예정 (A12)", "3.86"], ["② ACOS 규격 변경 추가 개발", "07.28 ~ 09.30 · 수행 완료 (A4)", "8.10"], ["③ DVT 기간 변경 · 연동 대응", "10.01 ~ 11.17 · 수행 완료 (A13)", "11.05"], ["합계", "", "<b>23.01</b>"]], { right: [2], nowrap: [0] }) + '<p style="margin-top:10px"><a href="#extra-dvt" class="more">A15 추가 DVT 예측 26.95 MM (별도 제안)</a></p>';
+      return { kicker: "첫 장 · " + np[0], title: np[0], html: nb };
+    }
+    if (k[0] === "principle") return { kicker: "산정 원칙", title: S.principle.title, html: '<p>' + esc(S.principle.lead) + '</p>' + table(["원칙", "내용"], S.principle.items.map(function (x) { return [x.k, x.v]; }), { nowrap: [0] }) + '<h4>확인 상태</h4>' + table(["항목", "내용"], S.status.map(function (x) { return [x.k, x.v]; }), { nowrap: [0] }) };
     if (k[0] === "callbtn") return { kicker: "A12 · 근거", title: A.callbtn.title, html: '<p>' + esc(A.callbtn.message) + '</p>' + bCallbtn() };
     if (k[0] === "dvtchg") return { kicker: "A13 · 근거", title: A.dvtChg.title, html: '<p>' + esc(A.dvtChg.message) + '</p>' + bDvtChg() };
     if (k[0] === "vdp") return { kicker: "A7 · 근거", title: A.vdp.title, html: '<p>' + esc(A.vdp.message) + '</p>' + bVdp() };

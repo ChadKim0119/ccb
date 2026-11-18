@@ -759,6 +759,17 @@ summary.narrative = {
   ],
 };
 
+// 첫 장 한 장 구성: 본문은 핵심만, 전체 서술은 우측 drawer(상세 보기)
+const shortNar = [
+  "4월 계약은 TMC의 규격 · 서버 적기 제공을 전제로 했으나, 규격이 06.28(24개)과 07.27(9개)에 바뀌어 Global South 개발 범위의 약 60%를 다시 작업해야 했습니다.",
+  "DVT에 배정된 인력이 변경 개발 12개 항목(162 MD)과 계획에 없던 내부 테스트를 먼저 수행해, 계획 42.2 MM 대비 50.3 MM이 투입되었고 증가분 8.10 MM을 요청합니다.",
+  "TMC의 VDP · PGM 지연으로 DVT가 10.06 ~ 11.17로 밀리면서, 계약상 최소 인력 6.0 MM 대신 35.0 MM이 투입되어 29.00 MM이 늘었습니다.",
+  "29.00 MM 중 7/27 이후 TMC · TMKR의 변경 · 정정에 대응한 11.05 MM만 요청하고, 시험 · 결함 대응 17.95 MM은 인지만 요청합니다.",
+  "8.10 + 11.05 + e-Care 콜버튼 3.86 = 23.01 MM이 최종 요청이며, 11.18 이후 추가 DVT 예측 26.95 MM은 별도로 제안합니다.",
+];
+summary.narrative.paras = summary.narrative.paras.map((x, i) => [x[0], x[1], shortNar[i]]);
+summary.narrative.title = "무엇 때문에, 어떤 공수가 발생했는가";
+
 module.exports = {
   meta: {
     title: "ACOS 규격 확정 지연 대응 추가 공수 협의",
