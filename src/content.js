@@ -378,7 +378,7 @@ const appendix = {
     cards: [
       { k: "TMC 제공 정보 → 정정 사항", v: ["접속 대상: Diag 플랫폼 IP 3개 → CoCo API 호출 대상 아님", "Endpoint: 개별 REST 3종 → 단일 /v1", "적용 범위: e-Care는 DTC 조회만 적용 (SSR 미적용)"] },
       { k: "DVT 영향 및 후속 대응", v: ["10.27 기준 VDP 연동 미완료로 2차 시험 중 VDP 연동 항목 일정 조정 가능", "TMC 확정 요청: 최종 인터페이스 사양, 인증 조건, DTC 조회 가능 테스트 VIN", "LGU+ 대응: Endpoint 변경 반영, 재검증, DVT 계획 반영"] },
-      { k: "공수 영향", v: ["Endpoint 변경 수정 개발 · 재검증 공수는 TMC 최종 사양 확정 후 산정하여 별도 협의 (37.10 MM 미포함)"] },
+      { k: "공수 영향", v: ["Endpoint 변경에 따른 수정 개발 · 재검증은 DVT 기간 변경 · 연동 대응 11.05 MM(A13)에 반영. 이후 추가 변경분은 추가 DVT 예측(A15)에서 관리"] },
     ],
   },
   ux: {
@@ -731,6 +731,22 @@ appendix.extraDvt = {
 // DVT 수행 실적: 11.17 기준 결과 행 추가
 appendix.dvtRun.result.rows.push(["GS (11/17)", "326", "264", "3", "59", "81.0%"], ["e-Care (11/17)", "528", "269", "0", "259", "50.9%"], ["DMS (11/17)", "114", "78", "2", "34", "68.4%"]);
 appendix.dvtRun.result.notes.push("11.17 기준 3개 구분 합계 968건: Pass 611, Fail 5, NT 352. 상세는 A15 참조");
+
+// 11.05 MM 증적 연결: 영역별로 이력(A14 행), PPT 쪽수, 관련 부록을 묶음
+const chgEv = {
+  "VDP Diag": { log: [1, 2, 6, 7], deck: "p.71~72 · p.76", more: [["vdp", "A7 VDP 연계 경과"]] },
+  "VDP CoCo": { log: [7, 9, 14], deck: "p.71 · p.76", more: [["vdp", "A7 VDP 연계 경과"], ["dvt-run", "A10 DVT 수행 실적"]] },
+  "ACOS API": { log: [8, 10], deck: "p.71", more: [["dvt-run", "A10 DVT 수행 실적"]] },
+  "ACOS Provisioning": { log: [11, 12], deck: "p.71", more: [["dvt-run", "A10 DVT 수행 실적"]] },
+  "MM/HU · DCM/ADF": { log: [13], deck: "p.71", more: [["dvt-run", "A10 DVT 수행 실적"]] },
+  "CTI/TCK": { log: [15], deck: "p.72", more: [] },
+  "Global/Local App": { log: [16], deck: "p.72", more: [["dvt-run", "A10 DVT 수행 실적"]] },
+  "DMS · Digital Key": { log: [], deck: "p.72", more: [["dvt-run", "A10 DVT 수행 실적"]] },
+  "uCUBE": { log: [], deck: "p.72", more: [] },
+  "DVT 영향 분석": { log: [3, 4, 5], deck: "p.72", more: [["dvt-run", "A10 DVT 수행 실적"], ["dvt", "A5 DVT 일정"]] },
+};
+appendix.dvtChg.ev = chgEv;
+appendix.dvtChg.story = { total: "29.00", ack: "17.95", ask: "11.05", lead: "10 ~ 11월 실투입은 29.00 MM이지만, 최종적으로 요청하는 공수는 7/28 이후 변경 · 정정 · 연동 대응으로 발생한 11.05 MM입니다" };
 
 module.exports = {
   meta: {
