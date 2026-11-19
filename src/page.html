@@ -723,9 +723,9 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
     var e = S.equation, tot = +e[3].v, w = [0, 1].map(function (k) { return (+e[k].v / tot * 100).toFixed(2); });
     return '<section class="sheet hero" id="summary"><span class="sheet-no"><span class="pill main">메인</span><b>1</b> / 5 · Executive Summary</span>' +
       '<h1>' + esc(S.headline).replace(/ ~ /g, "&nbsp;~&nbsp;") + '</h1>' +
-      '<p class="ask">' + esc(S.ask).replace("23.01 MM", '<mark><b data-sum="p1tot">23.01 MM</b></mark>') + '</p>' +
+      '<p class="ask">' + esc(S.ask).replace("22.06 MM", '<mark><b data-sum="p1tot">22.06 MM</b></mark>') + '</p>' +
       '<div class="scale"><div class="scale-top"><span class="cap">' + esc(e[3].label) + ' · ' + esc(e[3].desc) + '</span><span class="tot num" data-sum="p1tot">' + e[3].v + '<small>MM</small></span></div>' +
-      '<div class="scale-bar num" role="img" aria-label="콜버튼 3.86 MM, ACOS 규격 변경 8.10 MM, DVT 변경 · 연동 대응 11.05 MM, 합계 23.01 MM"><div class="s0" data-sp="p1tot" data-v="' + e[0].v + '" style="width:' + w[0] + '%">' + e[0].v + '</div><div class="s1" data-sp="p1tot" data-v="' + e[1].v + '" style="width:' + w[1] + '%">' + e[1].v + '</div><div class="s2" data-sp="p1tot" data-v="' + e[2].v + '" style="flex:1">' + e[2].v + '</div></div>' +
+      '<div class="scale-bar num" role="img" aria-label="콜버튼 3.86 MM, ACOS 규격 변경 8.10 MM, DVT 변경 · 연동 대응 10.10 MM, 합계 22.06 MM"><div class="s0" data-sp="p1tot" data-v="' + e[0].v + '" style="width:' + w[0] + '%">' + e[0].v + '</div><div class="s1" data-sp="p1tot" data-v="' + e[1].v + '" style="width:' + w[1] + '%">' + e[1].v + '</div><div class="s2" data-sp="p1tot" data-v="' + e[2].v + '" style="flex:1">' + e[2].v + '</div></div>' +
       '<div class="scale-cap"><div style="width:' + w[0] + '%"><b>' + esc(e[0].label) + '</b><span>' + esc(e[0].desc) + '</span></div><div style="width:' + w[1] + '%"><b>' + esc(e[1].label) + '</b><span>' + esc(e[1].desc) + '</span></div><div style="flex:1"><b>' + esc(e[2].label) + '</b><span>' + esc(e[2].desc) + '</span></div></div></div>' +
       '<div class="narr"><h2>' + esc(S.narrative.title) + '</h2><ol class="nl">' + S.narrative.paras.map(function (x, i) { return '<li><b>' + esc(x[0]) + '</b><p>' + esc(x[2]) + '</p><button type="button" class="more" data-panel="nar:' + i + '">상세 보기</button></li>'; }).join("") + '</ol>' +
       '<p class="narr-foot"><button type="button" class="more" data-panel="principle">산정 원칙</button><button type="button" class="more" data-panel="notice">공유 이력과 출처</button></p></div></section>';
@@ -786,7 +786,7 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
     }).join("");
     var sp = E.split, w1 = sp.parts[0].v / (sp.parts[0].v + sp.parts[1].v) * 100;
     return '<section class="sheet" id="effort"><div class="sh-top"><span class="sheet-no"><span class="pill main">메인</span><b>3</b> / 5 · 월별 투입 공수</span>' + seg() + '</div>' +
-      '<h2>계약 대비 순증은 8&nbsp;~&nbsp;9월 8.10&nbsp;MM, 10&nbsp;~&nbsp;11월 29.00&nbsp;MM으로 합계 37.10&nbsp;MM입니다. 이 중 정산 요청은 8.10&nbsp;+&nbsp;11.05&nbsp;MM입니다</h2>' + storyBar() +
+      '<h2>계약 대비 순증은 8&nbsp;~&nbsp;9월 8.10&nbsp;MM, 10&nbsp;~&nbsp;11월 29.00&nbsp;MM으로 합계 37.10&nbsp;MM입니다. 이 중 정산 요청은 8.10&nbsp;+&nbsp;10.10&nbsp;MM입니다 (uCUBE 0.95 제외)</h2>' + storyBar() +
       '<p class="lede">8 ~ 9월은 계획 인력이 변경 개발로 전환되어 순증이 작고, DVT가 이동한 10 ~ 11월에 순증이 집중됩니다. 월을 누르면 계획과 실제 구성이 열립니다. 항목별 숫자는 <a href="#sheet" class="more" style="font-size:inherit">4장 월별 투입 공수 표</a>에 있습니다.</p>' +
       '<div class="eff"><div class="chart"><div class="c-legend"><span><i style="background:var(--plan)"></i>계획 (계약 시점)</span><span><i style="background:var(--ink)"></i>실제 투입</span><span><i style="background:var(--accent)"></i>계약 대비 순증</span><span>단위 MM</span></div>' +
       '<div class="plot" id="plot">' + grid + '<div class="cols">' + cols + '</div><div class="tip" id="tip"></div></div>' +
@@ -968,7 +968,7 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
   function bVdp() { var v = A.vdp; return table(["일자", "경과", "결과"], v.rows, { nowrap: [0] }) + '<div class="cols3" style="margin-top:16px">' + v.cards.map(function (c) { return '<div class="card"><h5>' + esc(c.k) + '</h5><ul class="plain">' + c.v.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join("") + '</ul></div>'; }).join("") + '</div>'; }
   function storyBar() {
     var t = A.dvtChg.story, k = (+t.ack / +t.total * 100).toFixed(2);
-    return '<div class="story"><p>' + esc(t.lead) + '</p><div class="bar3 num"><div class="k" style="width:' + k + '%">인지 ' + t.ack + '</div><div class="r" style="flex:1">요청 ' + t.ask + '</div></div><div class="cap3"><span style="width:' + k + '%">DVT 시험 · 결함 대응 (인지 요청)</span><span style="flex:1">변경 · 정정 · 연동 대응 (정산 요청) · <a href="#dvt-chg">A13 증적 보기</a></span></div></div>';
+    return '<div class="story"><p>' + esc(t.lead) + '</p><div class="bar3 num"><div class="k" style="width:' + k + '%">인지 ' + t.ack + '</div><div class="r" style="flex:1">요청 ' + t.ask + '</div></div><div class="cap3"><span style="width:' + k + '%">DVT 시험 · 결함 대응 + uCUBE (인지 · uCUBE 청구 제외)</span><span style="flex:1">변경 · 정정 · 연동 대응 (정산 요청) · <a href="#dvt-chg">A13 증적 보기</a></span></div></div>';
   }
   function chgEvCell(r) {
     var e = A.dvtChg.ev[r[1]] || { log: [], deck: "", more: [] };
@@ -980,7 +980,7 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
     var d = A.dvtChg, tot = d.rows.reduce(function (a, r) { return a + r[5]; }, 0);
     return storyBar() + '<div class="wl-kpi num">' + d.split.map(function (x) { return '<div><small>' + esc(x[2]) + '</small><b>' + esc(x[0]) + '</b></div>'; }).join("") + '</div>' +
       '<ul class="notes">' + d.split.map(function (x) { return '<li>' + esc(x[0]) + ' · ' + esc(x[1]) + ' (' + esc(x[2]) + ')</li>'; }).join("") + '</ul>' +
-      '<h4>변경 · 정정별 수행 업무와 공수 (11.05 MM)</h4>' + table(d.head.concat(["증적"]), d.rows.map(function (r) { return [r[0], r[1], r[2], r[3], r[4], f2(r[5]), chgEvCell(r)]; }).concat([["합계", "변경 · 정정 · 연동 대응", "", "", "", '<b>' + f2(tot) + ' MM</b>', ""]]), { right: [5], nowrap: [0, 1, 2] }) +
+      '<h4>변경 · 정정별 수행 업무와 공수 (10.10 MM, uCUBE 제외)</h4>' + table(d.head.concat(["증적"]), d.rows.map(function (r) { return [r[0], r[1], r[2], r[3], r[4], f2(r[5]), chgEvCell(r)]; }).concat([["합계", "변경 · 정정 · 연동 대응", "", "", "", '<b>' + f2(tot) + ' MM</b>', ""]]), { right: [5], nowrap: [0, 1, 2] }) +
       '<h4>세부 항목 (A4-1)</h4>' + table(d.detailHead, d.detail, { nowrap: [0, 2] }) +
       '<ul class="notes">' + d.notes.map(function (n) { return '<li>' + esc(n) + '</li>'; }).join("") + '</ul>' +
       '<p style="margin-top:14px"><a href="#change-log" class="more">A14 변경 · 정정 이력</a> <a href="#extra-dvt" class="more" style="margin-left:14px">A15 추가 DVT 예측</a></p>' + srcLine(d.source);
@@ -994,8 +994,8 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
     return '<h4>11.17 현재 잔여 이슈 (TMC 측 선행 조건 미해소)</h4>' + table(["영역", "귀책", "내용"], d.issues, { nowrap: [0, 1] }) +
       '<h4>DVT 시험 결과 (11.17 기준)</h4>' + T(d.result) + '<ul class="notes">' + d.resultNotes.map(function (n) { return '<li>' + esc(n) + '</li>'; }).join("") + '</ul>' +
       '<h4>DVT 실질 완료 시점 검토</h4>' + table(d.schedule.head, d.schedule.rows, { nowrap: [0] }) +
-      '<h4>영역별 예측 공수</h4>' + table(d.head, d.areas.map(function (r) { return [r[0], r[1], f2(r[2])]; }).concat([["합계", "분석 5.40 · 설계 4.15 · 개발 7.25 · 테스트 10.15", '<b>' + f2(tot) + '</b>']]), { right: [2], nowrap: [0] }) +
-      '<h4>기간별 예측 공수</h4>' + table(["기간", "주요 수행 업무", "MM"], d.periods.map(function (r) { return [r[0], r[1], f2(r[2])]; }).concat([["합계", "", '<b>26.95</b>']]), { right: [2], nowrap: [0] }) +
+      '<h4>영역별 예측 공수</h4>' + table(d.head, d.areas.map(function (r) { return [r[0], r[1], f2(r[2])]; }).concat([["합계", "11개 영역 · uCUBE 2.00 제외", '<b>' + f2(tot) + '</b>']]), { right: [2], nowrap: [0] }) +
+      '<h4>기간별 예측 공수</h4>' + table(["기간", "주요 수행 업무", "MM"], d.periods.map(function (r) { return [r[0], r[1], f2(r[2])]; }).concat([["합계", "", '<b>' + f2(d.periods.reduce(function (a, r) { return a + r[2]; }, 0)) + '</b>']]), { right: [2], nowrap: [0] }) +
       '<ul class="notes">' + d.notes.map(function (n) { return '<li>' + esc(n) + '</li>'; }).join("") + '</ul>' + srcLine(d.source);
   }
   function bCallbtn() {
@@ -1160,7 +1160,7 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
       else if (ni === 1) nb += '<h4>변경 개발 12개 항목 (항목을 누르면 변경 내용)</h4>' + bChgdev() + '<h4>내부 테스트와 DVT 일정 조율 경과</h4>' + table(["시점", "내용"], G.delay.items, { nowrap: [0] });
       else if (ni === 2) nb += '<h4>DVT 수행 일정 (2026.10.06 ~ 11.17)</h4>' + bDvtStages() + '<p style="margin-top:10px"><a href="#dvt-effort" class="more">A6 10 ~ 11월 DVT 투입 공수</a> <a href="#dvt-run" class="more" style="margin-left:14px">A10 DVT 수행 실적</a></p>';
       else if (ni === 3) nb += bDvtChg();
-      else nb += '<h4>요청 공수 구성</h4>' + table(["구분", "내용", "MM"], [["① e-Care 콜버튼", "TMKR 신규 요청 · 수행 예정 (A12)", "3.86"], ["② ACOS 규격 변경 추가 개발", "07.28 ~ 09.30 · 수행 완료 (A4)", "8.10"], ["③ DVT 기간 변경 · 연동 대응", "10.01 ~ 11.17 · 수행 완료 (A13)", "11.05"], ["합계", "", "<b>23.01</b>"]], { right: [2], nowrap: [0] }) + '<p style="margin-top:10px"><a href="#extra-dvt" class="more">A15 추가 DVT 예측 26.95 MM (별도 제안)</a></p>';
+      else nb += '<h4>요청 공수 구성</h4>' + table(["구분", "내용", "MM"], [["① e-Care 콜버튼", "TMKR 신규 요청 · 수행 예정 (A12)", "3.86"], ["② ACOS 규격 변경 추가 개발", "07.28 ~ 09.30 · 수행 완료 (A4)", "8.10"], ["③ DVT 기간 변경 · 연동 대응", "10.01 ~ 11.17 · 수행 완료, uCUBE 0.95 제외 (A13)", "10.10"], ["합계", "", "<b>22.06</b>"]], { right: [2], nowrap: [0] }) + '<p style="margin-top:10px"><a href="#extra-dvt" class="more">A15 추가 DVT 예측 24.95 MM (별도 제안)</a></p>';
       return { kicker: "첫 장 · " + np[0], title: np[0], html: nb };
     }
     if (k[0] === "principle") return { kicker: "산정 원칙", title: S.principle.title, html: '<p>' + esc(S.principle.lead) + '</p>' + table(["원칙", "내용"], S.principle.items.map(function (x) { return [x.k, x.v]; }), { nowrap: [0] }) + '<h4>확인 상태</h4>' + table(["항목", "내용"], S.status.map(function (x) { return [x.k, x.v]; }), { nowrap: [0] }) };
