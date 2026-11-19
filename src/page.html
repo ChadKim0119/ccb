@@ -398,9 +398,15 @@ body.staged .page.on { height: 800px; overflow-y: auto; overscroll-behavior: con
 .r5box { margin-top: 12px; padding: 4px 18px 6px; background: var(--wash); border: 1px solid var(--line); border-radius: 12px; }
 .r5box .tbl { background: transparent; }
 .r5box .tbl th:nth-child(4), .r5box .tbl td:nth-child(4) { width: 112px; text-align: right; }
-.r5cmp tr.r5big td { font-size: 27px; font-weight: 700; padding-top: 8px; padding-bottom: 8px; vertical-align: middle; }
+.r5cmp tr.r5big td { font-size: 23px; font-weight: 700; padding-top: 8px; padding-bottom: 8px; vertical-align: middle; }
 .r5cmp tr.r5big td:first-child { font-size: 14px; }
 .r5evb { border: 1px solid var(--accent); background: var(--paper); color: var(--accent-deep); border-radius: 999px; padding: 4px 12px; font: inherit; font-size: 12.5px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+.r5chain { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
+.r5chain i { font-style: normal; font-weight: 700; color: var(--ink-3); }
+.r5c { display: inline-flex; align-items: baseline; gap: 5px; padding: 2px 9px; border-radius: 999px; background: var(--paper); border: 1px solid var(--line); white-space: nowrap; }
+.r5c b { font-size: 14px; } .r5c small { font-size: 11.5px; color: var(--ink-2); }
+.r5cmp tr.r5calc td { padding-top: 7px; padding-bottom: 7px; vertical-align: middle; }
+.r5c.fin { background: #e6007e; border-color: #e6007e; } .r5c.fin b, .r5c.fin small { color: #fff; }
 .r5bdbar { cursor: pointer; } .r5bdbar:hover rect { filter: brightness(1.06); }
 .r5evb:hover { background: var(--accent-wash); }
 .r5hint { align-self: center; font-size: 12px; color: var(--ink-3); white-space: nowrap; }
@@ -813,46 +819,48 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
     svg += '<line x1="48" x2="1170" y1="' + BASE + '" y2="' + BASE + '" stroke="var(--ink)" stroke-width="1.5"/>';
     svg += '<line x1="595" x2="595" y1="40" y2="' + (BASE + 70) + '" stroke="var(--line)" stroke-dasharray="3 4"/>';
     cx.forEach(function (c, m) {
-      var p = P[m], a = A2[m], px = c - bw - 6, ax = c + 6, early = m < 2;
+      var p = P[m], a = A2[m], early = m < 2, pw = early ? bw : 50, aw = early ? bw : 164, px = early ? c - bw - 6 : c - 120, ax = early ? c + 6 : c - 62;
       // contract bar
-      svg += '<g class="r5-plan"><rect x="' + px + '" y="' + y(p) + '" width="' + bw + '" height="' + p * K + '" rx="4" fill="var(--plan-wash)" stroke="var(--plan)" stroke-width="1.5"/>' +
-        tx(px + bw / 2, y(p) - 8, '<tspan data-sp="r5p' + (early ? 0 : 1) + '">' + f1(p) + '</tspan>', { c: "var(--ink-2)", halo: 1 });
-      if (early) svg += tx(px + bw / 2, y(p) + 30, "DVT 개발", { fs: 13, c: "var(--ink-2)", cls: "r5-pl" }) + tx(px + bw / 2, y(p) + 48, "· 대응", { fs: 13, c: "var(--ink-2)", cls: "r5-pl" }) +
-        '<line class="r5-strike" x1="' + (px + 10) + '" x2="' + (px + bw - 10) + '" y1="' + (y(p) + 34) + '" y2="' + (y(p) + 34) + '" stroke="#e6007e" stroke-width="2.5"/>' +
-        (function () { var x1 = px + bw * 0.72, y1 = y(p) - 26, x2 = ax + bw / 2, y2 = y(a) - 28, pk = Math.min(y1, y2) - 34; return '<path class="r5-arc r5-role" pathLength="100" d="M' + x1 + ' ' + y1 + ' C ' + x1 + ' ' + pk + ', ' + x2 + ' ' + pk + ', ' + x2 + ' ' + y2 + '" fill="none" stroke="#e6007e" stroke-width="2.2"/>' + head(x2, y2, "r5-role-h") + tx((x1 + x2) / 2, pk + 4, "역할 변경", { fs: 12, c: "#a3005a", cls: "r5-s2 r5-rolelab", halo: 1 }); })();
-      else svg += tx(px + bw / 2, y(p) - 26, "E2E 최소 인력", { fs: 12, fw: 500, c: "var(--ink-2)" });
+      svg += '<g class="r5-plan"><rect x="' + px + '" y="' + y(p) + '" width="' + pw + '" height="' + p * K + '" rx="4" fill="var(--plan-wash)" stroke="var(--plan)" stroke-width="1.5"/>' +
+        tx(px + pw / 2, y(p) - 8, '<tspan data-sp="r5p' + (early ? 0 : 1) + '">' + f1(p) + '</tspan>', { c: "var(--ink-2)", halo: 1 });
+      if (early) svg += tx(px + pw / 2, y(p) + 30, "DVT 개발", { fs: 13, c: "var(--ink-2)", cls: "r5-pl" }) + tx(px + pw / 2, y(p) + 48, "· 대응", { fs: 13, c: "var(--ink-2)", cls: "r5-pl" }) +
+        '<line class="r5-strike" x1="' + (px + 10) + '" x2="' + (px + pw - 10) + '" y1="' + (y(p) + 34) + '" y2="' + (y(p) + 34) + '" stroke="#e6007e" stroke-width="2.5"/>' +
+        (function () { var x1 = px + pw * 0.72, y1 = y(p) - 26, x2 = ax + aw / 2, y2 = y(a) - 28, pk = Math.min(y1, y2) - 34; return '<path class="r5-arc r5-role" pathLength="100" d="M' + x1 + ' ' + y1 + ' C ' + x1 + ' ' + pk + ', ' + x2 + ' ' + pk + ', ' + x2 + ' ' + y2 + '" fill="none" stroke="#e6007e" stroke-width="2.2"/>' + head(x2, y2, "r5-role-h") + tx((x1 + x2) / 2, pk + 4, "역할 변경", { fs: 12, c: "#a3005a", cls: "r5-s2 r5-rolelab", halo: 1 }); })();
+      else svg += tx(px + pw / 2, y(p) - 26, "E2E 계약", { fs: 11.5, fw: 500, c: "var(--ink-2)" });
       svg += '</g>';
-      svg += '<line class="r5-lvl" x1="' + (px - 8) + '" x2="' + (ax + bw + 8) + '" y1="' + y(p) + '" y2="' + y(p) + '" stroke="var(--ink)" stroke-width="1.5" stroke-dasharray="5 4"/>';
+      svg += '<line class="r5-lvl" x1="' + (px - 8) + '" x2="' + (ax + aw + 8) + '" y1="' + y(p) + '" y2="' + y(p) + '" stroke="var(--ink)" stroke-width="1.5" stroke-dasharray="5 4"/>';
       // what was done
       svg += '<g class="r5-act m' + m + '">';
       if (early) {
         var ux = aSum("ux", m), qa = aSum("dvt", m), dv = aSum("dev", m), yy = BASE;
-        svg += '<rect x="' + ax + '" y="' + (yy - ux * K) + '" width="' + bw + '" height="' + ux * K + '" fill="#6f45b8"/>'; yy -= ux * K;
-        svg += '<rect x="' + ax + '" y="' + (yy - qa * K) + '" width="' + bw + '" height="' + qa * K + '" fill="#b55708"/>' + tx(ax + bw / 2, yy - qa * K / 2 + 5, f1(qa), { c: "#fff", fs: 12 }); yy -= qa * K;
-        svg += '<rect x="' + ax + '" y="' + (yy - dv * K) + '" width="' + bw + '" height="' + dv * K + '" fill="#2460bf"/>';
-        if (a > p) svg += '<rect x="' + ax + '" y="' + y(a) + '" width="' + bw + '" height="' + (a - p) * K + '" fill="url(#r5hatch)" opacity=".55"/>';
+        svg += '<rect x="' + ax + '" y="' + (yy - ux * K) + '" width="' + aw + '" height="' + ux * K + '" fill="#6f45b8"/>'; yy -= ux * K;
+        svg += '<rect x="' + ax + '" y="' + (yy - qa * K) + '" width="' + aw + '" height="' + qa * K + '" fill="#b55708"/>' + tx(ax + aw / 2, yy - qa * K / 2 + 5, f1(qa), { c: "#fff", fs: 12 }); yy -= qa * K;
+        svg += '<rect x="' + ax + '" y="' + (yy - dv * K) + '" width="' + aw + '" height="' + dv * K + '" fill="#2460bf"/>';
+        if (a > p) svg += '<rect x="' + ax + '" y="' + y(a) + '" width="' + aw + '" height="' + (a - p) * K + '" fill="url(#r5hatch)" opacity=".55"/>';
         var mid = a > p ? (y(p) + yy) / 2 - 2 : yy - dv * K / 2;
-        svg += tx(ax + bw / 2, mid - 18, "GS · e-Care", { c: "#fff", fs: 12 }) + tx(ax + bw / 2, mid - 2, "변경 개발 ·", { c: "#fff", fs: 12 }) + tx(ax + bw / 2, mid + 14, "내부 테스트", { c: "#fff", fs: 12 }) + tx(ax + bw / 2, mid + 32, f1(dv), { c: "#fff", fs: 12 });
+        svg += tx(ax + aw / 2, mid - 18, "GS · e-Care", { c: "#fff", fs: 12 }) + tx(ax + aw / 2, mid - 2, "변경 개발 ·", { c: "#fff", fs: 12 }) + tx(ax + aw / 2, mid + 14, "내부 테스트", { c: "#fff", fs: 12 }) + tx(ax + aw / 2, mid + 32, f1(dv), { c: "#fff", fs: 12 });
       } else {
-        // 순증을 청구 영역별로 쌓음: 계약(E2E) → 인지(DVT 시험·결함) → uCUBE(LGU+ 부담) → 청구(변경·연동)
-        var b = R5BD.months[m - 2], yk = y(p), hk = b.ack * K, hu = b.ucube * K, hc = b.claim * K;
+        // 순증을 수행 업무별로 쌓음 (청구 구분은 보조 표기): 계약 E2E → DVT 시험 · 결함(인지) → uCUBE(LGU+ 부담) → 변경 · 연동(청구)
+        var b = R5BD.months[m - 2], yk = y(p), hk = b.ack * K, hu = b.ucube * K, hc = b.claim * K, cxm = ax + aw / 2;
         svg += '<g data-panel="r5bd" class="r5bdbar" role="button" aria-label="' + E.months[m] + ' 신규 투입 세부 내역 보기">';
-        svg += '<rect x="' + ax + '" y="' + y(p) + '" width="' + bw + '" height="' + p * K + '" fill="var(--plan)"/>' + (p >= 3 ? tx(ax + bw / 2, y(p) + p * K / 2 + 4, "계약 " + f1(p), { c: "#fff", fs: 11 }) : "");
-        svg += '<rect x="' + ax + '" y="' + (yk - hk) + '" width="' + bw + '" height="' + hk + '" fill="#f6c2dc"/>' + tx(ax + bw / 2, yk - hk / 2 - 3, "인지 (미청구)", { c: "#7a0044", fs: 11.5 }) + tx(ax + bw / 2, yk - hk / 2 + 12, f2(b.ack), { c: "#7a0044", fs: 12 });
+        svg += '<rect x="' + ax + '" y="' + y(p) + '" width="' + aw + '" height="' + p * K + '" fill="var(--plan)"/>' + tx(cxm, y(p) + p * K / 2 + 4, "E2E 대응 " + f1(p) + " · 계약", { c: "#fff", fs: 10.5 });
+        svg += '<rect x="' + ax + '" y="' + (yk - hk) + '" width="' + aw + '" height="' + hk + '" fill="#f6c2dc"/>' +
+          tx(cxm, yk - hk / 2 - 9, "DVT 시험 · 결함 대응 " + f2(b.ack), { c: "#5c0033", fs: 12 }) + tx(cxm, yk - hk / 2 + 6, b.ackWork, { c: "#7a0044", fs: 10.5, fw: 500 }) + tx(cxm, yk - hk / 2 + 21, "인지 (미청구)", { c: "#a3005a", fs: 10.5 });
         yk -= hk;
-        svg += '<rect x="' + ax + '" y="' + (yk - hu) + '" width="' + bw + '" height="' + hu + '" fill="#fff" stroke="#e6007e" stroke-width="1"/>';
-        svg += '<line x1="' + (ax - 3) + '" x2="' + (ax - 16) + '" y1="' + (yk - hu / 2) + '" y2="' + (yk - hu / 2) + '" stroke="#a3005a"/>' + tx(ax - 19, yk - hu / 2 + 4, "uCUBE " + f2(b.ucube) + " LGU+ 부담", { a: "end", fs: 11, fw: 600, c: "#a3005a", halo: 1 });
+        svg += '<rect x="' + ax + '" y="' + (yk - hu) + '" width="' + aw + '" height="' + hu + '" fill="#fff" stroke="#e6007e" stroke-width="1"/>';
+        svg += '<line x1="' + (ax - 3) + '" x2="' + (ax - 12) + '" y1="' + (yk - hu / 2) + '" y2="' + (yk - hu / 2) + '" stroke="#a3005a"/>' + tx(ax - 15, yk - hu / 2 - 2, "uCUBE 연계 " + f2(b.ucube), { a: "end", fs: 10.5, c: "#a3005a", halo: 1 }) + tx(ax - 15, yk - hu / 2 + 11, "LGU+ 부담", { a: "end", fs: 10.5, fw: 500, c: "#a3005a", halo: 1 });
         yk -= hu;
-        svg += '<rect x="' + ax + '" y="' + (yk - hc) + '" width="' + bw + '" height="' + hc + '" fill="#e6007e"/>' + (hc >= 34 ? tx(ax + bw / 2, yk - hc / 2 - 3, "청구", { c: "#fff", fs: 12 }) + tx(ax + bw / 2, yk - hc / 2 + 12, f2(b.claim), { c: "#fff", fs: 12 }) : tx(ax + bw / 2, yk - hc / 2 + 4, "청구 " + f2(b.claim), { c: "#fff", fs: 11.5 }));
+        var cl = ["변경 · 연동 대응 " + f2(b.claim) + " · 청구"].concat(b.claimWork), lh = hc >= 40 ? 13 : 11.5, top = yk - hc / 2 - (cl.length - 1) * lh / 2 + 4;
+        svg += '<rect x="' + ax + '" y="' + (yk - hc) + '" width="' + aw + '" height="' + hc + '" fill="#e6007e"/>' + cl.map(function (t, k) { return tx(cxm, top + k * lh, t, { c: "#fff", fs: k ? 10 : 11.5, fw: k ? 500 : 700 }); }).join("");
         svg += '</g>';
       }
-      svg += tx(ax + bw / 2, y(a) - 8, f1(a), { halo: 1 }) + '</g>';
+      svg += tx(ax + aw / 2, y(a) - 8, f1(a), { halo: 1 }) + '</g>';
       // contract level line + delta
-      svg += tx(ax + bw + 12, (Dl[m] > 0 ? (y(a) + y(p)) / 2 : y(a)) + 5, '<tspan data-sp="r5d' + (early ? 0 : 1) + '" data-v="' + sg(Dl[m]) + '">' + sg(Dl[m]) + '</tspan>', { a: "start", fs: 13, c: Dl[m] > 0 ? "#a3005a" : "var(--ink-3)", cls: early ? "r5-s2" : "r5-s3" });
-      svg += tx(px + bw / 2, BASE + 20, "계약", { fs: 12, fw: 500, c: "var(--ink-2)" }) + tx(ax + bw / 2, BASE + 20, "수행", { fs: 12, fw: 500, c: "var(--ink-2)" }) + tx(c, BASE + 44, E.months[m], { fs: 15 });
+      svg += tx(ax + aw + (early ? 12 : 8), (early ? (Dl[m] > 0 ? (y(a) + y(p)) / 2 : y(a)) : y(a) + 14) + 5, '<tspan data-sp="r5d' + (early ? 0 : 1) + '" data-v="' + sg(Dl[m]) + '">' + sg(Dl[m]) + '</tspan>', { a: "start", fs: 13, c: Dl[m] > 0 ? "#a3005a" : "var(--ink-3)", cls: early ? "r5-s2" : "r5-s3" });
+      svg += tx(px + pw / 2, BASE + 20, "계약", { fs: 12, fw: 500, c: "var(--ink-2)" }) + tx(ax + aw / 2, BASE + 20, "수행", { fs: 12, fw: 500, c: "var(--ink-2)" }) + tx(c, BASE + 44, E.months[m], { fs: 15 });
     });
     // DVT work moves right: arcs from the 8 · 9월 contract bars to the 10 · 11월 bars
-    var arc = function (m1, m2, peak, lab, lx, ly, n) { var x1 = cx[m1] - bw - 6 + bw * 0.28, y1 = y(P[m1]) - 26, x2 = cx[m2] + bw / 2 + 6, y2 = y(A2[m2]) - 28; return '<path class="r5-arc r5-move m' + n + '" pathLength="100" d="M' + x1 + ' ' + y1 + ' C ' + x1 + ' ' + peak + ', ' + x2 + ' ' + peak + ', ' + x2 + ' ' + y2 + '" fill="none" stroke="#e6007e" stroke-width="2.2"/>' + head(x2, y2, "r5-move-h m" + n) + tx(lx, ly, lab, { fs: 12.5, c: "#a3005a", cls: "r5-s3 r5-arclab", halo: 1 }); };
+    var arc = function (m1, m2, peak, lab, lx, ly, n) { var x1 = cx[m1] - bw - 6 + bw * 0.28, y1 = y(P[m1]) - 26, x2 = cx[m2] + 20, y2 = y(A2[m2]) - 28; return '<path class="r5-arc r5-move m' + n + '" pathLength="100" d="M' + x1 + ' ' + y1 + ' C ' + x1 + ' ' + peak + ', ' + x2 + ' ' + peak + ', ' + x2 + ' ' + y2 + '" fill="none" stroke="#e6007e" stroke-width="2.2"/>' + head(x2, y2, "r5-move-h m" + n) + tx(lx, ly, lab, { fs: 12.5, c: "#a3005a", cls: "r5-s3 r5-arclab", halo: 1 }); };
     svg += arc(0, 2, -14, "8월에 못 한 DVT 개발 업무", 545, 16, 0) + arc(1, 3, 14, "9월에 못 한 DVT 개발 업무", 1010, 56, 1);
     svg += '<g class="r5-s2">' + tx(315, BASE + 72, "① 같은 인력 · 업무 변경: DVT 개발 → ACOS 규격에 따른 GS · e-Care 변경 개발 · 내부 테스트", { fs: 13, c: "#2460bf" }) + '</g>';
     svg += '<g class="r5-s3">' + tx(875, BASE + 72, "② 인력 계획이 없던 기간에 신규 투입 = 추가 개발", { fs: 13, c: "#a3005a" }) + '</g></svg>';
@@ -867,17 +875,20 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
     var evb = function (n) { return '<button type="button" class="r5evb" data-panel="r5ev:' + n + '">근거 자료 <span aria-hidden="true">›</span></button>'; };
     var box = '<div class="r5box"><table class="tbl r5cmp"><thead><tr><th>구간</th><th>TMKR이 보는 관점 (당사 이해)</th><th>당사 입장</th><th>근거</th></tr></thead><tbody>' +
       '<tr><td class="nw"><b>8 ~ 9월</b><br><span class="num">계약 ' + f1(P[0] + P[1]) + ' → 수행 ' + f1(A2[0] + A2[1]) + '</span></td><td>계약 인력 ' + f1(P[0] + P[1]) + ' MM은 계약 범위이고, 초과분 8.10 MM만 ACOS 추가 개발</td><td><b>같은 생각입니다.</b> 다만 계약 인력 ' + f1(P[0] + P[1]) + ' MM은 DVT가 아닌 ACOS 규격에 따른 GS · e-Care 변경 개발 · 내부 테스트에 쓰였습니다. 인력은 그대로, 업무만 바뀌었습니다.</td><td>' + evb(0) + '</td></tr>' +
-      '<tr><td class="nw"><b>10 ~ 11월</b><br><span class="num">계약 ' + f1(P[2] + P[3]) + ' → 수행 ' + f1(A2[2] + A2[3]) + '</span></td><td>8 ~ 9월 DVT가 뒤로 밀린 것(순연)이므로 계약 범위</td><td>DVT 업무는 밀렸지만, 이를 맡을 계약 인력은 8 ~ 9월에 이미 변경 개발에 투입되었습니다. E2E 최소 인력 ' + f1(P[2] + P[3]) + ' MM만 계획된 기간에 인력을 새로 투입했으므로 <b>순연이 아닌 추가 개발</b>입니다. 이 중 고객사 청구는 변경 · 연동 대응 10.10 MM이며, 나머지는 인지 요청입니다.</td><td>' + evb(1) + '<button type="button" class="r5evb" style="margin-top:6px" data-panel="r5bd">세부 내역 <span aria-hidden="true">›</span></button></td></tr>' +
+      '<tr><td class="nw"><b>10 ~ 11월</b><br><span class="num">계약 ' + f1(P[2] + P[3]) + ' → 수행 ' + f1(A2[2] + A2[3]) + '</span></td><td>8 ~ 9월 DVT가 뒤로 밀린 것(순연)이므로 계약 범위</td><td>DVT 업무는 밀렸지만, 이를 맡을 계약 인력은 8 ~ 9월에 이미 변경 개발에 투입되었습니다. E2E 최소 인력 ' + f1(P[2] + P[3]) + ' MM만 계획된 기간에 인력을 새로 투입했으므로 <b>순연이 아닌 추가 개발</b>입니다.</td><td>' + evb(1) + '<button type="button" class="r5evb" style="margin-top:6px" data-panel="r5bd">세부 내역 <span aria-hidden="true">›</span></button></td></tr>' +
+      '<tr class="r5calc"><td class="nw"><b>청구 10.10 산출</b></td><td colspan="3"><div class="r5chain num"><span class="r5c"><b>35.0</b><small>10 ~ 11월 수행</small></span><i>−</i><span class="r5c"><b>6.0</b><small>계약 E2E</small></span><i>=</i><span class="r5c"><b>29.00</b><small>신규 투입</small></span><i>−</i><span class="r5c"><b>17.95</b><small>DVT 시험 · 결함 인지</small></span><i>=</i><span class="r5c"><b>11.05</b><small>변경 · 연동 (다산 산정)</small></span><i>−</i><span class="r5c"><b>0.95</b><small>uCUBE (LGU+ 부담)</small></span><i>=</i><span class="r5c fin"><b>10.10 MM</b><small>고객사 청구</small></span></div></td></tr>' +
       '<tr class="tot r5big"><td>추가 공수</td><td class="num">8.10 MM</td><td class="num" colspan="2"><span data-sum="r5d0" data-sp="r5tot" data-v="8.10">8.10</span> + <span data-sum="r5d1" data-sp="r5tot" data-v="29.00">29.00</span> = <mark data-sum="r5tot">37.10 MM</mark></td></tr></tbody></table></div>';
 
     return '<section class="sheet" id="reading"><div class="sh-top"><span class="sheet-no"><span class="pill main">메인</span><b>5</b> / 5 · 양사 시각 정리</span></div>' +
       '<h2>8 ~ 9월은 같은 인력의 업무 변경, 10 ~ 11월은 계획에 없던 신규 투입입니다</h2>' +
       '<p class="lede">TMKR은 8 ~ 9월 순증 8.10 MM만 추가 개발로 보는 것으로 이해합니다. 공수 숫자는 그대로이며, 같은 숫자를 당사가 어떻게 읽는지 정리했습니다.</p>' +
-      stepper + '<div class="r5stage st1" id="r5stage"><div class="c-legend"><span><i style="background:var(--plan-wash);border:1.5px solid var(--plan)"></i>계약 계획</span><span><i class="sw c-dev"></i>GS · e-Care 변경 개발 · 내부 테스트</span><span><i class="sw c-dvt"></i>품질</span><span><i class="sw c-ux"></i>기획</span><span><i style="background:#e6007e"></i>신규 투입 중 청구 (변경 · 연동)</span><span><i style="background:#fff;border:1px solid #e6007e"></i>uCUBE (LGU+ 부담)</span><span><i style="background:#f6c2dc"></i>인지 (DVT 시험 · 결함, 미청구)</span><span><i style="border-top:2px dashed var(--ink);height:0;width:16px;border-radius:0;vertical-align:3px"></i>계약 수준</span><span>단위 MM</span></div>' + svg + '</div>' +
+      stepper + '<div class="r5stage st1" id="r5stage"><div class="c-legend"><span><i style="background:var(--plan-wash);border:1.5px solid var(--plan)"></i>계약 계획</span><span><i class="sw c-dev"></i>GS · e-Care 변경 개발 · 내부 테스트</span><span><i class="sw c-dvt"></i>품질</span><span><i class="sw c-ux"></i>기획</span><span><i style="background:#e6007e"></i>변경 · 연동 대응 (청구)</span><span><i style="background:#fff;border:1px solid #e6007e"></i>uCUBE 연계 (LGU+ 부담)</span><span><i style="background:#f6c2dc"></i>DVT 시험 · 결함 대응 (인지)</span><span><i style="border-top:2px dashed var(--ink);height:0;width:16px;border-radius:0;vertical-align:3px"></i>계약 수준</span><span>단위 MM</span></div>' + svg + '</div>' +
       box + '</section>';
   }
   /* 10 ~ 11월 신규 투입 세부 내역: 청구 영역의 월 배분은 다산 산정 기간(10.01 ~ 11.17) 근무일 비례 추정 (10월 21일 · 11월 12일) */
-  var R5BD = { months: [{ claim: 6.43, ucube: 0.60, ack: 8.97 }, { claim: 3.67, ucube: 0.35, ack: 8.98 }] };
+  var R5BD = { months: [
+    { claim: 6.43, ucube: 0.60, ack: 8.97, claimWork: ["ACOS 재변경 · Capable 응답", "VDP CoCo 정정 · CTI · DMS"], ackWork: "1 · 2차 시험, 결함 수정" },
+    { claim: 3.67, ucube: 0.35, ack: 8.98, claimWork: ["MM Flag · VDP Diag · Auth0"], ackWork: "2차 수정 · 3차 시험" }] };
   function r5bdPanel() {
     var team = table(["팀 · 역할", "주요 업무", "10월", "11월", "계"], [
       ["기획 / 디자인 (UX/GUI)", "DVT 화면 · 문구 대응", "1.0", "–", "1.0"],
