@@ -777,13 +777,23 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
 
   /* ── 3 effort ── */
   var YMAX = 36;
+  // 10 · 11월 순증을 업무별로 칠함 (위에서부터 변경 · 연동 청구 → uCUBE → DVT 시험 · 결함 인지)
+  function overBg(i, d) {
+    if (i < 2 || !E.byWork) return "";
+    var w = E.byWork[i - 2], c = w.claim / d * 100, u = (w.claim + w.ucube) / d * 100;
+    return ' style="background:linear-gradient(to bottom,#e6007e 0 ' + c.toFixed(1) + '%,#fff ' + c.toFixed(1) + '% ' + u.toFixed(1) + '%,#f6c2dc ' + u.toFixed(1) + '% 100%);box-shadow:inset 0 0 0 1px #e6007e" title="변경 · 연동 대응 ' + f2(w.claim) + ' (청구) · uCUBE ' + f2(w.ucube) + ' (LGU+ 부담) · DVT 시험 · 결함 대응 ' + f2(w.ack) + ' (인지)"';
+  }
+  function chain10() {
+    var c = function (t, sub, cls) { return '<span class="r5c' + (cls || "") + '"><b>' + t + '</b><small>' + sub + '</small></span>'; };
+    return '<div class="r5chain num">' + c("35.0", "10 ~ 11월 수행") + '<i>−</i>' + c("6.0", "계약 E2E") + '<i>=</i>' + c("29.00", "신규 투입") + '<i>−</i>' + c("17.95", "DVT 시험 · 결함 인지") + '<i>=</i>' + c("11.05", "변경 · 연동 (다산 산정)") + '<i>−</i>' + c("0.95", "uCUBE (LGU+ 부담)") + '<i>=</i>' + c("10.10 MM", "고객사 청구", " fin") + '</div>';
+  }
   function vEffort() {
     var cols = E.months.map(function (mn, i) {
       var p = E.planTotal[i], a = E.actualTotal[i], d = E.deltaTotal[i];
       var ph = p / YMAX * 100, ah = a / YMAX * 100, oh = d > 0 ? d / a * 100 : 0, top = Math.max(ph, ah);
       return '<button type="button" class="col" data-month="' + i + '" data-panel="month:' + i + '" aria-label="' + mn + ' 계획 ' + f1(p) + ' MM, 실제 ' + f1(a) + ' MM, 순증 ' + sg(d) + ' MM. 상세 보기">' +
         '<span class="b p" style="--ph:' + ph + '%"><span class="val num" data-sp="p3p' + (i < 2 ? 0 : 1) + ' p3pt">' + f1(p) + '</span></span>' +
-        '<span class="b a" style="--ah:' + ah + "%;--oh:" + oh + "%;--i:" + i + '"><span class="over"></span><span class="val num" data-sp="p3a' + (i < 2 ? 0 : 1) + ' p3at">' + f1(a) + '</span></span>' +
+        '<span class="b a" style="--ah:' + ah + "%;--oh:" + oh + "%;--i:" + i + '"><span class="over"' + overBg(i, d) + '></span><span class="val num" data-sp="p3a' + (i < 2 ? 0 : 1) + ' p3at">' + f1(a) + '</span></span>' +
         '<span class="chip num' + (d < 0 ? " neg" : "") + '" data-sp="p3d' + (i < 2 ? 0 : 1) + '" style="--top:' + top + '%">' + sg(d) + '</span></button>';
     }).join("");
     var grid = [0, 10, 20, 30].map(function (v) { return '<div class="grid" style="bottom:' + v / YMAX * 100 + '%">' + '<span class="num">' + v + '</span></div>'; }).join("");
@@ -795,7 +805,7 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
     return '<section class="sheet" id="effort"><div class="sh-top"><span class="sheet-no"><span class="pill main">메인</span><b>3</b> / 5 · 월별 투입 공수</span>' + seg() + '</div>' +
       '<h2>계약 대비 순증은 8&nbsp;~&nbsp;9월 8.10&nbsp;MM, 10&nbsp;~&nbsp;11월 29.00&nbsp;MM으로 합계 37.10&nbsp;MM입니다. 이 중 정산 요청은 8.10&nbsp;+&nbsp;10.10&nbsp;MM입니다 (변경 · 연동 투입 11.05 중 uCUBE 0.95는 LGU+ 부담)</h2>' + storyBar() +
       '<p class="lede">8 ~ 9월은 계획 인력이 변경 개발로 전환되어 순증이 작고, DVT가 이동한 10 ~ 11월에 순증이 집중됩니다. 월을 누르면 계획과 실제 구성이 열립니다. 항목별 숫자는 <a href="#sheet" class="more" style="font-size:inherit">4장 월별 투입 공수 표</a>에 있습니다.</p>' +
-      '<div class="eff"><div class="chart"><div class="c-legend"><span><i style="background:var(--plan)"></i>계획 (계약 시점)</span><span><i style="background:var(--ink)"></i>실제 투입</span><span><i style="background:var(--accent)"></i>계약 대비 순증</span><span>단위 MM</span></div>' +
+      '<div class="eff"><div class="chart"><div class="c-legend"><span><i style="background:var(--plan)"></i>계획 (계약 시점)</span><span><i style="background:var(--ink)"></i>실제 투입</span><span><i style="background:var(--accent)"></i>순증 (8 · 9월)</span><span><i style="background:#e6007e"></i>변경 · 연동 대응 (청구)</span><span><i style="background:#fff;border:1px solid #e6007e"></i>uCUBE (LGU+ 부담)</span><span><i style="background:#f6c2dc"></i>DVT 시험 · 결함 대응 (인지)</span><span>단위 MM</span></div>' +
       '<div class="plot" id="plot">' + grid + '<div class="cols">' + cols + '</div><div class="tip" id="tip"></div></div>' +
       '<div class="xlab">' + E.months.map(function (m) { return '<span>' + m + '</span>'; }).join("") + '</div><div class="brackets">' + brk + '</div><ul class="notes">' + E.notes.map(function (n) { return '<li>' + esc(n) + '</li>'; }).join("") + '</ul></div>' +
       '<div class="side"><h3>순증 구성</h3><div class="sum-eq num"><div><span data-sum="p3d0" data-sp="p3eq" data-v="8.10">8.10</span><small>8 ~ 9월</small></div><span>+</span><div><span data-sum="p3d1" data-sp="p3eq" data-v="29.00">29.00</span><small>10 ~ 11월</small></div><span>=</span><div class="t"><mark data-sum="p3eq">37.10 MM</mark><small>계획 <span data-sum="p3pt">' + f1(E.total.plan) + '</span> → 투입 <span data-sum="p3at">' + f1(E.total.actual) + '</span></small></div></div>' +
@@ -877,7 +887,7 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
       '<tr><td class="nw"><b>8 ~ 9월</b><br><span class="num">계약 ' + f1(P[0] + P[1]) + ' → 수행 ' + f1(A2[0] + A2[1]) + '</span></td><td>계약 인력 ' + f1(P[0] + P[1]) + ' MM은 계약 범위이고, 초과분 8.10 MM만 ACOS 추가 개발</td><td><b>같은 생각입니다.</b> 다만 계약 인력 ' + f1(P[0] + P[1]) + ' MM은 DVT가 아닌 ACOS 규격에 따른 GS · e-Care 변경 개발 · 내부 테스트에 쓰였습니다. 인력은 그대로, 업무만 바뀌었습니다.</td><td>' + evb(0) + '</td></tr>' +
       '<tr><td class="nw"><b>10 ~ 11월</b><br><span class="num">계약 ' + f1(P[2] + P[3]) + ' → 수행 ' + f1(A2[2] + A2[3]) + '</span></td><td>8 ~ 9월 DVT가 뒤로 밀린 것(순연)이므로 계약 범위</td><td>DVT 업무는 밀렸지만, 이를 맡을 계약 인력은 8 ~ 9월에 이미 변경 개발에 투입되었습니다. E2E 최소 인력 ' + f1(P[2] + P[3]) + ' MM만 계획된 기간에 인력을 새로 투입했으므로 <b>순연이 아닌 추가 개발</b>입니다.</td><td>' + evb(1) + '<button type="button" class="r5evb" style="margin-top:6px" data-panel="r5bd">세부 내역 <span aria-hidden="true">›</span></button></td></tr>' +
       '<tr class="r5calc"><td class="nw"><b>청구 10.10 산출</b></td><td colspan="3"><div class="r5chain num"><span class="r5c"><b>35.0</b><small>10 ~ 11월 수행</small></span><i>−</i><span class="r5c"><b>6.0</b><small>계약 E2E</small></span><i>=</i><span class="r5c"><b>29.00</b><small>신규 투입</small></span><i>−</i><span class="r5c"><b>17.95</b><small>DVT 시험 · 결함 인지</small></span><i>=</i><span class="r5c"><b>11.05</b><small>변경 · 연동 (다산 산정)</small></span><i>−</i><span class="r5c"><b>0.95</b><small>uCUBE (LGU+ 부담)</small></span><i>=</i><span class="r5c fin"><b>10.10 MM</b><small>고객사 청구</small></span></div></td></tr>' +
-      '<tr class="tot r5big"><td>추가 공수</td><td class="num">8.10 MM</td><td class="num" colspan="2"><span data-sum="r5d0" data-sp="r5tot" data-v="8.10">8.10</span> + <span data-sum="r5d1" data-sp="r5tot" data-v="29.00">29.00</span> = <mark data-sum="r5tot">37.10 MM</mark></td></tr></tbody></table></div>';
+      '<tr class="tot r5big"><td>청구 공수<small style="display:block;font-size:11.5px;font-weight:500;color:var(--ink-2)">콜버튼 3.86 포함 시 22.06</small></td><td class="num">8.10 MM</td><td class="num" colspan="2"><span data-sum="r5d0" data-sp="r5tot" data-v="8.10">8.10</span> + <span data-sp="r5tot" data-v="10.10">10.10</span> = <mark data-sum="r5tot">18.20 MM</mark><small style="font-size:12.5px;font-weight:500;color:var(--ink-2);margin-left:12px">순증 37.10 (8.10 + 29.00) 중</small></td></tr></tbody></table></div>';
 
     return '<section class="sheet" id="reading"><div class="sh-top"><span class="sheet-no"><span class="pill main">메인</span><b>5</b> / 5 · 양사 시각 정리</span></div>' +
       '<h2>8 ~ 9월은 같은 인력의 업무 변경, 10 ~ 11월은 계획에 없던 신규 투입입니다</h2>' +
@@ -1015,9 +1025,12 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
   }
   function bVdp() { var v = A.vdp; return table(["일자", "경과", "결과"], v.rows, { nowrap: [0] }) + '<div class="cols3" style="margin-top:16px">' + v.cards.map(function (c) { return '<div class="card"><h5>' + esc(c.k) + '</h5><ul class="plain">' + c.v.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join("") + '</ul></div>'; }).join("") + '</div>'; }
   function storyBar() {
-    var t = A.dvtChg.story, k = (+t.ack / +t.total * 100).toFixed(2);
-    return '<div class="story"><p>' + esc(t.lead) + '</p><div class="bar3 num"><div class="k" style="width:' + k + '%">인지 ' + t.ack + '</div><div class="r" style="flex:1">변경 · 연동 ' + t.ask + ' → 청구 10.10' + '</div></div><div class="cap3"><span style="width:' + k + '%">DVT 시험 · 결함 대응 (인지 요청)</span><span style="flex:1">변경 · 정정 · 연동 대응 (청구 10.10 · uCUBE 0.95 LGU+ 부담) · <a href="#dvt-chg">A13 증적 보기</a></span></div></div>';
+    var t = A.dvtChg.story, tot = +t.total, k = (+t.ack / tot * 100).toFixed(2), r = (10.10 / tot * 100).toFixed(2);
+    return '<div class="story"><p>' + esc(t.lead) + '</p><div class="bar3 num"><div class="k" style="width:' + k + '%">DVT 시험 · 결함 대응 ' + t.ack + ' · 인지</div><div class="r" style="flex:1;border-radius:0">변경 · 연동 대응 10.10 · 청구</div><div style="flex:none;width:92px;padding:0 6px;background:#fff;border:1.5px solid #e6007e;border-radius:0 5px 5px 0;color:#a3005a;justify-content:center;font-size:12.5px" title="uCUBE 연계 대응 0.95 MM, LGU+ 부담">uCUBE 0.95</div></div>' +
+      '<div class="cap3"><span style="width:' + k + '%">1 ~ 3차 시험 수행, 결함 분석 · 수정 · 재시험 (인지 요청)</span><span style="flex:1">ACOS 추가 변경 · TMC 서버 · 환경 지연 · TMKR 연계 변경 · DVT 영향 분석 (uCUBE 0.95는 LGU+ 부담) · <a href="#dvt-chg">A13</a> · <a href="#chg-plan">A16 예정 vs 실제</a></span></div>' +
+      '<div style="margin-top:10px">' + chain10() + '</div></div>';
   }
+
   function chgEvCell(r) {
     var e = A.dvtChg.ev[r[1]] || { log: [], deck: "", more: [] };
     return e.log.map(function (n) { return '<a class="evl" href="#cl-' + n + '">A14 #' + n + ' ' + esc(A.changeLog.rows[n - 1][0]) + '</a>'; }).join("") +
@@ -1028,7 +1041,7 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
     var d = A.dvtChg, tot = d.rows.reduce(function (a, r) { return a + r[5]; }, 0);
     return storyBar() + '<div class="wl-kpi num">' + d.split.map(function (x) { return '<div><small>' + esc(x[2]) + '</small><b>' + esc(x[0]) + '</b></div>'; }).join("") + '</div>' +
       '<ul class="notes">' + d.split.map(function (x) { return '<li>' + esc(x[0]) + ' · ' + esc(x[1]) + ' (' + esc(x[2]) + ')</li>'; }).join("") + '</ul>' +
-      '<h4>변경 · 정정별 수행 업무와 공수 (투입 11.05 MM 중 고객사 청구 10.10 MM)</h4>' + table(d.head.concat(["증적"]), d.rows.map(function (r) { return [r[0], r[1], r[2], r[3], r[4], f2(r[5]), chgEvCell(r)]; }).concat([["합계", "변경 · 정정 · 연동 대응", "", "", "", '<b>' + f2(tot) + ' MM</b>', ""]]), { right: [5], nowrap: [0, 1, 2] }) +
+      '<h4>변경 · 정정별 수행 업무와 공수 (투입 11.05 MM 중 고객사 청구 10.10 MM)</h4>' + table(d.head.concat(["증적"]), d.rows.map(function (r) { return [esc(r[0]), esc(r[1]), esc(r[2]), esc(r[3]), esc(r[4]), f2(r[5]), chgEvCell(r)]; }).concat([["합계", "변경 · 정정 · 연동 대응", "", "", "uCUBE 0.95 (LGU+ 부담) 제외", '<b>' + f2(tot) + ' MM</b>', ""]]), { right: [5], nowrap: [0, 1], raw: 1 }) +
       '<h4>세부 항목 (A4-1)</h4>' + table(d.detailHead, d.detail, { nowrap: [0, 2] }) +
       '<ul class="notes">' + d.notes.map(function (n) { return '<li>' + esc(n) + '</li>'; }).join("") + '</ul>' +
       '<p style="margin-top:14px"><a href="#chg-plan" class="more" style="margin-right:14px">A16 항목별 예정 vs 실제 · 향후 공수</a><a href="#change-log" class="more">A14 변경 · 정정 이력</a> <a href="#extra-dvt" class="more" style="margin-left:14px">A15 추가 DVT 예측</a></p>' + srcLine(d.source);
