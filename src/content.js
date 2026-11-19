@@ -775,21 +775,21 @@ const swap = (s) => s
   .replace(/23\.01 MM/g, "22.06 MM").replace(/11\.05 MM/g, "10.10 MM").replace(/26\.95 MM/g, "24.95 MM");
 summary.headline = swap(summary.headline);
 summary.ask = "요청 공수 합계 22.06 MM에 대한 검토 및 인정을 요청드립니다 (LGU+ 연계 시스템 uCUBE 대응 0.95 MM은 청구에서 제외)";
-summary.equation[2] = { v: "10.10", unit: "MM", label: "③ DVT 기간 변경 · 연동 대응", desc: "10.01 ~ 11.17 · uCUBE 0.95 제외" };
-summary.equation[3] = { v: "22.06", unit: "MM", label: "요청 공수 합계", desc: "기존 23.01 MM에서 uCUBE 0.95 MM 제외" };
-summary.steps[2] = { ...summary.steps[2], title: "DVT 기간 변경 · 연동 대응 10.10 MM", body: "7/27 이후 ACOS 추가 변경과 VDP · PGM 등 TMC 서버 · 환경 지연에 대응해 DVT 기간(10.01 ~ 11.17)에 분석 · 개발 · 재검증이 발생. 10 ~ 11월 실투입 29.00 MM 중 10.10 MM만 정산 요청(uCUBE 0.95 MM은 LGU+ 사유로 청구 제외), 나머지 18.90 MM은 인지 요청" };
+summary.equation[2] = { v: "10.10", unit: "MM", label: "③ DVT 기간 변경 · 연동 대응", desc: "투입 11.05(다산) 중 uCUBE 0.95 LGU+ 부담" };
+summary.equation[3] = { v: "22.06", unit: "MM", label: "요청 공수 합계", desc: "고객사 청구 기준 · uCUBE 0.95 MM 제외" };
+summary.steps[2] = { ...summary.steps[2], title: "DVT 기간 변경 · 연동 대응 10.10 MM", body: "7/27 이후 ACOS 추가 변경과 VDP · PGM 등 TMC 서버 · 환경 지연에 대응해 DVT 기간(10.01 ~ 11.17)에 분석 · 개발 · 재검증이 발생. 변경 · 연동 대응 투입 11.05 MM(다산 산정) 중 uCUBE 0.95 MM은 LGU+ 부담으로 청구하지 않고 10.10 MM만 정산 요청, 시험 · 결함 대응 17.95 MM은 인지 요청" };
 summary.principle.items = summary.principle.items.map((x) => ({ k: x.k, v: swap(x.v) }));
-summary.principle.items.splice(1, 0, { k: "LGU+ 사유 청구 제외", v: "uCUBE(LGU+ 연계 시스템) 대응분은 청구하지 않음: 10 ~ 11월 0.95 MM, 추가 DVT 예측 2.00 MM" });
+summary.principle.items.splice(1, 0, { k: "uCUBE는 LGU+ 부담", v: "다산 투입 · 산정 공수는 그대로(10 ~ 11월 변경 · 연동 11.05 MM, 추가 DVT 26.95 MM). 그중 LGU+ 연계 시스템 uCUBE 대응분(0.95 · 2.00 MM)은 LGU+가 부담하고 고객사에 청구하지 않음" });
 summary.narrative.paras = summary.narrative.paras.map((x) => x.map(swap));
 summary.narrative.paras[3][0] = "그중 최종적으로 요청하는 공수 10.10 MM";
-summary.narrative.paras[3][1] = summary.narrative.paras[3][1].replace("10.01부터 11.17까지 이 대응에 10.10 MM이 투입되었습니다.", "10.01부터 11.17까지 이 대응에 11.05 MM이 투입되었고, 이 중 LGU+ 연계 시스템(uCUBE) 대응 0.95 MM은 청구에서 제외해 10.10 MM을 요청드립니다.");
-summary.narrative.paras[3][2] = "29.00 MM 중 7/27 이후 TMC · TMKR의 변경 · 정정에 대응한 10.10 MM만 요청하고(uCUBE 0.95 MM 제외), 시험 · 결함 대응 등 18.90 MM은 인지만 요청합니다.";
+summary.narrative.paras[3][1] = summary.narrative.paras[3][1].replace("10.01부터 11.17까지 이 대응에 10.10 MM이 투입되었습니다.", "10.01부터 11.17까지 이 대응에 11.05 MM이 투입되었습니다(다산 산정). 이 중 LGU+ 연계 시스템(uCUBE) 대응 0.95 MM은 LGU+가 부담하고, 고객사에는 10.10 MM을 요청드립니다.");
+summary.narrative.paras[3][2] = "29.00 MM 중 변경 · 정정 대응 투입 11.05 MM에서 uCUBE 0.95 MM(LGU+ 부담)을 뺀 10.10 MM만 요청하고, 시험 · 결함 대응 17.95 MM은 인지만 요청합니다.";
 summary.narrative.paras[4][2] = "8.10 + 10.10 + e-Care 콜버튼 3.86 = 22.06 MM이 최종 요청이며, 11.18 이후 추가 DVT 예측 24.95 MM(uCUBE 제외)은 별도로 제안합니다.";
 appendix.callbtn.source = swap(appendix.callbtn.source);
 
 const D3 = "CCB 자료 2026.11.19";
-appendix.dvtChg.title = "DVT 기간 변경 · 정정 대응 업무와 공수 10.10 MM (10.01 ~ 11.17)";
-appendix.dvtChg.message = "7/27 규격 배포 이후 ACOS 추가 변경과 VDP · PGM 등 TMC 서버 · 환경 지연에 개발 인력이 분석 · 개발 · 재검증으로 대응함. 청구 대상은 uCUBE(0.95 MM)를 제외한 10.10 MM";
+appendix.dvtChg.title = "DVT 기간 변경 · 정정 대응 업무와 공수 (투입 11.05 MM · 청구 10.10 MM, 10.01 ~ 11.17)";
+appendix.dvtChg.message = "7/27 규격 배포 이후 ACOS 추가 변경과 VDP · PGM 등 TMC 서버 · 환경 지연에 개발 인력이 분석 · 개발 · 재검증으로 대응함. 투입은 11.05 MM(다산 산정)이며, uCUBE 0.95 MM은 LGU+가 부담하고 고객사에는 10.10 MM을 청구";
 appendix.dvtChg.source = "출처: " + D3 + " p.11, p.70~71 (발생 시점은 Jira · 주간보고 · 메일 이력 기준)";
 appendix.dvtChg.head = ["분류", "영역", "귀책 · 진행 일정", "주요 발생 사유 · 확인 오류", "수행 업무 → 현재 결과", "MM"];
 appendix.dvtChg.rows = [
@@ -807,24 +807,24 @@ appendix.dvtChg.rows = [
 appendix.dvtChg.detail = appendix.dvtChg.detail.filter((r, i, a) => !(r[0].startsWith("uCUBE") || (r[0] === "" && a.slice(0, i).reverse().find((x) => x[0])?.[0].startsWith("uCUBE"))));
 appendix.dvtChg.notes = [
   "8.10 MM과의 구분: Upsert Administrator · Capable API는 7/27 규격 기준으로 개발 완료 후, 10월 TMC가 정책(SkipVehicleAuthentication)과 응답 구조를 다시 변경하여 발생한 재작업임",
-  "청구 기준: DVT 기간 추가 · 변경 업무 11.05 MM 중 LGU+ 연계 시스템 uCUBE 대응 0.95 MM은 청구에서 제외하고 10.10 MM을 요청함. 1 MM = 20 근무일",
+  "청구 기준: 다산 투입 11.05 MM은 그대로이며, 그중 LGU+ 연계 시스템 uCUBE 대응 0.95 MM은 LGU+가 부담하고 고객사에는 10.10 MM을 청구함. 1 MM = 20 근무일",
   "Digital Key 발생 일자는 개발팀 확인 후 갱신 예정",
 ];
-appendix.dvtChg.split = [["29.00 MM", "10 ~ 11월 실투입 (계약상 6 MM 대비 실제 35 MM)", "인지"], ["10.10 MM", "TMC · TMKR 7/27 이후 변경 · 정정 · 연동 대응 (10.01 ~ 11.17)", "정산 요청"], ["0.95 MM", "uCUBE 연계 대응 (LGU+ 사유)", "청구 제외"], ["17.95 MM", "DVT 시험 · 결함 분석 · 수정 · 재시험 (기타 연계 포함)", "인지"]];
-appendix.dvtChg.story = { total: "29.00", ack: "18.90", ask: "10.10", lead: "10 ~ 11월 실투입은 29.00 MM이지만, 최종적으로 요청하는 공수는 7/28 이후 변경 · 정정 · 연동 대응 중 uCUBE를 제외한 10.10 MM입니다" };
+appendix.dvtChg.split = [["29.00 MM", "10 ~ 11월 실투입 (계약상 6 MM 대비 실제 35 MM)", "인지"], ["11.05 MM", "7/27 이후 변경 · 정정 · 연동 대응 투입 (다산 산정, 10.01 ~ 11.17)", "투입"], ["10.10 MM", "그중 고객사 청구분 (TMC · TMKR 사유)", "정산 요청"], ["0.95 MM", "그중 uCUBE 연계 대응 (LGU+ 연계 시스템)", "LGU+ 부담"], ["17.95 MM", "DVT 시험 · 결함 분석 · 수정 · 재시험 (기타 연계 포함)", "인지"]];
+appendix.dvtChg.story = { total: "29.00", ack: "17.95", ask: "11.05", lead: "10 ~ 11월 실투입은 29.00 MM이고 그중 변경 · 정정 · 연동 대응 투입은 11.05 MM(다산 산정)입니다. 이 중 uCUBE 0.95 MM은 LGU+가 부담하고, 고객사에는 10.10 MM을 청구합니다" };
 delete chgEv["uCUBE"];
 delete chgEv["DMS · Digital Key"];
 for (const k of Object.keys(chgEv)) chgEv[k].deck = chgEv[k].deck.replace(/p\.(\d+)/g, (m, n) => "p." + (+n - 1));
 chgEv["DMS"] = { log: [], deck: "p.71", more: [["dvt-run", "A10 DVT 수행 실적"]] };
 chgEv["Digital Key"] = { log: [], deck: "p.71", more: [] };
 
-appendix.extraDvt.title = "추가 DVT 기간 예측 공수 24.95 MM (2026.11.18 ~ 2027.01.29, uCUBE 제외)";
-appendix.extraDvt.message = "TMC 측 선행 조건이 해소되지 않아 잔여 N/T 352건이 남아 있고, DVT 실질 종료(2027.01)까지 uCUBE를 제외한 24.95 MM이 필요할 것으로 예측함. 월 환산 인원은 QA 포함 약 9.5 · 9.9 · 9.8명으로, 4월 계획상 9월 개발 인력 10명 이내. 본 요청 합계 22.06 MM에는 포함하지 않음";
+appendix.extraDvt.title = "추가 DVT 기간 예측 공수 24.95 MM (2026.11.18 ~ 2027.01.29, 다산 산정 26.95 중 uCUBE 제외)";
+appendix.extraDvt.message = "TMC 측 선행 조건이 해소되지 않아 잔여 N/T 352건이 남아 있고, DVT 실질 종료(2027.01)까지 다산 산정 26.95 MM 중 uCUBE 2.00 MM(LGU+ 부담)을 제외한 24.95 MM을 고객사에 제안함. 월 환산 인원은 QA 포함 약 9.5 · 9.9 · 9.8명으로, 4월 계획상 9월 개발 인력 10명 이내. 본 요청 합계 22.06 MM에는 포함하지 않음";
 appendix.extraDvt.source = "출처: " + D3 + " p.17~19, p.72~73";
 appendix.extraDvt.areas = appendix.extraDvt.areas.filter((r) => r[0] !== "uCUBE");
 appendix.extraDvt.periods = [["11/18 ~ 11/30", "연동 장애 해소, 환경 정상화, E2E 진입 대응", 4.26], ["12/01 ~ 12/31", "잔여 기능 수정, 외부 연동시험, E2E 진입 대응", 10.88], ["2027.01.01 ~ 01.29", "잔여 N/T 해소, 결함 수정, 최종 회귀시험", 9.81]];
 appendix.extraDvt.notes = [
-  "uCUBE 2.00 MM 제외(기존 26.95 MM). 기간별 값은 비례 차감한 값이며 단계별(분석 · 설계 · 개발 · 테스트) 구분은 재산정 예정",
+  "다산 산정 26.95 MM 중 uCUBE 2.00 MM은 LGU+ 부담으로 고객사 제안에서 제외. 기간별 값은 비례 차감한 값이며 단계별(분석 · 설계 · 개발 · 테스트) 구분은 재산정 예정",
   "월 환산 인원 = MM ÷ (기간 근무일 ÷ 20): 11/18~30 약 9.5명, 12월 약 9.9명, 1월 약 9.8명 (QA 포함). 10 · 11월 실적은 개발 인력만 13 · 13 MM (품질 · 기획 제외)",
   "각 서비스 모듈 담당자는 변경 및 이슈 대응을 위해 검증 기간 중 유지되어야 함",
   "본사 API 사양 변경 · Pre-PROD 반영이 2027년 2월 이후 확정될 경우, 별도 일정 · 공수로 관리하거나 DVT 종료 기준 재협의 필요",
@@ -840,7 +840,7 @@ module.exports = {
     modes: { plan: "기존 계획", changed: "변경" , planSub: "계약 기준", changedSub: "ACOS 규격 지연 대응" },
     // 장표 변경 이력 (최신이 위)
     changelog: [
-      { v: "v14", at: "2026.11.19 10:00", items: ["uCUBE(LGU+ 연계 시스템) 대응분 청구 제외: 요청 합계 23.01 → 22.06 MM, ③ DVT 변경 · 연동 대응 11.05 → 10.10 MM", "A13을 4개 분류(ACOS 추가 변경 · TMC 서버 · 환경 지연 · TMKR 연계 변경 · DVT 영향 분석)로 재구성하고 진행 일정 · 현재 결과 추가", "A15 추가 DVT 예측 26.95 → 24.95 MM (uCUBE 2.00 제외), 월 환산 인원 · 개발 인력 실적 기준 명시"] },
+      { v: "v14", at: "2026.11.19 10:00", items: ["uCUBE(LGU+ 연계 시스템) 대응분은 LGU+ 부담으로 고객사 청구에서 제외: 다산 투입 11.05 MM 유지, 고객사 청구 ③ 10.10 MM · 합계 22.06 MM", "A13을 4개 분류(ACOS 추가 변경 · TMC 서버 · 환경 지연 · TMKR 연계 변경 · DVT 영향 분석)로 재구성하고 진행 일정 · 현재 결과 추가", "A15 추가 DVT 예측 26.95 → 24.95 MM (uCUBE 2.00 제외), 월 환산 인원 · 개발 인력 실적 기준 명시"] },
       { v: "v13", at: "2026.11.14 12:20", items: ["5장 보완: 단계는 클릭 · Space로만 진행, 8 ~ 9월 수행 업무 표기 정정 (GS · e-Care 변경 개발 · 내부 테스트), 근거 자료를 사이드 패널로 이동", "합계 강조의 안내 문구 삭제"] },
       { v: "v12", at: "2026.11.14 10:40", items: ["메인 5장을 양사 시각 정리로 재구성: 8 ~ 9월 같은 인력의 업무 변경, 10 ~ 11월 계획에 없던 기간의 신규 투입을 단계별 애니메이션으로 표시 (공수 숫자 변경 없음)", "5장에 근거 자료 링크 (Appendix, TMKR Confluence · Jira) 추가"] },
       { v: "v11", at: "2026.11.13 10:10", items: ["메인 5장 추가: 8 ~ 9월 투입 50.3 MM의 업무 구성과 추가 요청 8.10 MM의 의미"] },

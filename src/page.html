@@ -786,7 +786,7 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
     }).join("");
     var sp = E.split, w1 = sp.parts[0].v / (sp.parts[0].v + sp.parts[1].v) * 100;
     return '<section class="sheet" id="effort"><div class="sh-top"><span class="sheet-no"><span class="pill main">메인</span><b>3</b> / 5 · 월별 투입 공수</span>' + seg() + '</div>' +
-      '<h2>계약 대비 순증은 8&nbsp;~&nbsp;9월 8.10&nbsp;MM, 10&nbsp;~&nbsp;11월 29.00&nbsp;MM으로 합계 37.10&nbsp;MM입니다. 이 중 정산 요청은 8.10&nbsp;+&nbsp;10.10&nbsp;MM입니다 (uCUBE 0.95 제외)</h2>' + storyBar() +
+      '<h2>계약 대비 순증은 8&nbsp;~&nbsp;9월 8.10&nbsp;MM, 10&nbsp;~&nbsp;11월 29.00&nbsp;MM으로 합계 37.10&nbsp;MM입니다. 이 중 정산 요청은 8.10&nbsp;+&nbsp;10.10&nbsp;MM입니다 (변경 · 연동 투입 11.05 중 uCUBE 0.95는 LGU+ 부담)</h2>' + storyBar() +
       '<p class="lede">8 ~ 9월은 계획 인력이 변경 개발로 전환되어 순증이 작고, DVT가 이동한 10 ~ 11월에 순증이 집중됩니다. 월을 누르면 계획과 실제 구성이 열립니다. 항목별 숫자는 <a href="#sheet" class="more" style="font-size:inherit">4장 월별 투입 공수 표</a>에 있습니다.</p>' +
       '<div class="eff"><div class="chart"><div class="c-legend"><span><i style="background:var(--plan)"></i>계획 (계약 시점)</span><span><i style="background:var(--ink)"></i>실제 투입</span><span><i style="background:var(--accent)"></i>계약 대비 순증</span><span>단위 MM</span></div>' +
       '<div class="plot" id="plot">' + grid + '<div class="cols">' + cols + '</div><div class="tip" id="tip"></div></div>' +
@@ -968,7 +968,7 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
   function bVdp() { var v = A.vdp; return table(["일자", "경과", "결과"], v.rows, { nowrap: [0] }) + '<div class="cols3" style="margin-top:16px">' + v.cards.map(function (c) { return '<div class="card"><h5>' + esc(c.k) + '</h5><ul class="plain">' + c.v.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join("") + '</ul></div>'; }).join("") + '</div>'; }
   function storyBar() {
     var t = A.dvtChg.story, k = (+t.ack / +t.total * 100).toFixed(2);
-    return '<div class="story"><p>' + esc(t.lead) + '</p><div class="bar3 num"><div class="k" style="width:' + k + '%">인지 ' + t.ack + '</div><div class="r" style="flex:1">요청 ' + t.ask + '</div></div><div class="cap3"><span style="width:' + k + '%">DVT 시험 · 결함 대응 + uCUBE (인지 · uCUBE 청구 제외)</span><span style="flex:1">변경 · 정정 · 연동 대응 (정산 요청) · <a href="#dvt-chg">A13 증적 보기</a></span></div></div>';
+    return '<div class="story"><p>' + esc(t.lead) + '</p><div class="bar3 num"><div class="k" style="width:' + k + '%">인지 ' + t.ack + '</div><div class="r" style="flex:1">변경 · 연동 ' + t.ask + ' → 청구 10.10' + '</div></div><div class="cap3"><span style="width:' + k + '%">DVT 시험 · 결함 대응 (인지 요청)</span><span style="flex:1">변경 · 정정 · 연동 대응 (청구 10.10 · uCUBE 0.95 LGU+ 부담) · <a href="#dvt-chg">A13 증적 보기</a></span></div></div>';
   }
   function chgEvCell(r) {
     var e = A.dvtChg.ev[r[1]] || { log: [], deck: "", more: [] };
@@ -980,7 +980,7 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
     var d = A.dvtChg, tot = d.rows.reduce(function (a, r) { return a + r[5]; }, 0);
     return storyBar() + '<div class="wl-kpi num">' + d.split.map(function (x) { return '<div><small>' + esc(x[2]) + '</small><b>' + esc(x[0]) + '</b></div>'; }).join("") + '</div>' +
       '<ul class="notes">' + d.split.map(function (x) { return '<li>' + esc(x[0]) + ' · ' + esc(x[1]) + ' (' + esc(x[2]) + ')</li>'; }).join("") + '</ul>' +
-      '<h4>변경 · 정정별 수행 업무와 공수 (10.10 MM, uCUBE 제외)</h4>' + table(d.head.concat(["증적"]), d.rows.map(function (r) { return [r[0], r[1], r[2], r[3], r[4], f2(r[5]), chgEvCell(r)]; }).concat([["합계", "변경 · 정정 · 연동 대응", "", "", "", '<b>' + f2(tot) + ' MM</b>', ""]]), { right: [5], nowrap: [0, 1, 2] }) +
+      '<h4>변경 · 정정별 수행 업무와 공수 (투입 11.05 MM 중 고객사 청구 10.10 MM)</h4>' + table(d.head.concat(["증적"]), d.rows.map(function (r) { return [r[0], r[1], r[2], r[3], r[4], f2(r[5]), chgEvCell(r)]; }).concat([["합계", "변경 · 정정 · 연동 대응", "", "", "", '<b>' + f2(tot) + ' MM</b>', ""]]), { right: [5], nowrap: [0, 1, 2] }) +
       '<h4>세부 항목 (A4-1)</h4>' + table(d.detailHead, d.detail, { nowrap: [0, 2] }) +
       '<ul class="notes">' + d.notes.map(function (n) { return '<li>' + esc(n) + '</li>'; }).join("") + '</ul>' +
       '<p style="margin-top:14px"><a href="#change-log" class="more">A14 변경 · 정정 이력</a> <a href="#extra-dvt" class="more" style="margin-left:14px">A15 추가 DVT 예측</a></p>' + srcLine(d.source);
