@@ -207,6 +207,11 @@ button.g-bar:hover { filter: brightness(1.15); }
 .b.a { background: var(--ink); height: var(--ah); transition-delay: calc(var(--i) * 110ms + 150ms); overflow: visible; }
 .b.a .over { position: absolute; left: 0; right: 0; top: 0; height: var(--oh); background: var(--accent); border-radius: 4px 4px 0 0; }
 .b.a .val { font-weight: 700; }
+.b.a .over { display: flex; flex-direction: column; overflow: hidden; }
+.bs { display: flex; align-items: center; justify-content: center; text-align: center; font-size: 10.5px; line-height: 1.2; font-weight: 700; overflow: hidden; color: #fff; flex: none; }
+.bs.c { background: #e6007e; } .bs.u { background: #fff; box-shadow: inset 0 0 0 1px #e6007e; } .bs.k { background: #f6c2dc; color: #7a0044; }
+.bs.base { position: absolute; left: 0; right: 0; bottom: 0; color: rgba(255,255,255,.75); font-weight: 600; }
+[data-mode="plan"] .bs { color: transparent; }
 [data-mode="plan"] .b.a { height: 0; }
 [data-mode="plan"] .b.a .val, [data-mode="plan"] .chip { opacity: 0; }
 .chip { position: absolute; left: 50%; transform: translateX(-50%); bottom: calc(var(--top) + 30px); background: var(--accent); color: #fff; font-weight: 700; font-size: 13px; padding: 1px 9px; border-radius: 999px; white-space: nowrap; transition: opacity .4s .9s; }
@@ -778,10 +783,14 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
   /* ── 3 effort ── */
   var YMAX = 36;
   // 10 · 11월 순증을 업무별로 칠함 (위에서부터 변경 · 연동 청구 → uCUBE → DVT 시험 · 결함 인지)
-  function overBg(i, d) {
-    if (i < 2 || !E.byWork) return "";
-    var w = E.byWork[i - 2], c = w.claim / d * 100, u = (w.claim + w.ucube) / d * 100;
-    return ' style="background:linear-gradient(to bottom,#e6007e 0 ' + c.toFixed(1) + '%,#fff ' + c.toFixed(1) + '% ' + u.toFixed(1) + '%,#f6c2dc ' + u.toFixed(1) + '% 100%);box-shadow:inset 0 0 0 1px #e6007e" title="변경 · 연동 대응 ' + f2(w.claim) + ' (청구) · uCUBE ' + f2(w.ucube) + ' (LGU+ 부담) · DVT 시험 · 결함 대응 ' + f2(w.ack) + ' (인지)"';
+  // 순증을 청구 프레임으로 나눔: 8 · 9월 = ACOS 추가 개발(청구), 10 · 11월 = 변경 · 연동(청구) · uCUBE(LGU+) · DVT 시험 · 결함(인지)
+  function overSegs(i, d) {
+    if (d <= 0) return "";
+    if (i < 2) return '<span class="bs c" style="height:100%" title="ACOS 규격 변경 추가 개발 (청구)">ACOS<br>추가 개발<br>' + f1(d) + '</span>';
+    var w = E.byWork[i - 2], pc = function (v) { return (v / d * 100).toFixed(2) + "%"; };
+    return '<span class="bs c" style="height:' + pc(w.claim) + '" title="변경 · 연동 대응 ' + f2(w.claim) + ' MM (청구)">청구<br>' + f2(w.claim) + '</span>' +
+      '<span class="bs u" style="height:' + pc(w.ucube) + '" title="uCUBE 연계 ' + f2(w.ucube) + ' MM (LGU+ 부담)"></span>' +
+      '<span class="bs k" style="height:' + pc(w.ack) + '" title="DVT 시험 · 결함 대응 ' + f2(w.ack) + ' MM (인지)">인지<br>' + f2(w.ack) + '</span>';
   }
   function chain10() {
     var c = function (t, sub, cls) { return '<span class="r5c' + (cls || "") + '"><b>' + t + '</b><small>' + sub + '</small></span>'; };
@@ -793,25 +802,28 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
       var ph = p / YMAX * 100, ah = a / YMAX * 100, oh = d > 0 ? d / a * 100 : 0, top = Math.max(ph, ah);
       return '<button type="button" class="col" data-month="' + i + '" data-panel="month:' + i + '" aria-label="' + mn + ' 계획 ' + f1(p) + ' MM, 실제 ' + f1(a) + ' MM, 순증 ' + sg(d) + ' MM. 상세 보기">' +
         '<span class="b p" style="--ph:' + ph + '%"><span class="val num" data-sp="p3p' + (i < 2 ? 0 : 1) + ' p3pt">' + f1(p) + '</span></span>' +
-        '<span class="b a" style="--ah:' + ah + "%;--oh:" + oh + "%;--i:" + i + '"><span class="over"' + overBg(i, d) + '></span><span class="val num" data-sp="p3a' + (i < 2 ? 0 : 1) + ' p3at">' + f1(a) + '</span></span>' +
+        '<span class="b a" style="--ah:' + ah + "%;--oh:" + oh + "%;--i:" + i + '"><span class="over">' + overSegs(i, d) + '</span>' + (i >= 2 ? '<span class="bs base" style="height:' + (100 - oh) + '%">계약</span>' : '') + '<span class="val num" data-sp="p3a' + (i < 2 ? 0 : 1) + ' p3at">' + f1(a) + '</span></span>' +
         '<span class="chip num' + (d < 0 ? " neg" : "") + '" data-sp="p3d' + (i < 2 ? 0 : 1) + '" style="--top:' + top + '%">' + sg(d) + '</span></button>';
     }).join("");
     var grid = [0, 10, 20, 30].map(function (v) { return '<div class="grid" style="bottom:' + v / YMAX * 100 + '%">' + '<span class="num">' + v + '</span></div>'; }).join("");
     var brk = E.periods.map(function (p, j) {
       return '<div class="brk num"><b>' + esc(p.label) + '</b><span class="sp">' + esc(p.planWork) + '<br><span class="big">계획 <span data-sum="p3p' + j + '">' + f1(p.plan) + '</span> MM</span></span>' +
-        '<span class="sc">' + esc(p.actualWork) + '<br><span class="big">순증 <span data-sum="p3d' + j + '">' + f2(p.delta) + '</span> MM</span><br>계획 <span data-sum="p3p' + j + '">' + f1(p.plan) + '</span> → 투입 <span data-sum="p3a' + j + '">' + f1(p.actual) + '</span></span></div>';
+        '<span class="sc">' + (j ? "변경 · 연동 대응 (TMC · TMKR 사유)" : "ACOS 규격 변경 추가 개발 · 내부 테스트") + '<br><span class="big">청구 ' + (j ? "10.10" : "8.10") + ' MM</span><br>순증 <span data-sum="p3d' + j + '">' + f2(p.delta) + '</span>' + (j ? " − 인지 17.95 − uCUBE 0.95" : " 전액") + '<br>계획 <span data-sum="p3p' + j + '">' + f1(p.plan) + '</span> → 투입 <span data-sum="p3a' + j + '">' + f1(p.actual) + '</span></span></div>';
     }).join("");
     var sp = E.split, w1 = sp.parts[0].v / (sp.parts[0].v + sp.parts[1].v) * 100;
     return '<section class="sheet" id="effort"><div class="sh-top"><span class="sheet-no"><span class="pill main">메인</span><b>3</b> / 5 · 월별 투입 공수</span>' + seg() + '</div>' +
-      '<h2>계약 대비 순증은 8&nbsp;~&nbsp;9월 8.10&nbsp;MM, 10&nbsp;~&nbsp;11월 29.00&nbsp;MM으로 합계 37.10&nbsp;MM입니다. 이 중 정산 요청은 8.10&nbsp;+&nbsp;10.10&nbsp;MM입니다 (변경 · 연동 투입 11.05 중 uCUBE 0.95는 LGU+ 부담)</h2>' + storyBar() +
-      '<p class="lede">8 ~ 9월은 계획 인력이 변경 개발로 전환되어 순증이 작고, DVT가 이동한 10 ~ 11월에 순증이 집중됩니다. 월을 누르면 계획과 실제 구성이 열립니다. 항목별 숫자는 <a href="#sheet" class="more" style="font-size:inherit">4장 월별 투입 공수 표</a>에 있습니다.</p>' +
-      '<div class="eff"><div class="chart"><div class="c-legend"><span><i style="background:var(--plan)"></i>계획 (계약 시점)</span><span><i style="background:var(--ink)"></i>실제 투입</span><span><i style="background:var(--accent)"></i>순증 (8 · 9월)</span><span><i style="background:#e6007e"></i>변경 · 연동 대응 (청구)</span><span><i style="background:#fff;border:1px solid #e6007e"></i>uCUBE (LGU+ 부담)</span><span><i style="background:#f6c2dc"></i>DVT 시험 · 결함 대응 (인지)</span><span>단위 MM</span></div>' +
+      '<h2>계약 대비 순증 37.10&nbsp;MM 중 청구는 18.20&nbsp;MM입니다: 8&nbsp;~&nbsp;9월 ACOS 추가 개발 8.10&nbsp;MM + 10&nbsp;~&nbsp;11월 변경 · 연동 대응 10.10&nbsp;MM (DVT 시험 · 결함 17.95는 인지, uCUBE 0.95는 LGU+ 부담)</h2>' + storyBar() +
+      '<div class="eff"><div class="chart"><div class="c-legend"><span><i style="background:var(--plan)"></i>계획 (계약 시점)</span><span><i style="background:var(--ink)"></i>계약 범위 투입</span><span><i style="background:#e6007e"></i>청구</span><span><i style="background:#fff;border:1px solid #e6007e"></i>uCUBE (LGU+)</span><span><i style="background:#f6c2dc"></i>인지</span><span>단위 MM</span></div>' +
       '<div class="plot" id="plot">' + grid + '<div class="cols">' + cols + '</div><div class="tip" id="tip"></div></div>' +
       '<div class="xlab">' + E.months.map(function (m) { return '<span>' + m + '</span>'; }).join("") + '</div><div class="brackets">' + brk + '</div><ul class="notes">' + E.notes.map(function (n) { return '<li>' + esc(n) + '</li>'; }).join("") + '</ul></div>' +
-      '<div class="side"><h3>순증 구성</h3><div class="sum-eq num"><div><span data-sum="p3d0" data-sp="p3eq" data-v="8.10">8.10</span><small>8 ~ 9월</small></div><span>+</span><div><span data-sum="p3d1" data-sp="p3eq" data-v="29.00">29.00</span><small>10 ~ 11월</small></div><span>=</span><div class="t"><mark data-sum="p3eq">37.10 MM</mark><small>계획 <span data-sum="p3pt">' + f1(E.total.plan) + '</span> → 투입 <span data-sum="p3at">' + f1(E.total.actual) + '</span></small></div></div>' +
+      '<div class="side"><h3>청구 구성</h3><div class="sum-eq num"><div><span data-sp="p3eq" data-v="8.10">8.10</span><small>8 ~ 9월 ACOS 추가 개발</small></div><span>+</span><div><span data-sp="p3eq" data-v="10.10">10.10</span><small>10 ~ 11월 변경 · 연동</small></div><span>=</span><div class="t"><mark data-sum="p3eq">18.20 MM</mark><small>+ 콜버튼 3.86 = 요청 합계 22.06</small></div></div>' +
+      '<table class="tbl num" style="margin-top:10px"><thead><tr><th>구간</th><th class="r">계획 → 투입</th><th class="r">순증</th><th class="r">인지</th><th class="r">LGU+ 부담</th><th class="r">청구</th></tr></thead><tbody>' +
+      '<tr><td>8 ~ 9월</td><td class="r">42.2 → 50.3</td><td class="r"><span data-sum="p3d0">8.10</span></td><td class="r">–</td><td class="r">–</td><td class="r pos">8.10</td></tr>' +
+      '<tr><td>10 ~ 11월</td><td class="r">6.0 → 35.0</td><td class="r"><span data-sum="p3d1">29.00</span></td><td class="r">17.95</td><td class="r">0.95</td><td class="r pos">10.10</td></tr>' +
+      '<tr class="tot"><td>합계</td><td class="r">' + f1(E.total.plan) + ' → ' + f1(E.total.actual) + '</td><td class="r">37.10</td><td class="r">17.95</td><td class="r">0.95</td><td class="r pos">18.20</td></tr></tbody></table>' +
       '<div class="split"><h3>' + esc(sp.title).replace("16.4 MM", '<span data-sum="p3split">16.4</span> MM') + '</h3><div class="split-bar num"><div class="x1" data-sp="p3split" style="width:' + w1 + '%">' + f1(sp.parts[0].v) + '</div><div class="x2" data-sp="p3split" style="flex:1">' + f1(sp.parts[1].v) + '</div></div>' +
       '<div class="split-cap"><div style="width:' + w1 + '%">' + esc(sp.parts[0].label) + '</div><div style="flex:1">' + esc(sp.parts[1].label) + '</div></div><p>' + esc(sp.note) + '</p></div>' +
-      '<div class="principle"><h3>' + esc(S.principle.title) + '</h3><p class="lead">' + esc(S.principle.lead) + '</p><dl>' + S.principle.items.map(function (i) { return '<div class="r"><dt>' + esc(i.k) + '</dt><dd>' + esc(i.v) + '</dd></div>'; }).join("") + '</dl></div></div></div>' +
+      '<div class="principle"><h3>' + esc(S.principle.title) + '</h3><p class="lead">' + esc(S.principle.lead) + '</p><button type="button" class="r5evb" data-panel="principle">산정 원칙 ' + S.principle.items.length + '개 보기 <span aria-hidden="true">›</span></button></div></div></div>' +
       '</section>';
   }
 
