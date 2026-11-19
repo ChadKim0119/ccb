@@ -401,6 +401,7 @@ body.staged .page.on { height: 800px; overflow-y: auto; overscroll-behavior: con
 .r5cmp tr.r5big td { font-size: 27px; font-weight: 700; padding-top: 8px; padding-bottom: 8px; vertical-align: middle; }
 .r5cmp tr.r5big td:first-child { font-size: 14px; }
 .r5evb { border: 1px solid var(--accent); background: var(--paper); color: var(--accent-deep); border-radius: 999px; padding: 4px 12px; font: inherit; font-size: 12.5px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+.r5bdbar { cursor: pointer; } .r5bdbar:hover rect { filter: brightness(1.06); }
 .r5evb:hover { background: var(--accent-wash); }
 .r5hint { align-self: center; font-size: 12px; color: var(--ink-3); white-space: nowrap; }
 .r5evl { list-style: none; margin: 10px 0 0; padding: 0; }
@@ -833,10 +834,17 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
         var mid = a > p ? (y(p) + yy) / 2 - 2 : yy - dv * K / 2;
         svg += tx(ax + bw / 2, mid - 18, "GS · e-Care", { c: "#fff", fs: 12 }) + tx(ax + bw / 2, mid - 2, "변경 개발 ·", { c: "#fff", fs: 12 }) + tx(ax + bw / 2, mid + 14, "내부 테스트", { c: "#fff", fs: 12 }) + tx(ax + bw / 2, mid + 32, f1(dv), { c: "#fff", fs: 12 });
       } else {
-        svg += '<rect x="' + ax + '" y="' + y(p) + '" width="' + bw + '" height="' + p * K + '" fill="var(--plan)"/>';
-        svg += '<rect x="' + ax + '" y="' + y(a) + '" width="' + bw + '" height="' + (a - p) * K + '" rx="0" fill="#e6007e"/>';
-        var mm = y(a) + (a - p) * K / 2;
-        svg += tx(ax + bw / 2, mm - 10, "DVT 대응/개발", { c: "#fff", fs: 12.5 }) + tx(ax + bw / 2, mm + 7, "(신규 투입)", { c: "#fff", fs: 12 });
+        // 순증을 청구 영역별로 쌓음: 계약(E2E) → 인지(DVT 시험·결함) → uCUBE(LGU+ 부담) → 청구(변경·연동)
+        var b = R5BD.months[m - 2], yk = y(p), hk = b.ack * K, hu = b.ucube * K, hc = b.claim * K;
+        svg += '<g data-panel="r5bd" class="r5bdbar" role="button" aria-label="' + E.months[m] + ' 신규 투입 세부 내역 보기">';
+        svg += '<rect x="' + ax + '" y="' + y(p) + '" width="' + bw + '" height="' + p * K + '" fill="var(--plan)"/>' + (p >= 3 ? tx(ax + bw / 2, y(p) + p * K / 2 + 4, "계약 " + f1(p), { c: "#fff", fs: 11 }) : "");
+        svg += '<rect x="' + ax + '" y="' + (yk - hk) + '" width="' + bw + '" height="' + hk + '" fill="#f6c2dc"/>' + tx(ax + bw / 2, yk - hk / 2 - 3, "인지 (미청구)", { c: "#7a0044", fs: 11.5 }) + tx(ax + bw / 2, yk - hk / 2 + 12, f2(b.ack), { c: "#7a0044", fs: 12 });
+        yk -= hk;
+        svg += '<rect x="' + ax + '" y="' + (yk - hu) + '" width="' + bw + '" height="' + hu + '" fill="#fff" stroke="#e6007e" stroke-width="1"/>';
+        svg += '<line x1="' + (ax - 3) + '" x2="' + (ax - 16) + '" y1="' + (yk - hu / 2) + '" y2="' + (yk - hu / 2) + '" stroke="#a3005a"/>' + tx(ax - 19, yk - hu / 2 + 4, "uCUBE " + f2(b.ucube) + " LGU+ 부담", { a: "end", fs: 11, fw: 600, c: "#a3005a", halo: 1 });
+        yk -= hu;
+        svg += '<rect x="' + ax + '" y="' + (yk - hc) + '" width="' + bw + '" height="' + hc + '" fill="#e6007e"/>' + (hc >= 34 ? tx(ax + bw / 2, yk - hc / 2 - 3, "청구", { c: "#fff", fs: 12 }) + tx(ax + bw / 2, yk - hc / 2 + 12, f2(b.claim), { c: "#fff", fs: 12 }) : tx(ax + bw / 2, yk - hc / 2 + 4, "청구 " + f2(b.claim), { c: "#fff", fs: 11.5 }));
+        svg += '</g>';
       }
       svg += tx(ax + bw / 2, y(a) - 8, f1(a), { halo: 1 }) + '</g>';
       // contract level line + delta
@@ -852,21 +860,50 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
     var steps = [
       ["계약 계획", "8 ~ 9월 DVT 개발 · 대응 " + f1(P[0] + P[1]) + " MM, 10 ~ 11월은 E2E 최소 인력 " + f1(P[2] + P[3]) + " MM"],
       ["8 ~ 9월 업무 변경", "같은 인력이 ACOS 규격에 따른 GS · e-Care 변경 개발 · 내부 테스트 수행"],
-      ["10 ~ 11월 신규 투입", "DVT 업무는 이동, 수행 인력은 계획에 없던 기간에 새로 투입"],
+      ["10 ~ 11월 신규 투입", "DVT 업무는 이동, 신규 투입 중 변경 · 연동분만 청구 (막대를 누르면 세부 내역)"],
     ];
     var stepper = '<div class="r5steps" role="group" aria-label="단계">' + steps.map(function (st, i) { return '<button type="button" data-step="' + (i + 1) + '"><b><span class="num">' + (i + 1) + '</span>' + esc(st[0]) + '</b><small>' + esc(st[1]) + '</small></button>'; }).join("") + '<button type="button" class="r5replay" data-step="1" aria-label="첫 단계로">처음으로</button><span class="r5hint">다음 단계 <kbd>Space</kbd></span></div>';
 
     var evb = function (n) { return '<button type="button" class="r5evb" data-panel="r5ev:' + n + '">근거 자료 <span aria-hidden="true">›</span></button>'; };
     var box = '<div class="r5box"><table class="tbl r5cmp"><thead><tr><th>구간</th><th>TMKR이 보는 관점 (당사 이해)</th><th>당사 입장</th><th>근거</th></tr></thead><tbody>' +
       '<tr><td class="nw"><b>8 ~ 9월</b><br><span class="num">계약 ' + f1(P[0] + P[1]) + ' → 수행 ' + f1(A2[0] + A2[1]) + '</span></td><td>계약 인력 ' + f1(P[0] + P[1]) + ' MM은 계약 범위이고, 초과분 8.10 MM만 ACOS 추가 개발</td><td><b>같은 생각입니다.</b> 다만 계약 인력 ' + f1(P[0] + P[1]) + ' MM은 DVT가 아닌 ACOS 규격에 따른 GS · e-Care 변경 개발 · 내부 테스트에 쓰였습니다. 인력은 그대로, 업무만 바뀌었습니다.</td><td>' + evb(0) + '</td></tr>' +
-      '<tr><td class="nw"><b>10 ~ 11월</b><br><span class="num">계약 ' + f1(P[2] + P[3]) + ' → 수행 ' + f1(A2[2] + A2[3]) + '</span></td><td>8 ~ 9월 DVT가 뒤로 밀린 것(순연)이므로 계약 범위</td><td>DVT 업무는 밀렸지만, 이를 맡을 계약 인력은 8 ~ 9월에 이미 변경 개발에 투입되었습니다. E2E 최소 인력 ' + f1(P[2] + P[3]) + ' MM만 계획된 기간에 인력을 새로 투입했으므로 <b>순연이 아닌 추가 개발</b>입니다.</td><td>' + evb(1) + '</td></tr>' +
+      '<tr><td class="nw"><b>10 ~ 11월</b><br><span class="num">계약 ' + f1(P[2] + P[3]) + ' → 수행 ' + f1(A2[2] + A2[3]) + '</span></td><td>8 ~ 9월 DVT가 뒤로 밀린 것(순연)이므로 계약 범위</td><td>DVT 업무는 밀렸지만, 이를 맡을 계약 인력은 8 ~ 9월에 이미 변경 개발에 투입되었습니다. E2E 최소 인력 ' + f1(P[2] + P[3]) + ' MM만 계획된 기간에 인력을 새로 투입했으므로 <b>순연이 아닌 추가 개발</b>입니다. 이 중 고객사 청구는 변경 · 연동 대응 10.10 MM이며, 나머지는 인지 요청입니다.</td><td>' + evb(1) + '<button type="button" class="r5evb" style="margin-top:6px" data-panel="r5bd">세부 내역 <span aria-hidden="true">›</span></button></td></tr>' +
       '<tr class="tot r5big"><td>추가 공수</td><td class="num">8.10 MM</td><td class="num" colspan="2"><span data-sum="r5d0" data-sp="r5tot" data-v="8.10">8.10</span> + <span data-sum="r5d1" data-sp="r5tot" data-v="29.00">29.00</span> = <mark data-sum="r5tot">37.10 MM</mark></td></tr></tbody></table></div>';
 
     return '<section class="sheet" id="reading"><div class="sh-top"><span class="sheet-no"><span class="pill main">메인</span><b>5</b> / 5 · 양사 시각 정리</span></div>' +
       '<h2>8 ~ 9월은 같은 인력의 업무 변경, 10 ~ 11월은 계획에 없던 신규 투입입니다</h2>' +
       '<p class="lede">TMKR은 8 ~ 9월 순증 8.10 MM만 추가 개발로 보는 것으로 이해합니다. 공수 숫자는 그대로이며, 같은 숫자를 당사가 어떻게 읽는지 정리했습니다.</p>' +
-      stepper + '<div class="r5stage st1" id="r5stage"><div class="c-legend"><span><i style="background:var(--plan-wash);border:1.5px solid var(--plan)"></i>계약 계획</span><span><i class="sw c-dev"></i>GS · e-Care 변경 개발 · 내부 테스트</span><span><i class="sw c-dvt"></i>품질</span><span><i class="sw c-ux"></i>기획</span><span><i style="background:#e6007e"></i>DVT 대응/개발 (신규 투입)</span><span><i style="border-top:2px dashed var(--ink);height:0;width:16px;border-radius:0;vertical-align:3px"></i>계약 수준</span><span>단위 MM</span></div>' + svg + '</div>' +
+      stepper + '<div class="r5stage st1" id="r5stage"><div class="c-legend"><span><i style="background:var(--plan-wash);border:1.5px solid var(--plan)"></i>계약 계획</span><span><i class="sw c-dev"></i>GS · e-Care 변경 개발 · 내부 테스트</span><span><i class="sw c-dvt"></i>품질</span><span><i class="sw c-ux"></i>기획</span><span><i style="background:#e6007e"></i>신규 투입 중 청구 (변경 · 연동)</span><span><i style="background:#fff;border:1px solid #e6007e"></i>uCUBE (LGU+ 부담)</span><span><i style="background:#f6c2dc"></i>인지 (DVT 시험 · 결함, 미청구)</span><span><i style="border-top:2px dashed var(--ink);height:0;width:16px;border-radius:0;vertical-align:3px"></i>계약 수준</span><span>단위 MM</span></div>' + svg + '</div>' +
       box + '</section>';
+  }
+  /* 10 ~ 11월 신규 투입 세부 내역: 청구 영역의 월 배분은 다산 산정 기간(10.01 ~ 11.17) 근무일 비례 추정 (10월 21일 · 11월 12일) */
+  var R5BD = { months: [{ claim: 6.43, ucube: 0.60, ack: 8.97 }, { claim: 3.67, ucube: 0.35, ack: 8.98 }] };
+  function r5bdPanel() {
+    var team = table(["팀 · 역할", "주요 업무", "10월", "11월", "계"], [
+      ["기획 / 디자인 (UX/GUI)", "DVT 화면 · 문구 대응", "1.0", "–", "1.0"],
+      ["Global South 개발", "Provisioning · Capability · GS 서비스 연계, DVT 결함 수정", "4.0", "4.0", "8.0"],
+      ["Global South 품질", "DVT 시험 · 재시험, E2E 병행", "2.0", "2.0", "4.0"],
+      ["e-Care 개발", "VDP/VEP · Event · Workflow/Case · DMS/CCW 연계, 결함 수정", "9.0", "9.0", "18.0"],
+      ["e-Care 품질", "DVT 시험 · 재시험, E2E 병행", "2.0", "2.0", "4.0"],
+      ["<b>수행 합계</b>", "", "<b>18.0</b>", "<b>17.0</b>", "<b>35.0</b>"],
+      ["계약 E2E 최소 인력 (차감)", "10월 GS 2 · 11월 GS 2 + e-Care 2", "−2.0", "−4.0", "−6.0"],
+      ["<b>순증 (신규 투입)</b>", "", "<b>16.0</b>", "<b>13.0</b>", "<b>29.0</b>"]
+    ], { right: [2, 3, 4], nowrap: [0], raw: 1 });
+    var area = table(["청구 영역", "내용", "10월", "11월", "계", "처리"], [
+      ["<b>청구</b> · 변경 · 연동 대응", "① ACOS 추가 변경 2.60 · ② VDP · PGM 등 TMC 서버 · 환경 지연 4.50 · ③ TMKR 연계 변경 2.50 · ④ DVT 영향 분석 0.50 (A13)", "6.43", "3.67", "<b>10.10</b>", '<span class="pos">정산 요청</span>'],
+      ["uCUBE 연계 대응", "LGU+ 연계 시스템 대응 (다산 투입 11.05에 포함)", "0.60", "0.35", "0.95", "LGU+ 부담"],
+      ["DVT 시험 · 결함 대응", "DVT 시험 수행, 결함 분석 · 수정 · 재시험, 품질 · 기획 인력 포함", "8.97", "8.98", "17.95", "인지 (미청구)"],
+      ["<b>순증 합계</b>", "", "<b>16.00</b>", "<b>13.00</b>", "<b>29.00</b>", ""]
+    ], { right: [2, 3, 4], nowrap: [0, 5], raw: 1 });
+    var dev = table(["개발 13 MM 업무 영역", "10월 (260 MD)", "11월 (260 MD, 11.09 기준 예정 포함)"], [
+      ["ACOS Core / Interface", "2.50", "1.60"], ["Provisioning / PGM", "2.50", "1.90"], ["DB / Migration", "1.00", "1.00"], ["e-Care", "3.50", "3.50"],
+      ["Global South", "1.50", "1.50"], ["Digital Key", "1.00", "1.00"], ["Global App", "–", "1.00"], ["통합 Defect", "1.00", "1.50"], ["<b>계</b>", "<b>13.00</b>", "<b>13.00</b>"]
+    ], { right: [1, 2], nowrap: [0], raw: 1 });
+    return { kicker: "5장 · 세부 내역", title: "10월 18.0 · 11월 17.0 MM 세부 내역과 청구 영역", html:
+      '<p>10 ~ 11월 수행 35.0 MM에서 계약 E2E 최소 인력 6.0 MM을 뺀 순증 29.00 MM 중 고객사 청구는 변경 · 연동 대응 10.10 MM입니다. uCUBE 0.95 MM은 LGU+가 부담하고, DVT 시험 · 결함 대응 17.95 MM은 인지 요청입니다.</p>' +
+      '<h4>팀 · 역할별 투입 (MM)</h4>' + team + '<h4>순증 29.00 MM의 청구 영역 (MM)</h4>' + area +
+      '<h4>개발 인력 업무 영역 (A6 업무 목록 기준, MM)</h4>' + dev +
+      '<p class="mut" style="font-size:12.5px;margin-top:10px">청구 영역의 월별 숫자는 다산 산정 기간(10.01 ~ 11.17)을 근무일(10월 21일 · 11월 12일)로 나눈 추정치이며, 합계(10.10 · 0.95 · 17.95)만 확정값입니다. 항목별 일정 · 사유 · 결과는 <a href="#dvt-chg">A13</a>, 업무 목록은 <a href="#dvt-effort">A6</a>에 있습니다.</p>' };
   }
   var R5CONF = "https://toyotasystem.atlassian.net/wiki/spaces/GSP/pages/";
   var R5EV = [
@@ -1147,6 +1184,7 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
       pbody += '<button type="button" class="more" data-panel="ev:' + pr.act + ':' + pm + '">실제 수행 업무 근거 보기</button>';
       return { kicker: "계약 시점 공수 상세 · " + E.months[pm], title: pr.team + " · " + pr.role, html: pbody };
     }
+    if (k[0] === "r5bd") return r5bdPanel();
     if (k[0] === "r5ev") { var g = R5EV[+k[1]]; return { kicker: "5장 근거 자료", title: g.title, html: '<p>' + esc(g.lead) + '</p><ul class="r5evl">' + g.items.map(function (it) { return '<li><div><b>' + esc(it[1]) + '</b><small>' + esc(it[2]) + '</small></div>' + (it[3] ? '<a class="r5btn ext" href="' + it[0] + '" target="_blank" rel="noopener">Confluence · Jira에서 열기</a>' : '<a class="r5btn" href="' + it[0] + '">페이지로 이동</a>'); }).join("") + '</ul><p class="mut" style="font-size:12.5px;margin-top:10px">Confluence · Jira 자료는 TMKR 계정 로그인이 필요합니다. 페이지로 이동한 뒤 상단 "이전 화면"으로 5장에 돌아올 수 있습니다.</p>' }; }
     if (k[0] === "doc-history") return { kicker: "장표 정보", title: "이 장표의 변경 이력", html: '<p>공개 이후 바뀐 내용입니다. 최신 버전이 위에 있습니다.</p><ol class="clog">' + D.meta.changelog.map(function (c, i) { return '<li><div class="hd"><b>' + esc(c.v) + '</b><span>' + esc(c.at) + '</span>' + (i === 0 ? '<span class="now">현재</span>' : "") + '</div><ul>' + c.items.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join("") + '</ul></li>'; }).join("") + '</ol>' };
     if (k[0] === "notice") return { kicker: "A1 · 근거", title: "추가 공수와 일정 변경 공유 이력", html: '<p>' + esc(A.history.message) + '</p>' + bHistory(["공수", "일정"]) };
