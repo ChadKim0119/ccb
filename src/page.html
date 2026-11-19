@@ -913,7 +913,7 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
     return { kicker: "5장 · 세부 내역", title: "10월 18.0 · 11월 17.0 MM 세부 내역과 청구 영역", html:
       '<p>10 ~ 11월 수행 35.0 MM에서 계약 E2E 최소 인력 6.0 MM을 뺀 순증 29.00 MM 중 고객사 청구는 변경 · 연동 대응 10.10 MM입니다. uCUBE 0.95 MM은 LGU+가 부담하고, DVT 시험 · 결함 대응 17.95 MM은 인지 요청입니다.</p>' +
       '<h4>팀 · 역할별 투입 (MM)</h4>' + team + '<h4>순증 29.00 MM의 청구 영역 (MM)</h4>' + area +
-      '<h4>개발 인력 업무 영역 (A6 업무 목록 기준, MM)</h4>' + dev +
+      '<h4>변경 · 연동 항목별 예정 vs 실제와 공수 (A16)</h4>' + bChgPlan() + '<h4>개발 인력 업무 영역 (A6 업무 목록 기준, MM)</h4>' + dev +
       '<p class="mut" style="font-size:12.5px;margin-top:10px">청구 영역의 월별 숫자는 다산 산정 기간(10.01 ~ 11.17)을 근무일(10월 21일 · 11월 12일)로 나눈 추정치이며, 합계(10.10 · 0.95 · 17.95)만 확정값입니다. 항목별 일정 · 사유 · 결과는 <a href="#dvt-chg">A13</a>, 업무 목록은 <a href="#dvt-effort">A6</a>에 있습니다.</p>' };
   }
   var R5CONF = "https://toyotasystem.atlassian.net/wiki/spaces/GSP/pages/";
@@ -1031,7 +1031,7 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
       '<h4>변경 · 정정별 수행 업무와 공수 (투입 11.05 MM 중 고객사 청구 10.10 MM)</h4>' + table(d.head.concat(["증적"]), d.rows.map(function (r) { return [r[0], r[1], r[2], r[3], r[4], f2(r[5]), chgEvCell(r)]; }).concat([["합계", "변경 · 정정 · 연동 대응", "", "", "", '<b>' + f2(tot) + ' MM</b>', ""]]), { right: [5], nowrap: [0, 1, 2] }) +
       '<h4>세부 항목 (A4-1)</h4>' + table(d.detailHead, d.detail, { nowrap: [0, 2] }) +
       '<ul class="notes">' + d.notes.map(function (n) { return '<li>' + esc(n) + '</li>'; }).join("") + '</ul>' +
-      '<p style="margin-top:14px"><a href="#change-log" class="more">A14 변경 · 정정 이력</a> <a href="#extra-dvt" class="more" style="margin-left:14px">A15 추가 DVT 예측</a></p>' + srcLine(d.source);
+      '<p style="margin-top:14px"><a href="#chg-plan" class="more" style="margin-right:14px">A16 항목별 예정 vs 실제 · 향후 공수</a><a href="#change-log" class="more">A14 변경 · 정정 이력</a> <a href="#extra-dvt" class="more" style="margin-left:14px">A15 추가 DVT 예측</a></p>' + srcLine(d.source);
   }
   function bChangeLog() {
     var d = A.changeLog;
@@ -1045,6 +1045,12 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
       '<h4>영역별 예측 공수</h4>' + table(d.head, d.areas.map(function (r) { return [r[0], r[1], f2(r[2])]; }).concat([["합계", "11개 영역 · uCUBE 2.00 제외", '<b>' + f2(tot) + '</b>']]), { right: [2], nowrap: [0] }) +
       '<h4>기간별 예측 공수</h4>' + table(["기간", "주요 수행 업무", "MM"], d.periods.map(function (r) { return [r[0], r[1], f2(r[2])]; }).concat([["합계", "", '<b>' + f2(d.periods.reduce(function (a, r) { return a + r[2]; }, 0)) + '</b>']]), { right: [2], nowrap: [0] }) +
       '<ul class="notes">' + d.notes.map(function (n) { return '<li>' + esc(n) + '</li>'; }).join("") + '</ul>' + srcLine(d.source);
+  }
+  function bChgPlan() {
+    var d = A.chgPlan, s4 = d.rows.reduce(function (a, r) { return a + r[4]; }, 0), s5 = d.rows.reduce(function (a, r) { return a + r[5]; }, 0);
+    var st = function (t) { return /^미해소/.test(t) ? '<b style="color:#a3005a">' + esc(t) + '</b>' : esc(t); };
+    return table(d.head, d.rows.map(function (r) { return [esc(r[0]), esc(r[1]), esc(r[2]), st(r[3]), r[4] ? f2(r[4]) : "–", f2(r[5])]; }).concat([["<b>합계</b>", "", "", "uCUBE 제외 (LGU+ 부담 0.95 · 2.00)", "<b>" + f2(s4) + "</b>", "<b>" + f2(s5) + "</b>"]]), { right: [4, 5], nowrap: [0], raw: 1 }) +
+      '<ul class="notes">' + d.notes.map(function (n) { return '<li>' + esc(n) + '</li>'; }).join("") + '</ul>';
   }
   function bCallbtn() {
     var c = A.callbtn, tot = c.areas.reduce(function (a, r) { return a + r[2]; }, 0);
@@ -1123,7 +1129,7 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
   /* ── appendix ── */
   var APX = [
     [A.history, function () { return bHistory(); }], [A.effortDetail, bEffortDetail], [A.spec, function () { return bSpec(); }], [A.chgdev, bChgdev], [A.dvt, bDvt],
-    [A.dvtEffort, bDvtEffort], [A.vdp, bVdp], [A.ux, function () { return bUx(false); }], [A.others, bOthers], [A.dvtRun, bDvtRun], [A.dvtStaff, bDvtStaff], [A.callbtn, bCallbtn], [A.dvtChg, bDvtChg], [A.changeLog, bChangeLog], [A.extraDvt, bExtraDvt]
+    [A.dvtEffort, bDvtEffort], [A.vdp, bVdp], [A.ux, function () { return bUx(false); }], [A.others, bOthers], [A.dvtRun, bDvtRun], [A.dvtStaff, bDvtStaff], [A.callbtn, bCallbtn], [A.dvtChg, bDvtChg], [A.changeLog, bChangeLog], [A.extraDvt, bExtraDvt], [A.chgPlan, bChgPlan]
   ];
   function T(o, opt) { opt = opt || {}; var right = []; o.head.forEach(function (h, i) { if (i > 0 && /TC|Pass|Fail|NT|미분류|Total|Planned|Acted|비율|공수|근무일|인원|합계|20\d\d\./.test(h)) right.push(i); }); return table(o.head, o.rows, { right: opt.right || right, nowrap: opt.nowrap || [0], cls: "num", rowCls: function (r) { return r[0] === "합계" ? "tot" : ""; } }); }
   function srcLine(t) { return '<p style="font-size:12.5px;color:var(--ink-3);margin-top:14px">' + esc(t) + '</p>'; }
