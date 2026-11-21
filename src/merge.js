@@ -10,7 +10,7 @@ module.exports = function (base) {
   const now = {
     "ACOS API": "변경 반영 · 재검증 완료. TSC-GC/GB Request/Response 변경 영향 지속 (Redoc 사양 · Pre-PROD 반영 일정에 따라 추가 개발 가능)",
     "ACOS Provisioning": "11.18 오전 MM Capable Flag 정상화(27CY MM Flag 4개 수신). 원인 미확인 → TMC 분석 요청. Provisioning · 요금제 TC · Opt-in/out 재수행 결과는 미확인",
-    "VDP Diag": "10.27 네트워크 접속 → 11.13 첫 API 호출 → 최신 24 TC 중 Pass 21 · Fail 1 · NT 2 (11.18 회의록 기준 잔여 Fail 4건, 금주 재검증). 미해소: e-Care E2E는 VDP 서버 정상화 후",
+    "VDP Diag": "10.27 네트워크 접속 → 11.13 첫 API 호출 → DVT 장표 v2.9(11.21) 집계 24 TC 중 Pass 21 · Fail 1 · NT 2, 원문 미확인 (11.18 회의록은 잔여 Fail 4건, 금주 재검증). 미해소: e-Care E2E는 VDP 서버 정상화 후",
     "VDP CoCo": "Center Request 정상 응답, Callback 검증 중",
     "MM/HU · DCM/ADF": "11.13 · 11.15 HU 업데이트가 성공 확인 단계에서 멈춤(5회) → 11.18 HU 마지막 단계 재수행 · DCM 2644 FW 재적용 · ADF 재수행으로 HU ID 정상 전달 (해소, 원인 미확인)",
     "Digital Key": "TSC-DK 연동 환경 확인 진행 중",
@@ -92,7 +92,7 @@ module.exports = function (base) {
       ["★ MM Capable Flag 미반환 (ACOS Provisioning)", "TMC", "10월 TSC-GC Migration 후 Capable Partial 응답, 11월 초 MM Flag 미반환", "ok|11/18 오전 해소 — 27CY MM Flag 4개 정상 수신", "원인 미확인(동일 FW에서 결과 변화) → TMC 분석 요청. Provisioning → 요금제 TC → N/T 39건 금주 재수행 예정, 결과 미확인", "11/18 PM 회의록 · Backlog PRJ_0333-55 · 46"],
       ["★ HU SW SU#1 · SubMCU 업데이트", "TMC", "11/03 FW 미수령, 11/11 SU#1 확인, 11/13 · 15 업데이트 성공 확인 단계에서 중단", "ok|11/18 — HU 마지막 단계 재수행 · DCM 2644 FW 재적용 · ADF 재수행, HU ID 정상 전달", "E2E 환경 1세트 FW Update · 연결 완료. 추가 Test Set 확보 여부 확인 필요", "11/18 PM 회의록 · 11/13 보고 · Backlog PRJ_0333-40"],
       ["MM Opt-in/out 오류", "TMC", "Capable 미활성 시 Opt-in 불가 (11/11)", "part|11/18 Capable 정상화로 선행 조건 확보", "Flag 조합별 Opt-in/out 검증 결과 미확인", "E2E 사전준비 · PRJ_0333-55"],
-      ["★ VDP Diag 연동", "TMC", "10/06 접속 9건 전건 Timeout", "part|10/26 /v1 정정 → 10/27 네트워크 접속 → 11/13 첫 API 호출", "미해소 — 최신 24 TC 중 Pass 21 · Fail 1 · NT 2, 11/18 회의록은 잔여 Fail 4건(금주 재검증). e-Care E2E 12/14 ~ 12/30 계획, VDP 오류 시 시뮬레이터로 KR 영역만 시험", "11/18 PM 회의록 · E2E 세부일정(11/17) · DVT 덱 v2.9"],
+      ["★ VDP Diag 연동", "TMC", "10/06 접속 9건 전건 Timeout", "part|10/26 /v1 정정 → 10/27 네트워크 접속 → 11/13 첫 API 호출", "미해소 — DVT 장표 v2.9(11/21) 집계 24 TC 중 Pass 21 · Fail 1 · NT 2(원문 미확인), 11/18 회의록은 잔여 Fail 4건(금주 재검증). e-Care E2E 12/14 ~ 12/30 계획, VDP 오류 시 시뮬레이터로 KR 영역만 시험", "11/18 PM 회의록 · E2E 세부일정(11/17) · DVT 덱 v2.9"],
       ["VDP CoCo", "TMC", "10/06 Timeout", "part|11/11 이전 연결 테스트 완료", "Callback 검증 중", "E2E 사전준비 이슈 3"],
       ["★ CTI/TCK 중계 (CCW 236 TC)", "TMKR · TCK", "10/28 대체안 철회, 정식 개발 착수", "no|미해소 · 확정일 없음", "11/11 기준 개발 최대 3주, 고객센터 연계 시나리오(eCall · e-Care)는 12월 시험 진입. 11/18 회의록에 갱신 없음", "E2E 사전준비 #10 · 10/28 · 11/03 PM 회의록"],
       ["★ DMS 사양 변경", "TMKR", "10/21 요구 지속 유입, 10/23 범위 Freeze 합의", "part|API 5 → 24개 반영 중", "DMS 114 TC 중 Pass 78 · Fail 1 · NT 35. 11/18: DMS 최종 변경분 E2E TC Merge 필요", "E2E 사전준비 #9 · 11/18 PM 회의록"],
