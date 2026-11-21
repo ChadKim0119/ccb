@@ -860,6 +860,9 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
 .lt-gap { font-size: 12px; color: var(--ink-3); margin: 6px 0 0; }
 .lt-btn { border: 1px solid var(--accent); color: var(--accent-deep); background: #fff; border-radius: 12px; padding: 1px 9px; font: inherit; font-weight: 700; cursor: pointer; } .lt-btn:hover { background: var(--accent); color: #fff; }
 @media (max-width: 760px) { .lt-g { grid-template-columns: 1fr; } }
+.bst { display: inline-block; margin: 4px 0 6px; padding: 1px 8px; border-radius: 10px; font-size: 11.5px; font-weight: 700; text-decoration: none; white-space: nowrap; }
+.bst.ok { background: #e3f4ec; color: #0a7a4b; } .bst.part { background: #fff4d6; color: #8a5a00; } .bst.no { background: #fde3ea; color: #b0103f; }
+a.bst:hover { text-decoration: underline; }
 </style>
 </head>
 <body data-mode="changed">
@@ -1535,8 +1538,8 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
   function vI2Blk() {
     var s = XK.blk, br = function (t) { return esc(t).replace(/\n/g, "<br>"); };
     return '<section class="sheet i2" id="i2-blk">' + sheetHead("Item2 ②", s.kicker.replace(/^Item2 · /, "")) + '<h2>' + esc(s.title) + '</h2><p class="lede">' + esc(s.lede) + '</p>' +
-      '<div class="blk5">' + s.cards.map(function (c) { return '<div class="bc' + (c.hot ? " hot" : "") + '"><h3>' + esc(c.no) + ' ' + esc(c.h) + '</h3><span class="who">' + esc(c.who) + '</span><b>' + br(c.fact) + '</b><p>' + br(c.note) + '</p></div>'; }).join("") + '</div>' +
-      '<h3 class="blk-t">' + esc(s.doneTitle) + '</h3>' + table(s.doneHead, s.doneRows, { nowrap: [0], rowCls: function (r) { return /필요 인력/.test(r[0]) ? "tot" : ""; } }) + '<p class="blk-foot">' + esc(s.foot) + ' <button type="button" class="more" data-panel="dv:end">종료 시점 근거</button></p></section>';
+      '<div class="blk5">' + s.cards.map(function (c) { return '<div class="bc' + (c.hot ? " hot" : "") + '"><h3>' + esc(c.no) + ' ' + esc(c.h) + '</h3><span class="who">' + esc(c.who) + '</span>' + (c.st ? '<a class="bst ' + c.st[0] + '" href="#blk-dates">' + esc(c.st[1]) + '</a>' : '') + '<b>' + br(c.fact) + '</b><p>' + br(c.note) + '</p></div>'; }).join("") + '</div>' +
+      '<h3 class="blk-t">' + esc(s.doneTitle) + '</h3>' + table(s.doneHead, s.doneRows, { nowrap: [0], rowCls: function (r) { return /필요 인력/.test(r[0]) ? "tot" : ""; } }) + '<p class="blk-foot">' + esc(s.foot) + ' <button type="button" class="more" data-panel="dv:end">종료 시점 근거</button> <a class="more" href="#blk-dates">이슈별 해결 일자 (E4)</a></p></section>';
   }
   function vI2Man() {
     var s = XK.man;
@@ -1598,7 +1601,12 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
       '<div class="lt-g' + (inPanel ? ' one' : '') + '">' + L.reasons.map(function (r, i) { return '<div class="lt-c"><h4><i>' + (i + 1) + '</i>' + esc(r.h) + '</h4><p>' + esc(r.t) + '</p><table class="lt-ev"><tbody>' + r.ev.map(function (e) { return '<tr><td class="num">' + esc(e[0]) + '</td><td>' + esc(e[1]) + '</td></tr>'; }).join("") + '</tbody></table></div>'; }).join("") + '</div>' +
       '<p class="lt-close">' + esc(L.close) + '</p><div class="wy-ev lt-src"><span>근거</span>' + evLinks(L.src) + '</div><p class="lt-gap">※ ' + esc(L.gap) + '</p>';
   }
-  var APX_E = [[MG.evreq, bEvReq], [{ id: "delay-ev", code: "E2", title: "항목별 지연 사유 · 증적 (8.10 · 10.10 MM)", message: "Item1의 8.10 MM과 10.10 MM이 왜 발생했는지 — 언제 되었어야 했고 실제로 언제 되었는지, 사유, 현재 상태, 근거 — 를 영역별로 정리함. 증적 칩을 누르면 원본 이력으로 이동함." }, bDelayEv], [MG.late, function () { return bLate(false); }],
+  function bBlkDates() {
+    var D = MG.blkDates, lab = { ok: "해소", part: "진행", no: "미해소" };
+    return table(D.head, D.rows.map(function (r) { var d = r[3].split("|"); return ['<b>' + esc(r[0]) + '</b>', esc(r[1]), esc(r[2]), '<span class="bst ' + d[0] + '">' + lab[d[0]] + '</span> ' + esc(d[1]), esc(r[4]), '<small>' + esc(r[5]) + '</small>']; }), { raw: 1, nowrap: [1] }) +
+      '<p class="blk-foot">※ ' + esc(D.foot) + '</p><div class="wy-ev lt-src"><span>원문</span>' + evLinks(D.src) + '</div>';
+  }
+  var APX_E = [[MG.evreq, bEvReq], [{ id: "delay-ev", code: "E2", title: "항목별 지연 사유 · 증적 (8.10 · 10.10 MM)", message: "Item1의 8.10 MM과 10.10 MM이 왜 발생했는지 — 언제 되었어야 했고 실제로 언제 되었는지, 사유, 현재 상태, 근거 — 를 영역별로 정리함. 증적 칩을 누르면 원본 이력으로 이동함." }, bDelayEv], [MG.late, function () { return bLate(false); }], [MG.blkDates, bBlkDates],
     [{ id: "sheet", code: "B1", title: "월별 투입 공수 표 (계획 vs 실제)", message: "8 ~ 11월 계약 시점 계획 48.2 MM과 실제 85.3 MM을 과제 · 업무별로 비교함. 밑줄 숫자를 누르면 계획 업무와 실제 수행 업무가 열림. 오른쪽 위 버튼으로 기존 계획 / 변경 전환." }, function () { return '<div style="display:flex;justify-content:flex-end;margin:-6px 0 6px">' + seg() + '</div><div class="x-hint"><span><b>밑줄 숫자</b>를 누르면 계획 업무와 실제 수행 업무가 열립니다</span><span>숫자 옆 <span class="dl">+3.1</span> <span class="dl neg">−1.8</span> 은 계약 대비 증감 (MM)</span><span><i class="sw c-dev"></i>개발</span><span><i class="sw c-dvt"></i>DVT · 품질</span><span><i class="sw c-e2e"></i>E2E</span><span><i class="sw c-ux"></i>기획</span></div>' + bXl(); }]];
   var XN = XD.apxNew;
   var APX_D = [[XN.m11, xNew(XN.m11)], [XN.m4, function () { return xNew(XN.m4)() + '<h4 style="margin-top:18px">영역별 예측 공수 (11.18 ~ 2027.01.29)</h4>' + table(XK.man.areaHead, XK.man.areaRows, { nowrap: [0, 1, 3, 4, 5, 6], right: [3, 4, 5, 6], rowCls: function (r) { return r[0] === "합계" ? "tot" : ""; } }) + '<p class="blk-foot">' + esc(XK.man.foot) + '</p>'; }], [XA.a4, xCause], [XA.a1, function () { return xNumTable(XY.r1) + xSrc(["r1", "pm1007", "db"]); }],

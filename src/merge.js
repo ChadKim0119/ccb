@@ -9,12 +9,12 @@ module.exports = function (base) {
   /* ── 1. Item1 부록 현재 상태 최신화 (DVT 장표 v2.9 · 11/21 집계 기준) ── */
   const now = {
     "ACOS API": "변경 반영 · 재검증 완료. TSC-GC/GB Request/Response 변경 영향 지속 (Redoc 사양 · Pre-PROD 반영 일정에 따라 추가 개발 가능)",
-    "ACOS Provisioning": "11.18 MM Capable Flag 확인 완료. Flag 조합별 Opt-in/out 추가 검증 필요",
-    "VDP Diag": "11.13 첫 실연동 이후 24 TC 중 Pass 21 · Fail 1 · NT 2. VDP 서버 영향으로 e-Care E2E는 진행 불가",
+    "ACOS Provisioning": "11.18 오전 MM Capable Flag 정상화(27CY MM Flag 4개 수신). 원인 미확인 → TMC 분석 요청. Provisioning · 요금제 TC · Opt-in/out 재수행 결과는 미확인",
+    "VDP Diag": "10.27 네트워크 접속 → 11.13 첫 API 호출 → 최신 24 TC 중 Pass 21 · Fail 1 · NT 2 (11.18 회의록 기준 잔여 Fail 4건, 금주 재검증). 미해소: e-Care E2E는 VDP 서버 정상화 후",
     "VDP CoCo": "Center Request 정상 응답, Callback 검증 중",
-    "MM/HU · DCM/ADF": "SU#1 H/U · SubMCU 업데이트 5회 완료, 업데이트 후 테스트 필요",
+    "MM/HU · DCM/ADF": "11.13 · 11.15 HU 업데이트가 성공 확인 단계에서 멈춤(5회) → 11.18 HU 마지막 단계 재수행 · DCM 2644 FW 재적용 · ADF 재수행으로 HU ID 정상 전달 (해소, 원인 미확인)",
     "Digital Key": "TSC-DK 연동 환경 확인 진행 중",
-    "CTI/TCK": "27CY SU#2 전용 연계환경 구성 필요. CCW 236 TC는 CTI 미연동으로 NT, CCW 통화 E2E 미수행",
+    "CTI/TCK": "미해소: TCK 개발 최대 3주, 고객센터 연계 시나리오는 12월 시험 진입(11.11 기준, 이후 갱신 없음). CCW 236 TC는 CTI 미연동으로 NT",
     "Global/Local App": "TMC Auth0 설정 변경 협의 중",
     "DMS": "VDP 실데이터 미수신으로 시뮬레이터 대체 시험. DMS 114 TC 중 Pass 78 · Fail 1 · NT 35",
     "DVT 영향 분석": "통합 992 TC 중 잔여 NT 334건 원인 분류 · 재수행 대기",
@@ -74,6 +74,36 @@ module.exports = function (base) {
   DK.blk.kicker = "Item2 · 잔여 이슈와 DVT 종료 시점";
   DK.blk.title = "잔여 이슈 5건은 TMC · TMKR 측 선행 조건이 풀려야 해소되며, 해소 시점이 DVT 종료(12월 말 또는 1월 말)를 결정함";
   DK.blk.doneTitle = "DVT 종료 시점: 12월 말 vs 1월 말 (TMC 측 선행 조건 해소에 따름)";
+  // Critical Blocker 현재 상태 (11/18 PM 정례회의록 기준 더블체크)
+  DK.blk.lede = "① MM Capable Flag는 11/18 정상화되어 재수행 중이고, ② ~ ⑤는 TMC · TMKR 측 선행 조건이 아직 풀리지 않았습니다 (11/18 PM 정례회의록 기준, 11/19 이후 결과는 미확인).";
+  const st = { "①": ["ok", "11/18 해소 · 재수행 결과 확인 중"], "②": ["no", "미해소 · 금주 재검증"], "③": ["no", "미해소 · 12월 시험 진입"], "④": ["no", "미해소 · TC Merge 중"], "⑤": ["no", "미해소 · 일정 대기"] };
+  DK.blk.cards.forEach((c) => { if (st[c.no]) c.st = st[c.no]; });
+  DK.blk.cards[0].fact = "11/18 MM Capable Flag 정상화\n(27CY MM Flag 4개 수신)";
+  DK.blk.cards[0].note = "HU 마지막 단계 재수행 · DCM 2644 FW 재적용 후 정상. 원인은 미확인(TMC 분석 요청). Provisioning · N/T 39건 재수행 결과 미확인";
+  DK.blk.cards[1].fact = "24 TC 중 Pass 21 · Fail 1 · NT 2\n(11/18 회의록: 잔여 Fail 4건)";
+  DK.ev.blk.facts[0] = "① MM/HU · ACOS Provisioning (TMC): 11/18 오전 27CY MM Flag 4개 정상 수신으로 Capable Flag 정상화. HU 마지막 단계 재수행 · DCM 2644 FW 재적용 · ADF 재수행 후 결과가 바뀌었고 개발 수정은 없어 원인은 미확인 → 실패 · 성공 HU Log로 TMC 분석 요청. Provisioning → 요금제 TC → N/T 39건 금주 재수행 예정";
+  DK.ev.hu.title = "HU(MM) · Capable Flag — 11/18 정상화 (원인 미확인)";
+  DK.ev.hu.facts = ["11/13 · 11/15: HU 업데이트 Tier1 ①의 9단계(성공 여부 확인)에서 중단, 성공 확인 파일 미생성 (5회 시도)", "11/18 오전: HU 마지막 처리 단계 재수행 · DCM 2644 FW 재적용 · ADF 재수행 → HU ID 정상 전달, Capable Flag 조회 시 27CY MM Flag 4개 정상 수신", "LGU+ · 다산 개발 영역의 별도 수정 없이 같은 환경에서 결과가 바뀜 → 원인 미확인, 실패 · 성공 HU Log와 재처리 절차를 TMC Backlog로 분석 요청", "후속: Capable Flag 재확인 → MM Provisioning → 요금제 TC → 기존 N/T 39건 재수행 (금주 목표, 11/19 이후 결과는 Confluence · Jira에 아직 없음)", "E2E 환경: HU + DCM 1세트 FW Update · 장비 연결 완료(11/18), 추가 Test Set 확보는 확인 필요"];
+  const blkDates = {
+    id: "blk-dates", code: "E4", title: "Critical Blocker · 주요 이슈별 해결 일자와 현재 상태 (11/21 확인)",
+    message: "이슈마다 언제 생겼고, 언제 풀렸는지(또는 어디까지 진행됐는지), 지금 상태가 어떤지를 근거 문서와 함께 정리함. ★는 Item2 ② 잔여 이슈 5건(Critical Blocker).",
+    head: ["이슈", "담당", "발생", "해결 · 진행 일자", "현재 상태", "근거"],
+    rows: [
+      ["★ MM Capable Flag 미반환 (ACOS Provisioning)", "TMC", "10월 TSC-GC Migration 후 Capable Partial 응답, 11월 초 MM Flag 미반환", "ok|11/18 오전 해소 — 27CY MM Flag 4개 정상 수신", "원인 미확인(동일 FW에서 결과 변화) → TMC 분석 요청. Provisioning → 요금제 TC → N/T 39건 금주 재수행 예정, 결과 미확인", "11/18 PM 회의록 · Backlog PRJ_0333-55 · 46"],
+      ["★ HU SW SU#1 · SubMCU 업데이트", "TMC", "11/03 FW 미수령, 11/11 SU#1 확인, 11/13 · 15 업데이트 성공 확인 단계에서 중단", "ok|11/18 — HU 마지막 단계 재수행 · DCM 2644 FW 재적용 · ADF 재수행, HU ID 정상 전달", "E2E 환경 1세트 FW Update · 연결 완료. 추가 Test Set 확보 여부 확인 필요", "11/18 PM 회의록 · 11/13 보고 · Backlog PRJ_0333-40"],
+      ["MM Opt-in/out 오류", "TMC", "Capable 미활성 시 Opt-in 불가 (11/11)", "part|11/18 Capable 정상화로 선행 조건 확보", "Flag 조합별 Opt-in/out 검증 결과 미확인", "E2E 사전준비 · PRJ_0333-55"],
+      ["★ VDP Diag 연동", "TMC", "10/06 접속 9건 전건 Timeout", "part|10/26 /v1 정정 → 10/27 네트워크 접속 → 11/13 첫 API 호출", "미해소 — 최신 24 TC 중 Pass 21 · Fail 1 · NT 2, 11/18 회의록은 잔여 Fail 4건(금주 재검증). e-Care E2E 12/14 ~ 12/30 계획, VDP 오류 시 시뮬레이터로 KR 영역만 시험", "11/18 PM 회의록 · E2E 세부일정(11/17) · DVT 덱 v2.9"],
+      ["VDP CoCo", "TMC", "10/06 Timeout", "part|11/11 이전 연결 테스트 완료", "Callback 검증 중", "E2E 사전준비 이슈 3"],
+      ["★ CTI/TCK 중계 (CCW 236 TC)", "TMKR · TCK", "10/28 대체안 철회, 정식 개발 착수", "no|미해소 · 확정일 없음", "11/11 기준 개발 최대 3주, 고객센터 연계 시나리오(eCall · e-Care)는 12월 시험 진입. 11/18 회의록에 갱신 없음", "E2E 사전준비 #10 · 10/28 · 11/03 PM 회의록"],
+      ["★ DMS 사양 변경", "TMKR", "10/21 요구 지속 유입, 10/23 범위 Freeze 합의", "part|API 5 → 24개 반영 중", "DMS 114 TC 중 Pass 78 · Fail 1 · NT 35. 11/18: DMS 최종 변경분 E2E TC Merge 필요", "E2E 사전준비 #9 · 11/18 PM 회의록"],
+      ["★ ACOS API 사양 (TSC-GC/GB)", "TMC", "10/15 Notify API 변경, 10월 Upsert 정책 재변경", "part|변경 반영 · 재검증 완료", "미동작 버전 6개 정리 필요, Redoc · Pre-PROD 반영 일정에 따라 추가 개발 가능", "E2E 사전준비 #6"],
+      ["GSA · Auth0 DeepLink 흰 화면", "TMC", "11/06 TMC 원인 인정", "no|미해소 · TMC 일정 대기", "GS 시나리오 안 DeepLink 중심 시험, One ID · Auth0 일정 영향 확인 필요(11/18)", "11/18 PM 회의록 · E2E 사전준비 #14 · 17"],
+      ["DTC 재현 방법 (CANoe)", "TMC", "10/21 CANoe 파일 요청", "no|미해소 · 미정", "TMC가 유형별 코드 발생 필요", "E2E 사전준비 #5 · Backlog PRJ_0333-54"],
+      ["uCube 해지", "LGU+", "—", "part|가입 Flow는 정상", "해지 관련 잔여 이슈 재시험 예정 (청구 제외 항목)", "11/18 PM 회의록"],
+    ],
+    foot: "확인 범위: Confluence GSP 스페이스(최신 11/18 PM 정례회의록, 11/19 수정)와 Jira를 11/21에 다시 확인함. 11/19 ~ 21 재수행 결과(Provisioning · N/T 39건 · VDP Diag 재검증)는 아직 올라와 있지 않아 미확인. TMC Backlog(PRJ_0333-*)는 접근할 수 없어 번호만 표기.",
+    src: [["https://toyotasystem.atlassian.net/wiki/spaces/GSP/pages/1147404487", "11/18 PM 정례회의록", 1], ["https://toyotasystem.atlassian.net/wiki/spaces/GSP/pages/1133608962", "E2E 사전준비 (이슈 목록)", 1], ["https://toyotasystem.atlassian.net/wiki/spaces/GSP/pages/1121320967", "E2E 세부일정", 1]],
+  };
   DK.blk.doneRows = DK.blk.doneRows.concat([["필요 인력 (청구)", "15.00 MM (11월 5 + 12월 10)", "25.00 MM (11월 5 + 12월 10 + 1월 10)"]]);
   DK.man.kicker = "Item2 · 추가 인력 산정";
   DK.man.title = "DVT 개발 인력 유지 · 예측 공수 25.00 MM (11.18 ~ 2027.01.29, 1월 말 종료 기준)";
@@ -110,7 +140,7 @@ module.exports = function (base) {
         { a: [2027, 1, 1], b: [2027, 1, 29], t: "cond", dash: true, l: "TMC 해소 지연 시 1월 말까지", ev: "dv:end" },
       ] },
       { h: "외부 선행 조건", sub: "TMC · TMKR", bars: [
-        { a: [2026, 11, 18], b: [2026, 12, 31], t: "ext", dash: true, l: "HU(MM) 테스트 · VDP 서버 · ACOS API · CTI · DMS 해소 (일자 미정)", ev: "dv:blk" },
+        { a: [2026, 11, 18], b: [2026, 12, 31], t: "ext", dash: true, l: "VDP 서버 · ACOS API · CTI · DMS 해소 (일자 미정) · HU(MM)은 11/18 해소", ev: "dv:blk" },
       ] },
       { h: "E2E #1", sub: "GS TC 위주", bars: [
         { a: [2026, 11, 23], b: [2026, 12, 30], t: "e2e", l: "GS TC 위주 병행 (회귀 · ACOS IF 포함)", ev: "dv:e2e1" },
@@ -257,6 +287,7 @@ module.exports = function (base) {
     c.rows = rs.map((r) => ({ a: r[1], mm: r[5].toFixed(2) }));
   });
 
+  M.blkDates = blkDates;
   base.M = M;
   base.X = X;
   return base;
