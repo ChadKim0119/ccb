@@ -2116,19 +2116,28 @@ a.bst:hover { text-decoration: underline; }
 
   /* ── mouse wheel: scroll the page, then turn it at either end ── */
   var wAcc = 0, wLock = 0, wLast = 0, wInner = 0;
+  /* 마우스 휠: 한 칸(노치)마다 한 장 · 트랙패드: 제스처(관성 포함) 한 번에 한 장 · 스크롤 있는 장표는 끝에 닿은 뒤부터 */
+  var wMouseAt = 0;
   window.addEventListener("wheel", function (ev) {
     if (!document.body.classList.contains("staged") || document.body.classList.contains("open") || ev.ctrlKey) return;
-    var dy = ev.deltaMode === 1 ? ev.deltaY * 16 : ev.deltaY;
-    if (Math.abs(ev.deltaX) > Math.abs(dy)) return;
+    if (ev.target.closest && ev.target.closest("#srch, .panel")) return;
+    var dy = ev.deltaMode === 1 ? ev.deltaY * 16 : ev.deltaMode === 2 ? ev.deltaY * 800 : ev.deltaY;
+    if (!dy || Math.abs(ev.deltaX) > Math.abs(dy)) return;
     var now = Date.now(), gap = now - wLast; wLast = now;
-    if (now < wLock) { ev.preventDefault(); if (gap < 220) wLock = Math.max(wLock, now + 220); return; }
+    var wd = ev.wheelDeltaY || 0, mouse = ev.deltaMode === 1 || (wd !== 0 && Math.abs(wd) % 120 === 0) || (Math.abs(dy) >= 50 && dy === Math.round(dy) && gap > 40);
     var sc = pages[cur], atEnd = sc.scrollTop + sc.clientHeight >= sc.scrollHeight - 2, atTop = sc.scrollTop <= 1;
-    if ((dy > 0 && !atEnd) || (dy < 0 && !atTop)) { wInner = now; wAcc = 0; return; }
+    if ((dy > 0 && !atEnd) || (dy < 0 && !atTop)) { wInner = now; wAcc = 0; wLock = 0; return; }
     ev.preventDefault();
-    if (now - wInner < 350) { wInner = now; return; }
-    if (gap > 300) wAcc = 0;
+    if (now - wInner < (mouse ? 180 : 350)) { wInner = now; return; }
+    var t = cur + (dy > 0 ? 1 : -1);
+    if (mouse) {
+      if (now - wMouseAt < 70) return; /* 같은 노치가 두 번 들어오는 경우만 거름 */
+      wMouseAt = now; wAcc = 0; if (t >= 0 && t < pages.length) go(t); return;
+    }
+    if (now < wLock) { wLock = now + 200; return; } /* 트랙패드 관성이 끝날 때까지 대기 */
+    if (gap > 250) wAcc = 0;
     wAcc += dy;
-    if (Math.abs(wAcc) >= 40) { var t = cur + (wAcc > 0 ? 1 : -1); wAcc = 0; if (t >= 0 && t < pages.length) { go(t); wLock = now + 650; } }
+    if (Math.abs(wAcc) >= 50) { wAcc = 0; if (t >= 0 && t < pages.length) { go(t); wLock = now + 200; } }
   }, { passive: false });
 
   /* ── full screen: F key or the button ── */
