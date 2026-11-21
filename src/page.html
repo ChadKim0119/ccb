@@ -863,6 +863,15 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
 .bst { display: inline-block; margin: 4px 0 6px; padding: 1px 8px; border-radius: 10px; font-size: 11.5px; font-weight: 700; text-decoration: none; white-space: nowrap; }
 .bst.ok { background: #e3f4ec; color: #0a7a4b; } .bst.part { background: #fff4d6; color: #8a5a00; } .bst.no { background: #fde3ea; color: #b0103f; }
 a.bst:hover { text-decoration: underline; }
+/* 상단 바 한 줄: 제목 · 메뉴 · 버튼 */
+.bar-in { max-width: none; flex-wrap: nowrap; padding: 8px 20px; }
+.bar-in .brand { margin-right: 8px; flex: none; }
+.bar-in .nav { order: 0; flex: 1 1 auto; flex-basis: auto; flex-wrap: nowrap; min-width: 0; overflow-x: auto; scrollbar-width: none; white-space: nowrap; }
+.bar-in .nav::-webkit-scrollbar { display: none; }
+@media (max-width: 1500px) { .bar-in .brand span { display: none; } }
+@media (max-width: 1700px) { #pg-back:not([hidden]) ~ .brand { display: none; } }
+@media (max-width: 1400px) { .bar-in .nav a { padding: 6px 7px; font-size: 13px; } .bar-in { gap: 10px; } .bar-in .brand { display: none; } }
+@media (max-width: 979px) { .bar-in { flex-wrap: wrap; } .bar-in .nav { order: 3; flex-basis: 100%; } }
 </style>
 </head>
 <body data-mode="changed">
@@ -1695,6 +1704,10 @@ a.bst:hover { text-decoration: underline; }
     app.style.transform = "scale(" + sc + ")";
     app.style.left = (12 + (aw - SW * sc) / 2) + "px";
     app.style.top = (top + 12 + (ah - SH * sc) / 2) + "px";
+    /* 오른쪽 내비: 상단 바 아래 영역 가운데에 두고, 넘치면 축소 */
+    var rail = document.querySelector(".rail"), avail = window.innerHeight - top - 72, rh = rail.scrollHeight, k = Math.min(1, avail / rh);
+    rail.style.top = (top + 8 + avail / 2) + "px";
+    rail.style.transform = "translateY(-50%)" + (k < 1 ? " scale(" + k.toFixed(3) + ")" : "");
   }
   function fit() {
     layout();

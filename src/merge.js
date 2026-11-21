@@ -80,7 +80,7 @@ module.exports = function (base) {
   DK.blk.cards.forEach((c) => { if (st[c.no]) c.st = st[c.no]; });
   DK.blk.cards[0].fact = "11/18 MM Capable Flag 정상화\n(27CY MM Flag 4개 수신)";
   DK.blk.cards[0].note = "HU 마지막 단계 재수행 · DCM 2644 FW 재적용 후 정상. 원인은 미확인(TMC 분석 요청). Provisioning · N/T 39건 재수행 결과 미확인";
-  DK.blk.cards[1].fact = "24 TC 중 Pass 21 · Fail 1 · NT 2\n(11/18 회의록: 잔여 Fail 4건)";
+  DK.blk.cards[1].fact = "24 TC 중 Pass 21 · Fail 1 · NT 2\n(11/20 개발 PM 확인, 11/18 Fail 4 → 1)";
   DK.ev.blk.facts[0] = "① MM/HU · ACOS Provisioning (TMC): 11/18 오전 27CY MM Flag 4개 정상 수신으로 Capable Flag 정상화. HU 마지막 단계 재수행 · DCM 2644 FW 재적용 · ADF 재수행 후 결과가 바뀌었고 개발 수정은 없어 원인은 미확인 → 실패 · 성공 HU Log로 TMC 분석 요청. Provisioning → 요금제 TC → N/T 39건 금주 재수행 예정";
   DK.ev.hu.title = "HU(MM) · Capable Flag — 11/18 정상화 (원인 미확인)";
   DK.ev.hu.facts = ["11/13 · 11/15: HU 업데이트 Tier1 ①의 9단계(성공 여부 확인)에서 중단, 성공 확인 파일 미생성 (5회 시도)", "11/18 오전: HU 마지막 처리 단계 재수행 · DCM 2644 FW 재적용 · ADF 재수행 → HU ID 정상 전달, Capable Flag 조회 시 27CY MM Flag 4개 정상 수신", "LGU+ · 다산 개발 영역의 별도 수정 없이 같은 환경에서 결과가 바뀜 → 원인 미확인, 실패 · 성공 HU Log와 재처리 절차를 TMC Backlog로 분석 요청", "후속: Capable Flag 재확인 → MM Provisioning → 요금제 TC → 기존 N/T 39건 재수행 (금주 목표, 11/19 이후 결과는 Confluence · Jira에 아직 없음)", "E2E 환경: HU + DCM 1세트 FW Update · 장비 연결 완료(11/18), 추가 Test Set 확보는 확인 필요"];
