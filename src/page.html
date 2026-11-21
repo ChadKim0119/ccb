@@ -847,6 +847,19 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
   .mmcatc { flex-direction: column; } .mmcatc > div { flex: none !important; }
   .i2b { grid-template-columns: 1fr; }
 }
+.lt-q { display: flex; gap: 12px; align-items: baseline; padding: 12px 16px; border-left: 4px solid var(--accent); background: var(--wash); border-radius: 6px; margin: 4px 0 10px; }
+.lt-q span { font-size: 12px; font-weight: 700; color: var(--accent-deep); white-space: nowrap; } .lt-q b { font-size: 16px; }
+.lt-lead { font-size: 14px; line-height: 1.6; margin: 0 0 12px; }
+.lt-g { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; } .lt-g.one { grid-template-columns: 1fr; }
+.lt-c { border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; }
+.lt-c h4 { margin: 0 0 6px; font-size: 14.5px; display: flex; gap: 8px; align-items: center; }
+.lt-c h4 i { font-style: normal; width: 20px; height: 20px; border-radius: 50%; background: var(--ink); color: #fff; font-size: 12px; display: inline-flex; align-items: center; justify-content: center; flex: none; }
+.lt-c p { margin: 0 0 8px; font-size: 13px; line-height: 1.55; color: var(--ink-2); }
+.lt-ev { width: 100%; border-collapse: collapse; font-size: 12px; } .lt-ev td { padding: 3px 0; border-top: 1px dashed var(--line); vertical-align: top; } .lt-ev td:first-child { width: 92px; font-weight: 700; color: var(--accent-deep); white-space: nowrap; padding-right: 8px; }
+.lt-close { margin: 12px 0 8px; padding: 10px 14px; background: var(--accent-wash, #fde7f1); border-radius: 6px; font-size: 14px; font-weight: 600; line-height: 1.55; }
+.lt-gap { font-size: 12px; color: var(--ink-3); margin: 6px 0 0; }
+.lt-btn { border: 1px solid var(--accent); color: var(--accent-deep); background: #fff; border-radius: 12px; padding: 1px 9px; font: inherit; font-weight: 700; cursor: pointer; } .lt-btn:hover { background: var(--accent); color: #fff; }
+@media (max-width: 760px) { .lt-g { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body data-mode="changed">
@@ -1479,7 +1492,7 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
       '<p class="wy-t">' + esc(b.why) + '</p>' +
       '<table class="tbl wy-tb"><thead><tr><th>분류</th><th>언제 되었어야 → 실제</th><th class="r">MM</th><th></th></tr></thead><tbody>' +
       b.cats.map(function (c) { return '<tr><td><b>' + c.k + ' ' + esc(c.h) + '</b><small>' + c.rows.map(function (r) { return esc(r.a); }).join(" · ") + '</small></td><td><span class="sh">' + esc(c.should) + '</span><span class="ac">→ ' + esc(c.act) + '</span></td><td class="r num">' + cv("c:" + c.k, c.mm) + '</td><td><button type="button" class="r5evb" data-panel="why:cat:' + c.k + '">증적 <span aria-hidden="true">›</span></button></td></tr>'; }).join("") +
-      '</tbody></table><p class="wy-foot">① e-Care 콜버튼 3.86 MM은 TMKR 신규 요청 건으로 지연과 무관합니다 (<a href="#callbtn">A12</a>). 전체 항목은 <a href="#delay-ev">E2 항목별 지연 사유 · 증적</a></p></div>';
+      '</tbody></table><p class="wy-foot">① e-Care 콜버튼 3.86 MM은 TMKR 신규 요청 건으로 지연과 무관합니다 (<a href="#callbtn">A12</a>). 전체 항목은 <a href="#delay-ev">E2 항목별 지연 사유 · 증적</a> · <button type="button" class="lt-btn" data-panel="why:late">고객사 문의: 왜 늦게 알렸나 ›</button></p></div>';
     return '<section class="sheet" id="i1-why">' + sheetHead("Item1 ①", "일정 변경과 지연 사유 · 증적", seg()) +
       '<h2>ACOS 최종 규격이 07.27에야 확정되어 8&nbsp;~&nbsp;9월은 변경 개발에, TMC 서버 · 환경 지연으로 10&nbsp;~&nbsp;11월은 변경 · 연동 대응에 공수가 들었습니다</h2>' +
       ganttHtml() + '<div class="wy2">' + left + right + '</div></section>';
@@ -1579,7 +1592,13 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
   function xPre() { var a = XA.a5, done = a.rows.filter(function (r) { return r[3] === "준비완료"; }).length; return '<p style="font-size:13.5px;margin-bottom:8px"><b>' + a.rows.length + '개 항목</b> 중 준비완료 <b>' + done + '</b> · 그 외 ' + (a.rows.length - done) + '</p>' + table(a.head, a.rows.map(function (r) { return r.map(function (c, i) { return i === 3 ? '<span class="' + (c === "준비완료" ? "st-done" : "st-wait") + '">' + esc(c) + '</span>' : esc(c); }); }), { raw: true, nowrap: [0, 1, 3, 4, 5] }) + xSrc(["pre"]); }
   function xSrcList() { var a = XA.a7; return '<h4>DVT 결과 페이지 첨부</h4>' + table(["차수", "파일", "올린 날", "올린 사람"], a.files, { nowrap: [0, 2, 3] }) + '<h4>System Test Case 문서 버전</h4>' + table(["버전", "일자", "변경 내용"], a.tcHist, { nowrap: [0, 1] }) + '<h4>Item2가 참조한 문서</h4><ul class="plain">' + Object.keys(XSRC).map(function (k) { var s = XSRC[k]; return '<li>' + (s.u ? '<a href="' + s.u + '" target="_blank" rel="noopener">' + esc(s.t) + '</a>' : esc(s.t) + ' (' + (s.n || "프로젝트 DB 문서") + ')') + '</li>'; }).join("") + '</ul>'; }
   function xNew(o) { return function () { return table(o.head, o.rows, { nowrap: [0], rowCls: function (r) { return r[0] === "합계" ? "tot" : ""; } }); }; }
-  var APX_E = [[MG.evreq, bEvReq], [{ id: "delay-ev", code: "E2", title: "항목별 지연 사유 · 증적 (8.10 · 10.10 MM)", message: "Item1의 8.10 MM과 10.10 MM이 왜 발생했는지 — 언제 되었어야 했고 실제로 언제 되었는지, 사유, 현재 상태, 근거 — 를 영역별로 정리함. 증적 칩을 누르면 원본 이력으로 이동함." }, bDelayEv],
+  function bLate(inPanel) {
+    var L = MG.late;
+    return '<div class="lt-q"><span>고객사 문의</span><b>' + esc(L.q) + '</b></div><p class="lt-lead">' + esc(L.lead) + '</p>' +
+      '<div class="lt-g' + (inPanel ? ' one' : '') + '">' + L.reasons.map(function (r, i) { return '<div class="lt-c"><h4><i>' + (i + 1) + '</i>' + esc(r.h) + '</h4><p>' + esc(r.t) + '</p><table class="lt-ev"><tbody>' + r.ev.map(function (e) { return '<tr><td class="num">' + esc(e[0]) + '</td><td>' + esc(e[1]) + '</td></tr>'; }).join("") + '</tbody></table></div>'; }).join("") + '</div>' +
+      '<p class="lt-close">' + esc(L.close) + '</p><div class="wy-ev lt-src"><span>근거</span>' + evLinks(L.src) + '</div><p class="lt-gap">※ ' + esc(L.gap) + '</p>';
+  }
+  var APX_E = [[MG.evreq, bEvReq], [{ id: "delay-ev", code: "E2", title: "항목별 지연 사유 · 증적 (8.10 · 10.10 MM)", message: "Item1의 8.10 MM과 10.10 MM이 왜 발생했는지 — 언제 되었어야 했고 실제로 언제 되었는지, 사유, 현재 상태, 근거 — 를 영역별로 정리함. 증적 칩을 누르면 원본 이력으로 이동함." }, bDelayEv], [MG.late, function () { return bLate(false); }],
     [{ id: "sheet", code: "B1", title: "월별 투입 공수 표 (계획 vs 실제)", message: "8 ~ 11월 계약 시점 계획 48.2 MM과 실제 85.3 MM을 과제 · 업무별로 비교함. 밑줄 숫자를 누르면 계획 업무와 실제 수행 업무가 열림. 오른쪽 위 버튼으로 기존 계획 / 변경 전환." }, function () { return '<div style="display:flex;justify-content:flex-end;margin:-6px 0 6px">' + seg() + '</div><div class="x-hint"><span><b>밑줄 숫자</b>를 누르면 계획 업무와 실제 수행 업무가 열립니다</span><span>숫자 옆 <span class="dl">+3.1</span> <span class="dl neg">−1.8</span> 은 계약 대비 증감 (MM)</span><span><i class="sw c-dev"></i>개발</span><span><i class="sw c-dvt"></i>DVT · 품질</span><span><i class="sw c-e2e"></i>E2E</span><span><i class="sw c-ux"></i>기획</span></div>' + bXl(); }]];
   var XN = XD.apxNew;
   var APX_D = [[XN.m11, xNew(XN.m11)], [XN.m4, function () { return xNew(XN.m4)() + '<h4 style="margin-top:18px">영역별 예측 공수 (11.18 ~ 2027.01.29)</h4>' + table(XK.man.areaHead, XK.man.areaRows, { nowrap: [0, 1, 3, 4, 5, 6], right: [3, 4, 5, 6], rowCls: function (r) { return r[0] === "합계" ? "tot" : ""; } }) + '<p class="blk-foot">' + esc(XK.man.foot) + '</p>'; }], [XA.a4, xCause], [XA.a1, function () { return xNumTable(XY.r1) + xSrc(["r1", "pm1007", "db"]); }],
@@ -1589,6 +1608,7 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
 
   /* ── 패널: 지연 사유 · Item2 ── */
   function panelMerged(k) {
+    if (k[0] === "why" && k[1] === "late") return { kicker: "Item1 · 고객사 문의 답변", title: "ACOS · VDP 건 공수 제출이 늦어진 경위", html: bLate(true) };
     if (k[0] === "why" && k[1] === "810") { var a = MG.why810; return { kicker: "Item1 ① · 지연 사유 · 증적", title: a.h, html: '<p>' + esc(a.why) + '</p><h4>규격 배포 이력</h4>' + table(["일자", "내용", "출처"], A.history.rows.filter(function (r) { return r[1] === "규격"; }).map(function (r) { return [r[0], r[2], r[3]]; }), { nowrap: [0] }) + '<h4>변경 개발 12개 항목 (항목을 누르면 AS-IS / TO-BE · 증적 이미지)</h4>' + bChgdev() + '<h4>DVT 일정 조정 경과</h4>' + table(["시점", "내용"], G.delay.items, { nowrap: [0] }) + '<h4>증적</h4><p>' + evLinks(a.ev) + '</p>' }; }
     if (k[0] === "why" && k[1] === "cat") {
       var c = MG.why1010.cats.filter(function (x) { return x.k === k[2]; })[0]; if (!c) return null;
