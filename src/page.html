@@ -854,6 +854,16 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
 .manend small { display: block; font-size: 12px; font-weight: 700; color: var(--ink-2); } .manend b { display: block; font-size: 22px; } .manend span { font-size: 12px; color: var(--ink-2); }
 .manend .hot { background: var(--accent-deep); border-color: var(--accent-deep); color: #fff; } .manend .hot small, .manend .hot span { color: rgba(255,255,255,.85); }
 .i2tl .tl-m i { height: 200px; }
+.dvnow { display: grid; grid-template-columns: 210px 1fr; gap: 14px; align-items: center; margin-top: 12px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; }
+.dvn-k small { display: block; font-size: 12px; font-weight: 700; color: var(--i2); } .dvn-k b { display: block; font-size: 26px; line-height: 1.15; color: var(--i2); } .dvn-k b span { font-size: 13px; color: var(--ink-2); } .dvn-k > span { font-size: 12px; color: var(--ink-2); }
+.dvn-g { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+.dvn { display: flex; flex-direction: column; gap: 3px; text-align: left; border: 0; background: none; padding: 2px 0; font: inherit; color: inherit; cursor: pointer; min-width: 0; }
+.dvn-h { font-size: 12.5px; color: var(--ink-2); } .dvn-h b { color: var(--ink); }
+.dvn-bar { display: flex; height: 8px; border-radius: 3px; overflow: hidden; } .dvn-bar i.pass { background: var(--pass); } .dvn-bar i.fail { background: var(--fail); } .dvn-bar i.nt { background: var(--nt); }
+.dvn-n { font-size: 11.5px; color: var(--ink-2); white-space: nowrap; } .dvn-n em { font-style: normal; } .dvn-n em.f { color: var(--fail); font-weight: 700; }
+.dvn:hover .dvn-h b { text-decoration: underline; }
+@media (max-width: 980px) { .dvnow { grid-template-columns: 1fr; } .dvn-g { grid-template-columns: repeat(2, 1fr); } }
+.sheet.i2 .man-cards .mc.hot, .sheet.i2 .manend .hot { background: var(--i2); border-color: var(--i2); }
 .i2h { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; margin: 16px 0 8px; font-size: 15px; }
 .i2h i { font-style: normal; display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: var(--ink); color: #fff; font-size: 12px; margin-left: 4px; }
 .i2h i:first-child { margin-left: 0; } .i2h small { font-size: 12.5px; font-weight: 500; color: var(--ink-2); }
@@ -862,6 +872,7 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
 .pre-c.part { border-left-color: #c58a00; } .pre-c.ok { border-left-color: #0a7a4b; opacity: .85; }
 .pre-c:hover { border-color: var(--ink); } .pre-t { display: flex; gap: 6px; align-items: center; } .pre-t .bst { margin: 0; }
 .pre-c b { font-size: 14px; } .pre-s { font-size: 12.5px; color: var(--ink-2); } .pre-u { font-size: 12px; font-weight: 700; color: var(--accent-deep); }
+.tracks.t3 { grid-template-columns: repeat(3, 1fr); margin-top: 10px; } @media (max-width: 980px) { .tracks.t3 { grid-template-columns: 1fr; } }
 .trk.k0 { border-left-color: var(--ink); } .trk.k2 { border-left-style: dashed; border-left-color: var(--ink-3); }
 @media (max-width: 980px) { .prec { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 600px) { .prec { grid-template-columns: 1fr; } }
@@ -1588,6 +1599,13 @@ a.bst:hover { text-decoration: underline; }
       '<div class="i2tot"><h3>DVT 통합 결과 (최신, 992 TC)</h3>' + i2TotBars() + '</div>' +
       '<p class="askbar">' + esc(s.ask) + '</p></section>';
   }
+  /* DVT 현재 결과: 영역별 Pass · Fail · NT를 작게 (구 Item2 ① 현황 장표의 핵심) */
+  function dvtNow() {
+    var rows = XD.apxNew.m11.rows, tot = rows.filter(function (r) { return r[0] === "합계"; })[0] || ["합계", 992, 656, 2, 334];
+    var cells = rows.filter(function (r) { return r[0] !== "합계"; }).map(function (r) { var t = +r[1], p = +r[2], f = +r[3], n = +r[4];
+      return '<button type="button" class="dvn" data-panel="dv:status"><span class="dvn-h"><b>' + esc(r[0]) + '</b> ' + t + ' TC</span><span class="dvn-bar"><i class="pass" style="flex:' + p + '"></i>' + (f ? '<i class="fail" style="flex:' + f + '"></i>' : "") + '<i class="nt" style="flex:' + n + '"></i></span><span class="dvn-n">P ' + p + ' · <em class="' + (f ? "f" : "") + '">F ' + f + '</em> · NT ' + n + '</span></button>'; }).join("");
+    return '<div class="dvnow"><div class="dvn-k"><small>DVT 현재 · 11/20 개발 PM 확인</small><b class="num">' + tot[2] + '<span> / ' + tot[1] + ' TC Pass</span></b><span>Fail ' + tot[3] + ' · NT ' + tot[4] + ' (CCW 236은 CTI 미연동)</span></div><div class="dvn-g num">' + cells + '</div></div>';
+  }
   function i2TotBars() {
     var rows = XD.apxNew.m11.rows.filter(function (r) { return r[0] !== "합계"; });
     return '<div class="i2bars num">' + rows.map(function (r) { var t = +r[1], p = +r[2], f = +r[3], n = +r[4]; return '<div class="i2b"><span class="l"><b>' + esc(r[0]) + '</b> ' + t + ' TC</span><span class="bar" style="flex:' + t + '"><i class="pass" style="flex:' + p + '">' + (p ? p : "") + '</i>' + (f ? '<i class="fail" style="flex:' + f + '"></i>' : "") + '<i class="nt" style="flex:' + n + '">' + (n ? "NT " + n : "") + '</i></span></div>'; }).join("") + '</div>' +
@@ -1601,7 +1619,7 @@ a.bst:hover { text-decoration: underline; }
   }
   function vI2Man() {
     var s = XK.man;
-    return '<section class="sheet i2" id="i2-man">' + sheetHead("Item2 ③", s.kicker.replace(/^Item2 · /, "")) + '<h2>' + esc(s.title) + '</h2><p class="lede">' + esc(s.lede) + '</p>' +
+    return '<section class="sheet i2" id="i2-man">' + sheetHead("Item2 ②", s.kicker.replace(/^Item2 · /, "")) + '<h2>' + esc(s.title) + '</h2><p class="lede">' + esc(s.lede) + '</p>' +
       '<div class="man-cols"><div><h3 class="blk-t" style="margin-top:0">' + esc(s.baseTitle) + '</h3><div class="man-cards">' + s.cards.map(function (c) { return '<div class="mc' + (c.hot ? " hot" : "") + '"><small>' + esc(c.small) + '</small><b>' + esc(c.v) + '</b><span>' + esc(c.d) + '</span></div>'; }).join("") + '</div>' +
       '<ul class="man-ul">' + s.bullets.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join("") + '</ul>' + table(s.perHead, s.perRows, { nowrap: [0, 1, 2], right: [1, 2], rowCls: function (r) { return r[0] === "합계" ? "tot" : ""; } }) +
       '<div class="manend"><div><small>12월 말 종료 시</small><b class="num">15.00 MM</b><span>11월 5 + 12월 10</span></div><div class="hot"><small>1월 말 종료 시</small><b class="num">25.00 MM</b><span>+ 1월 10</span></div></div></div>' +
@@ -1621,12 +1639,11 @@ a.bst:hover { text-decoration: underline; }
     var stl = { ok: "해소", part: "진행 중", no: "미해소" }, OC = { TMC: "var(--o-tmc)", TMKR: "var(--o-tck)" };
     var preBlk = '<h3 class="i2h"><i>1</i>외부 선행 조건 <small>TMC · TMKR 측이 풀어야 DVT 재수행 · E2E 범위가 넓어짐</small></h3><div class="prec">' + t.pre.map(function (c) { return '<button type="button" class="pre-c ' + c.st + '" data-panel="' + c.ev + '"><span class="pre-t"><span class="otag" style="--oc:' + OC[c.o] + '">' + esc(c.o) + '</span><span class="bst ' + c.st + '">' + stl[c.st] + '</span></span><b>' + esc(c.h) + '</b><span class="pre-s">' + esc(c.s) + '</span><span class="pre-u">풀리면 → ' + esc(c.u) + '</span></button>'; }).join("") + '</div>';
     var ticks = ""; for (var k = 0; k <= N2; k += 7) ticks += '<i style="left:' + (k / N2 * 100).toFixed(2) + '%"></i>';
-    return '<section class="sheet i2" id="i2-plan">' + sheetHead("Item2 ④", s.kicker.replace(/^Item2 · /, "")) + '<h2>' + esc(s.title) + '</h2><p class="lede">' + esc(s.lede) + '</p>' + preBlk +
+    return '<section class="sheet i2" id="i2-plan">' + sheetHead("Item2 ①", s.kicker.replace(/^Item2 · /, "")) + '<h2>' + esc(s.title) + '</h2><p class="lede">' + esc(s.lede) + '</p>' + dvtNow() + preBlk +
       '<h3 class="i2h"><i>2</i>DVT 대응 · <i>3</i>Kensho E2E 일정</h3><div class="tl i2tl"><div class="tl-head"><span></span><div class="tl-ax">' + weeks.join("") + marks + '</div></div><div class="tl-body"><div class="tl-grid"><span></span><div>' + ticks + '</div></div>' + lanes + '</div></div>' +
       '<div class="lg" style="margin-top:6px"><span><i class="sw2" style="background:var(--ink)"></i>DVT 잔여 이슈 관리</span><span><i class="sw2" style="background:var(--accent)"></i>종료 연장 가능 구간</span><span><i class="sw2" style="background:#00856a"></i>Kensho E2E (GS TC)</span><span><i class="sw2" style="background:none;box-shadow:inset 0 0 0 1.5px var(--ink-3)"></i>미확정</span></div>' +
-      '<div class="i2pl"><div class="scroll"><table class="tbl prem"><thead><tr>' + s.premHead.map(function (h) { return '<th>' + esc(h) + '</th>'; }).join("") + '</tr></thead><tbody>' +
-      s.prem.map(function (r, i) { return '<tr data-panel="' + s.premEv[i] + '" tabindex="0">' + r.map(function (c, j) { return '<td' + (j === 0 ? ' class="nw"' : "") + '>' + (j === 1 ? '<b>' + esc(c) + '</b>' : esc(c)) + '</td>'; }).join("") + '</tr>'; }).join("") + '</tbody></table></div>' +
-      '<div class="tracks">' + s.tracks.map(function (tk, i) { return '<button type="button" class="trk k' + i + '" data-panel="' + tk.ev + '"><b>' + esc(tk.h) + '</b><span>' + esc(tk.b) + '</span></button>'; }).join("") + '</div></div></section>';
+      '<div class="tracks t3">' + s.tracks.map(function (tk, i) { return '<button type="button" class="trk k' + i + '" data-panel="' + tk.ev + '"><b>' + esc(tk.h) + '</b><span>' + esc(tk.b) + '</span></button>'; }).join("") + '</div>' +
+      '<p class="blk-foot">진행 기준(DVT 잔여 관리 · E2E 병행 · 외부 선행 조건 · 범위 변경 · 인력 · 청구) <button type="button" class="more" data-panel="dv:prem">진행 기준 5가지 ›</button> <button type="button" class="more" data-panel="dv:end">종료 시점 12월 말 vs 1월 말 ›</button> <a class="more" href="#blk-dates">이슈별 해결 일자 (E4) ›</a></p></section>';
   }
 
   /* ── 부록: E1 증적 요청 대응표 · E2 항목별 지연 사유 · 증적 · B1 공수 표 · Item2 부록 ── */
@@ -1724,9 +1741,9 @@ a.bst:hover { text-decoration: underline; }
   /* ── mount ── */
   $("chg").innerHTML = '변경 이력 <b>' + esc(D.meta.changelog[0].v) + '</b>'; $("ver").textContent = D.meta.changelog[0].v; $("chg").setAttribute("aria-label", "이 장표의 변경 이력, 현재 " + D.meta.changelog[0].v);
   $("brand").innerHTML = esc(D.meta.short || D.meta.title) + ' <span>· ' + esc(D.meta.owner) + ' ' + esc(D.meta.project) + ' · ' + esc(D.meta.date) + '</span>';
-  var NAVS = [["overview", "요약"], ["i1-why", "Item1 ① 지연 사유"], ["i1-mm", "Item1 ② 공수 산출"], ["i2-status", "Item2 ① 현황 · 기조"], ["i2-blk", "Item2 ② 잔여 이슈"], ["i2-man", "Item2 ③ 추가 인력"], ["i2-plan", "Item2 ④ 진행 계획"]];
+  var NAVS = [["overview", "요약"], ["i1-why", "Item1 ① 지연 사유"], ["i1-mm", "Item1 ② 공수 산출"], ["i2-plan", "Item2 ① 현황 · 진행 계획"], ["i2-man", "Item2 ② 추가 인력"]];
   $("nav").innerHTML = NAVS.map(function (n) { return '<a href="#' + n[0] + '">' + n[1] + '</a>'; }).join("") + '<span class="sep"></span><a href="#appendix">Appendix</a>';
-  $("app").innerHTML = vOverview() + vI1Why() + vI1Mm() + vI2Status() + vI2Blk() + vI2Man() + vI2Plan() + vAppendix();
+  $("app").innerHTML = vOverview() + vI1Why() + vI1Mm() + vI2Plan() + vI2Man() + vAppendix();
 
   /* ── mode switch (the control lives on the pages that use it) ── */
   function setMode(m) {
