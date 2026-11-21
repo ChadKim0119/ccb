@@ -22,6 +22,7 @@
   --plan-wash: #eceaef;
   --accent: #dd0079;      /* 변경 · 추가 (LGU+ magenta) */
   --accent-deep: #a3005a;
+  --i1: #a3005a; --i2: #24407a; /* Item1 · Item2 구분색 (흰 글자 대비 7:1 이상) */
   --accent-wash: #fde9f3;
   --mark: #ffe566;        /* 형광펜 */
   --font: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", sans-serif;
@@ -753,7 +754,11 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
 .ovh { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 .ovh h3 { font-size: 17px; }
 .ovtag { font-size: 12px; font-weight: 800; letter-spacing: .03em; color: #fff; background: var(--accent-deep); border-radius: 6px; padding: 2px 8px; }
-.ovtag.t2 { background: var(--ink); }
+.ovtag { background: var(--i1); border-radius: 999px; padding: 2px 10px; } .ovtag.t2 { background: var(--i2); }
+.ovc:has(.ovtag.t2) .ovchip { color: var(--i2); border-color: var(--i2); }
+.ovc:has(.ovtag.t2) .ovk b, .ovc:has(.ovtag.t2) .ovgo a { color: var(--i2); } .ovc:has(.ovtag.t2) .ovk { border-top-color: var(--i2); }
+.ovc:has(.ovtag.t2) .ovend button.hot { background: var(--i2); border-color: var(--i2); }
+.pill.main.i1 { background: var(--i1); border-color: var(--i1); } .pill.main.i2 { background: var(--i2); border-color: var(--i2); }
 .ovchip { margin-left: auto; font-size: 11.5px; font-weight: 700; color: var(--accent-deep); border: 1px solid var(--accent); border-radius: 999px; padding: 1px 9px; }
 .ovtot { margin-top: 8px; display: flex; align-items: baseline; gap: 6px; }
 .ovtot b { font-size: 38px; letter-spacing: -.02em; line-height: 1.05; }
@@ -1510,7 +1515,7 @@ a.bst:hover { text-decoration: underline; }
   // 산식 툴팁 대상: data-calc="키" (CALC[키] = [제목, 줄들])
   function cv(key, text, cls) { return '<span class="cx' + (cls ? " " + cls : "") + '" data-calc="' + esc(key) + '" tabindex="0">' + text + '</span>'; }
   function dvKey(k) { return String(k).replace(/^ev:/, "dv:"); }
-  function sheetHead(tag, label, extra) { return '<div class="sh-top"><span class="sheet-no"><span class="pill main">' + esc(tag) + '</span>' + esc(label) + '</span>' + (extra || "") + '</div>'; }
+  function sheetHead(tag, label, extra) { return '<div class="sh-top"><span class="sheet-no"><span class="pill main ' + (/^Item2/.test(tag) ? "i2" : "i1") + '">' + esc(tag) + '</span>' + esc(label) + '</span>' + (extra || "") + '</div>'; }
 
   /* ── 종합 요약 ── */
   function vOverview() {
@@ -1757,19 +1762,22 @@ a.bst:hover { text-decoration: underline; }
     rail.style.top = (top + 8 + avail / 2) + "px";
     rail.style.transform = "translateY(-50%)" + (k < 1 ? " scale(" + k.toFixed(3) + ")" : "");
   }
+  /* 헤더(배지 · 제목 · 리드 · 이전 화면)는 모든 장표에서 같은 크기로 두고, 본문만 축소해 한 화면에 맞춤 */
+  var HEAD_SEL = ".ed-layer, .sh-top, .sheet-no, .code, h1, h2, h3.t, p.lede, p.msg, #pg-back, #chg";
+  function zoomBody(p, z) { Array.prototype.forEach.call(p.children, function (c) { c.style.zoom = (z === 1 || c.matches(HEAD_SEL)) ? "" : z; }); }
   function fit() {
     layout();
-    var p = pages[cur]; p.style.zoom = ""; p.style.height = "";
+    var p = pages[cur]; p.style.zoom = ""; zoomBody(p, 1); p.style.height = "";
     if (!document.body.classList.contains("staged")) return;
     p.style.height = "auto";
     var H = app.getBoundingClientRect().height + 0.5, z = 1;
     if (p.getBoundingClientRect().height > H) {
-      var lo = 0.74, hi = 1; p.style.zoom = lo;
-      if (p.getBoundingClientRect().height > H) z = 0.86; /* too long to shrink: keep it readable and scroll inside the page */
-      else { for (var n = 0; n < 8; n++) { var mid = (lo + hi) / 2; p.style.zoom = mid; if (p.getBoundingClientRect().height <= H) lo = mid; else hi = mid; } z = lo; }
-      p.style.zoom = z;
+      var lo = 0.7, hi = 1; zoomBody(p, lo);
+      if (p.getBoundingClientRect().height > H) z = 0.84; /* too long to shrink: keep it readable and scroll inside the page */
+      else { for (var n = 0; n < 8; n++) { var mid = (lo + hi) / 2; zoomBody(p, mid); if (p.getBoundingClientRect().height <= H) lo = mid; else hi = mid; } z = lo; }
+      zoomBody(p, z);
     }
-    p.style.height = (SH / z) + "px";
+    p.style.height = SH + "px";
   }
   function go(i, opt) {
     opt = opt || {};
