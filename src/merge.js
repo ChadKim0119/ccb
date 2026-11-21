@@ -52,6 +52,7 @@ module.exports = function (base) {
 
   /* ── 2. Item2 데이터: 옵션(A · B · C) · 조건부 승인 문구 제거, 진행 기조로 통일 ── */
   const DK = X.deck, EV = DK.ev;
+  X.src.pm1118 = { t: "(11/18) PM 정례회의", u: "https://toyotasystem.atlassian.net/wiki/spaces/GSP/pages/1147404487" };
   const keepEv = ["status", "vdp", "hu", "cause", "e2e1", "e2e2", "blk", "e2e11", "c3", "t1113", "t1116", "t1117", "t1123", "deadline"];
   Object.keys(EV).forEach((k) => { if (keepEv.indexOf(k) < 0) delete EV[k]; });
   EV.e2e11.apx = "apx-pre";
@@ -60,8 +61,9 @@ module.exports = function (base) {
   EV.e2e1.facts = EV.e2e1.facts.filter((t) => !/마지노선/.test(t)).concat(["12/30 회귀 테스트 종료 시점에 DVT 잔여 이슈 해소 현황을 함께 점검"]);
   EV.e2e2.facts = EV.e2e2.facts.filter((t) => !/대체 수단/.test(t));
   EV.end = { kicker: "근거 · DVT 종료 시점", title: "12월 말 vs 1월 말 — TMC 선행 조건 해소 시점에 달림", facts: ["12월 말 종료: 11월 중 TMC 측 주요 선행 조건 해소가 필요하고 개발 · QA 집중 병렬 투입 필요 — 현실적으로 어려움, 조건부 단축 협의 필요", "1월 말 종료: 12월 중 단계적 해소를 전제로 단계별 투입 · 반복 검증 — 현실적인 일정", "필요 인력(청구): 12월 말 종료 시 15.00 MM(11월 5 + 12월 10), 1월 말 종료 시 25.00 MM(+ 1월 10)", "본사 API 사양 변경 · Pre-PROD 반영이 2027년 2월 이후 확정되면 별도 일정 · 공수로 관리하거나 종료 기준 재협의"], src: ["ccb1118"], apx: "apx-man" };
+  EV.reg = { kicker: "근거 · 회귀 테스트", title: "회귀 테스트는 TMC 환경 구성이 선결되어야 가능", facts: ["11/18 PM 회의: 회귀 테스트 Procedure는 TMC 제공 필요, 11월 말 제공 예상", "실제 수행은 1월로 넘어갈 가능성 검토", "Next Action: LG전자 담당자와 DCM Update 지원 가능 여부 · Update 파일 및 일정 확인, Regression Procedure 수신 후 Test 일정 확정", "그 전까지는 GS TC 위주 E2E와 DVT 잔여 대응을 병행"], src: ["pm1118"], apx: "apx-pre" };
   EV.p1 = { kicker: "진행 기준 1", title: "DVT 잔여 이슈 관리", facts: ["잔여 Fail 2 · NT 334건은 일정을 이유로 Pass 처리하지 않고 상태 그대로 기록", "TMC · TMKR 측 선행 조건이 해소되는 대로 해당 TC를 재수행 — 일정은 주간 단위로 조율", "결함은 개발사가 수정 · 재시험"], src: ["r3", "pm1111"], apx: "apx-total" };
-  EV.p2 = { kicker: "진행 기준 2", title: "E2E 병행 수행", facts: ["E2E는 DVT 잔여 대응과 병행", "VDP 서버 영향으로 e-Care E2E는 현재 진행 불가 → 초반 E2E는 GS TC 위주", "e-Care E2E는 VDP 서버 정상화 시점에 맞춰 일정 조율 후 진행", "11/03 PM 합의: 시험 가능 범위를 세분화해 시작부터 NT가 예상되는 TC를 최소화"], src: ["pm1103", "sch", "pre"], apx: "apx-pre" };
+  EV.p2 = { kicker: "진행 기준 2", title: "E2E 병행 수행", facts: ["E2E는 DVT 잔여 대응과 병행", "VDP 서버 영향이 없는 GS TC 위주로 Kensho E2E를 DVT와 병행 수행", "회귀 테스트는 TMC 환경 구성(Procedure · DCM Update)이 선결되어야 가능 — Procedure 11월 말 제공 예상, 수행은 1월 가능성 (11/18 PM 회의)", "11/03 PM 합의: 시험 가능 범위를 세분화해 시작부터 NT가 예상되는 TC를 최소화"], src: ["pm1103", "sch", "pre"], apx: "apx-pre" };
   EV.p3 = { kicker: "진행 기준 3", title: "외부 선행 조건 해소가 DVT 종료를 결정", facts: ["TMC: HU(MM) 업데이트 후 테스트, VDP 서버 정상화, ACOS API(TSC-GC/GB) 사양 확정", "TMKR: CTI 27CY SU#2 전용 연계환경, DMS 실데이터", "11월 중 해소 → 12월 말 종료 가능 / 12월 중 단계적 해소 → 1월 말 종료"], src: ["pm1103", "pre", "ccb1118"], apx: "apx-cause" };
   EV.p4 = { kicker: "진행 기준 4", title: "범위 변경", facts: ["DMS · ACOS API 등 사양 변경은 TC 문서 기준으로 신규 · 재수행 범위를 확정", "변경분은 근거(메일 · 회의록 · 사양서) 기준으로 별도 협의"], src: ["pm1111"], apx: "apx-man" };
   EV.p5 = { kicker: "진행 기준 5", title: "인력 운영과 청구", facts: ["대기 · 운영 인력은 모듈 담당자 중심 월 15명 내외로 유지, 유휴분은 수행사 부담", "청구는 실제 대응분 월 10 MM(11월 5 MM)으로 한정", "DVT 종료 시점 확정에 따라 1월분(10 MM)을 조정"], src: ["ccb1118"], apx: "apx-man" };
@@ -114,19 +116,20 @@ module.exports = function (base) {
   DK.plan = {
     kicker: "Item2 · 진행 계획",
     title: "E2E는 11/23 GS TC 위주로 병행 착수하고, DVT 잔여 이슈는 TMC 측 선행 조건 해소에 맞춰 12월 말 또는 1월 말까지 지속 관리함",
-    lede: "12월 중 선행 조건 해소 현황을 점검해 종료 시점을 확정함. 점선은 미확정 구간임.",
+    lede: "위 외부 선행 조건이 풀리는 순서대로 DVT 재수행과 E2E 범위가 넓어짐. 12월 중 해소 현황을 점검해 종료 시점을 확정함. 점선은 미확정 구간임.",
     premHead: ["#", "기준", "내용", "달라지면"],
     prem: [
       ["1", "DVT 잔여 이슈 관리", "잔여 Fail 2 · NT 334건은 상태 그대로 기록, 선행 조건이 해소되는 대로 재수행 (주간 일정 조율)", "종료 시점 재협의"],
-      ["2", "E2E 병행", "11/23 착수, 초반 GS TC 위주. e-Care는 VDP 서버 정상화 후 일정 조율", "E2E 일정 재조정"],
-      ["3", "외부 선행 조건", "TMC: HU(MM) · VDP 서버 · ACOS API / TMKR: CTI 연계환경 · DMS 실데이터", "해소 시점에 따라 12월 말 ↔ 1월 말"],
+      ["2", "Kensho E2E 병행", "11/23 착수, GS TC 위주로 DVT와 병행. 회귀 테스트는 TMC 환경 구성(Procedure · DCM Update) 선결 후 수행", "E2E 일정 재조정"],
+      ["3", "외부 선행 조건", "TMC: VDP 서버 · ACOS API · 회귀 테스트 환경 / TMKR: CTI 연계환경 · DMS 실데이터 (HU(MM)은 11/18 해소)", "해소 시점에 따라 12월 말 ↔ 1월 말"],
       ["4", "범위 변경", "사양 변경은 TC 문서 기준으로 신규 · 재수행 범위 확정", "근거 기준 별도 협의"],
       ["5", "인력 · 청구", "대기 · 운영 15명 내외, 청구 월 10 MM(11월 5 MM), 유휴분 수행사 부담", "종료 시점에 맞춰 1월분 조정"],
     ],
     premEv: ["dv:p1", "dv:p2", "dv:p3", "dv:p4", "dv:p5"],
     tracks: [
-      { h: "E2E #1 · GS TC 위주 (11/23 ~ 12/30)", b: "VDP 서버 영향이 없는 GS TC 위주로 착수. 회귀 테스트 · ACOS IF 기반 TC 포함, 회귀용 24 DCM 기자재 활용", ev: "dv:e2e1" },
-      { h: "E2E #2 · e-Care (VDP 서버 정상화 후)", b: "VDP 서버 영향으로 현재 진행 불가. 서버 정상화 시점에 맞춰 일정 조율 후 진행", ev: "dv:e2e2" },
+      { h: "DVT 대응 · 잔여 이슈 지속 관리", b: "잔여 Fail · NT는 상태 그대로 기록하고, 위 선행 조건이 풀리는 대로 해당 TC를 재수행 (주간 일정 조율). 해소가 늦어지면 1월 말까지", ev: "dv:p1" },
+      { h: "Kensho E2E · GS TC 위주, DVT와 병행 (11/23 ~ 12/30)", b: "VDP 서버 영향이 없는 GS TC 위주로 DVT 잔여 대응과 병행 수행. ACOS IF 기반 TC 포함", ev: "dv:e2e1" },
+      { h: "회귀 테스트 · TMC 환경 구성 선결 시 가능", b: "TMC Procedure 제공(11월 말 예상)과 DCM Update 지원이 먼저 확보되어야 수행 가능. 실제 수행은 1월로 넘어갈 가능성 검토 중(11/18 PM 회의)", ev: "dv:reg" },
     ],
   };
   DK.tl = {
@@ -138,19 +141,22 @@ module.exports = function (base) {
       { d: [2027, 1, 29], l: "1/29", ev: "dv:end", lo: 1 },
     ],
     lanes: [
-      { h: "DVT", sub: "잔여 이슈 지속 관리", bars: [
-        { a: [2026, 11, 18], b: [2026, 12, 31], t: "dvt", l: "잔여 이슈 지속 관리 · 재수행 (일정 조율)", ev: "dv:p1" },
+      { h: "DVT 대응", sub: "잔여 이슈 지속 관리", bars: [
+        { a: [2026, 11, 18], b: [2026, 12, 31], t: "dvt", l: "잔여 이슈 지속 관리 · 선행 조건 해소분 재수행", ev: "dv:p1" },
         { a: [2027, 1, 1], b: [2027, 1, 29], t: "cond", dash: true, l: "TMC 해소 지연 시 1월 말까지", ev: "dv:end" },
       ] },
-      { h: "외부 선행 조건", sub: "TMC · TMKR", bars: [
-        { a: [2026, 11, 18], b: [2026, 12, 31], t: "ext", dash: true, l: "VDP 서버 · ACOS API · CTI · DMS 해소 (일자 미정) · HU(MM)은 11/18 해소", ev: "dv:blk" },
+      { h: "Kensho E2E", sub: "GS TC 위주 · DVT 병행", bars: [
+        { a: [2026, 11, 23], b: [2026, 12, 30], t: "e2e", l: "GS TC 위주 · DVT와 병행 (ACOS IF 포함)", ev: "dv:e2e1" },
+        { a: [2026, 12, 1], b: [2027, 1, 29], t: "late", dash: true, l: "회귀 테스트 · TMC 환경 구성 선결 시 (1월 가능성)", ev: "dv:reg" },
       ] },
-      { h: "E2E #1", sub: "GS TC 위주", bars: [
-        { a: [2026, 11, 23], b: [2026, 12, 30], t: "e2e", l: "GS TC 위주 병행 (회귀 · ACOS IF 포함)", ev: "dv:e2e1" },
-      ] },
-      { h: "E2E #2", sub: "e-Care", bars: [
-        { a: [2026, 12, 1], b: [2027, 1, 29], t: "late", dash: true, l: "VDP 서버 정상화 후 일정 조율 (미정)", ev: "dv:e2e2" },
-      ] },
+    ],
+    pre: [
+      { o: "TMC", h: "VDP 서버 (Diag · CoCo)", st: "no", s: "미해소 · 24 TC 중 Fail 1 · NT 2 (11/20)", u: "DVT VDP 재수행", ev: "dv:vdp" },
+      { o: "TMC", h: "ACOS API 사양 (TSC-GC/GB)", st: "part", s: "변경 반영 · 미동작 버전 6개 정리 필요", u: "E2E ACOS IF TC", ev: "dv:blk" },
+      { o: "TMC", h: "회귀 테스트 환경 구성", st: "no", s: "Procedure 11월 말 제공 예상 · DCM Update 지원 확인 중", u: "회귀 테스트", ev: "dv:reg" },
+      { o: "TMKR", h: "CTI/TCK 연계환경", st: "no", s: "미해소 · 개발 최대 3주, 12월 시험 진입", u: "CCW 236 TC", ev: "dv:blk" },
+      { o: "TMKR", h: "DMS 사양 · 실데이터", st: "part", s: "API 5 → 24개 반영 중 · NT 35", u: "DMS 재수행", ev: "dv:blk" },
+      { o: "TMC", h: "HU(MM) · MM Capable Flag", st: "ok", s: "11/18 해소 · 재수행 결과 확인 중", u: "Provisioning · N/T 39건", ev: "dv:hu" },
     ],
     notes: ["DVT 잔여 이슈는 일정 조율을 통해 지속 관리하고 E2E는 병행 수행 (A · B 대안 비교 없이 단일 진행 기조)", "12월 중 TMC 측 선행 조건 해소 현황을 점검해 DVT 종료를 12월 말 또는 1월 말로 확정"],
   };
@@ -159,7 +165,7 @@ module.exports = function (base) {
     head: ["#", "기준", "내용", "달라지면", "공수 연계"],
     rows: [
       ["1", "DVT 잔여 이슈 관리", "잔여 Fail · NT는 상태 그대로 기록, 선행 조건 해소 시 재수행", "종료 시점 재협의", "잔여 N/T 재수행 · 회귀시험 2.60"],
-      ["2", "E2E 병행", "11/23 착수, 초반 GS TC 위주, e-Care는 VDP 서버 정상화 후", "E2E 일정 재조정", "E2E 대응은 영역별 담당자 내 수행"],
+      ["2", "Kensho E2E 병행", "11/23 착수, GS TC 위주로 DVT와 병행. 회귀 테스트는 TMC 환경 구성 선결 후", "E2E 일정 재조정", "E2E 대응은 영역별 담당자 내 수행"],
       ["3", "외부 선행 조건", "TMC: HU(MM) · VDP 서버 · ACOS API / TMKR: CTI · DMS", "12월 말 ↔ 1월 말", "VDP 6.80 · ACOS 5.70 · 외부시스템 9.90"],
       ["4", "범위 변경", "TC 문서 기준 신규 · 재수행 범위 확정", "근거 기준 별도 협의", "산정 제외"],
       ["5", "인력 · 청구", "대기 · 운영 15명 내외, 청구 월 10 MM(11월 5 MM)", "1월분 10.0 조정", "12월 말 종료 15.00 · 1월 말 종료 25.00"],

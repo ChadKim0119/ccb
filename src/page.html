@@ -16,11 +16,11 @@
   --wash: #f4f2f6;
   --ink: #17141a;
   --ink-2: #5a5461;
-  --ink-3: #8a8391;
+  --ink-3: #6b6571;
   --line: #ddd8e2;
   --plan: #b7b1be;        /* 기존 계획 */
   --plan-wash: #eceaef;
-  --accent: #e6007e;      /* 변경 · 추가 (LGU+ magenta) */
+  --accent: #dd0079;      /* 변경 · 추가 (LGU+ magenta) */
   --accent-deep: #a3005a;
   --accent-wash: #fde9f3;
   --mark: #ffe566;        /* 형광펜 */
@@ -50,7 +50,7 @@ button { font: inherit; color: inherit; }
 .nav a.on { color: var(--ink); font-weight: 700; box-shadow: inset 0 -2px 0 var(--ink); border-radius: 0; }
 .seg { position: relative; display: grid; grid-template-columns: 1fr 1fr; background: var(--plan-wash); border-radius: 999px; padding: 3px; }
 .seg button { position: relative; z-index: 1; border: 0; background: none; padding: 6px 16px; border-radius: 999px; font-size: 13.5px; font-weight: 600; color: var(--ink-2); cursor: pointer; white-space: nowrap; transition: color .3s; }
-.seg button small { font-weight: 500; font-size: 11.5px; opacity: .8; margin-left: 4px; }
+.seg button small { font-weight: 500; font-size: 11.5px; margin-left: 4px; color: inherit; }
 .seg button[aria-pressed="true"] { color: #fff; }
 .seg .thumb { position: absolute; top: 3px; bottom: 3px; left: 3px; width: calc(50% - 3px); border-radius: 999px; background: var(--ink); transition: transform .45s var(--ease), background .45s; }
 [data-mode="changed"] .seg .thumb { transform: translateX(100%); background: var(--accent); }
@@ -209,7 +209,7 @@ button.g-bar:hover { filter: brightness(1.15); }
 .b.a .val { font-weight: 700; }
 .b.a .over { display: flex; flex-direction: column; overflow: hidden; }
 .bs { display: flex; align-items: center; justify-content: center; text-align: center; font-size: 10.5px; line-height: 1.2; font-weight: 700; overflow: hidden; color: #fff; flex: none; }
-.bs.c { background: #e6007e; } .bs.u { background: #fff; box-shadow: inset 0 0 0 1px #e6007e; } .bs.k { background: #f6c2dc; color: #7a0044; }
+.bs.c { background: #dd0079; } .bs.u { background: #fff; box-shadow: inset 0 0 0 1px #dd0079; } .bs.k { background: #f6c2dc; color: #7a0044; }
 .bs.base { position: absolute; left: 0; right: 0; bottom: 0; color: rgba(255,255,255,.75); font-weight: 600; }
 [data-mode="plan"] .bs { color: transparent; }
 [data-mode="plan"] .b.a { height: 0; }
@@ -411,7 +411,7 @@ body.staged .page.on { height: 800px; overflow-y: auto; overscroll-behavior: con
 .r5c { display: inline-flex; align-items: baseline; gap: 5px; padding: 2px 9px; border-radius: 999px; background: var(--paper); border: 1px solid var(--line); white-space: nowrap; }
 .r5c b { font-size: 14px; } .r5c small { font-size: 11.5px; color: var(--ink-2); }
 .r5cmp tr.r5calc td { padding-top: 7px; padding-bottom: 7px; vertical-align: middle; }
-.r5c.fin { background: #e6007e; border-color: #e6007e; } .r5c.fin b, .r5c.fin small { color: #fff; }
+.r5c.fin { background: #dd0079; border-color: #dd0079; } .r5c.fin b, .r5c.fin small { color: #fff; }
 .r5bdbar { cursor: pointer; } .r5bdbar:hover rect { filter: brightness(1.06); }
 .r5evb:hover { background: var(--accent-wash); }
 .r5hint { align-self: center; font-size: 12px; color: var(--ink-3); white-space: nowrap; }
@@ -469,7 +469,7 @@ body.sumon #sumfx-f { display: block; }
 .nav .sep { width: 1px; background: var(--line); margin: 4px 8px; }
 .evb { display: flex; width: 100%; justify-content: flex-end; align-items: baseline; gap: 4px; border: 0; background: none; padding: 0; margin: 0; cursor: pointer; font: inherit; color: inherit; }
 .evb .v { font-weight: 600; text-decoration: underline; text-decoration-color: var(--ink-3); text-underline-offset: 3px; }
-.xl span.evb { cursor: default; }
+.xl span.evb { cursor: default; } button.evb { min-height: 24px; }
 .xl td.ev:hover { box-shadow: inset 0 0 0 2px var(--ink); }
 .xl td.ev:hover .v { text-decoration-color: var(--ink); }
 .dl { display: inline-block; min-width: 40px; text-align: right; font-size: 11.5px; font-weight: 700; color: var(--accent-deep); }
@@ -506,7 +506,7 @@ body.sumon #sumfx-f { display: block; }
 .xl .band { display: block; padding: 5px 8px; border-radius: 4px; font-weight: 700; text-align: center; }
 .xl .band.dvt { background: var(--ink); color: #fff; }
 .xl .band.e2e { box-shadow: inset 0 0 0 1.5px var(--ink); }
-.xl .band.chg { background: var(--accent); color: #fff; }
+.xl .band.chg { background: var(--accent-deep); color: #fff; }
 .xl tr.conn td { height: 44px; padding: 0; border-left-color: transparent; border-right-color: transparent; background: var(--paper); }
 .xl .cn { position: relative; height: 44px; }
 .xl .cn svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
@@ -685,7 +685,7 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
 .ed-ui[data-sel="el"] .c-w, .ed-ui[data-edit="1"] .c-w { display: inline-block; } /* 블록 선택 또는 글자 편집 중에 폭 · 한 줄 버튼 표시 */
 
 /* ── 2026.11.21 통합: Item2(DVT) 블록 ── */
-:root { --pass: #17141a; --fail: #b55708; --nt: #e6007e; --rest: #ffffff; --o-tmc: #2460bf; --o-tck: #6f45b8; --o-lgu: #e6007e; --o-dsn: #00856a; }
+:root { --pass: #17141a; --fail: #b55708; --nt: #dd0079; --rest: #ffffff; --o-tmc: #2460bf; --o-tck: #6f45b8; --o-lgu: #dd0079; --o-dsn: #00856a; }
 .kpi4 { margin-top: 18px; display: grid; grid-template-columns: repeat(4, 1fr); border-top: 2px solid var(--ink); }
 .kpi4 > * { padding: 12px 18px 4px 0; min-width: 0; text-align: left; border: 0; background: none; font: inherit; color: inherit; }
 .kpi4 > * + * { padding-left: 18px; border-left: 1px solid var(--line); }
@@ -734,7 +734,8 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
 .cx:hover, .cx:focus-visible { background: var(--mark); outline: none; }
 .scale-bar .cx.w { text-decoration-color: rgba(255,255,255,.7); } .scale-bar .cx.w:hover { background: rgba(255,255,255,.18); }
 .r5c.cx { text-decoration: none; } .r5c.cx:hover, .r5c.cx:focus-visible { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-wash); background: var(--paper); }
-.r5c.fin.cx:hover { background: #e6007e; }
+.r5c.fin.cx:hover { background: #dd0079; }
+.r5bdbar:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
 #ctip { position: fixed; z-index: 80; max-width: 420px; padding: 10px 13px 11px; border-radius: 10px; background: var(--ink); color: #fff; font-size: 13px; line-height: 1.5; box-shadow: 0 8px 28px rgba(0,0,0,.28); pointer-events: none; opacity: 0; transform: translateY(4px); transition: opacity .12s, transform .12s; left: -999px; top: -999px; }
 #ctip.on { opacity: 1; transform: none; }
 #ctip b { display: block; font-size: 13.5px; margin-bottom: 4px; color: #ffb3d6; }
@@ -753,7 +754,7 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
 .ovtot { margin-top: 8px; display: flex; align-items: baseline; gap: 6px; }
 .ovtot b { font-size: 38px; letter-spacing: -.02em; line-height: 1.05; }
 .ovtot small { font-size: 16px; font-weight: 700; } .ovtot > span { margin-left: 8px; font-size: 12.5px; color: var(--ink-2); }
-.rail .rg:not(.main) ol { gap: 1px; } .rail .rg:not(.main) .dot.sm { height: 10px; }
+.rail .rg:not(.main) ol { display: grid; grid-template-columns: repeat(3, 24px); gap: 0; } .rail .rg:not(.main) .dot.sm { height: 24px; width: 24px; }
 .ov-bar { height: 36px; margin-top: 6px; } .ov-bar div { font-size: 16px; padding: 0 10px; }
 .ov-cap { font-size: 12px; } .ov-cap b { font-size: 12.5px; }
 .ovpts { margin: 10px 0 0; display: grid; grid-template-columns: 4.6em 1fr; gap: 5px 10px; font-size: 13px; line-height: 1.5; }
@@ -818,7 +819,7 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
 .mmchain { margin-top: 8px; } .mmchain .r5c b { font-size: 15px; }
 .mmcat { display: flex; gap: 3px; height: 30px; margin-top: 8px; }
 .mmcat span { display: flex; align-items: center; padding: 0 10px; color: #fff; font-size: 13px; overflow: hidden; white-space: nowrap; text-decoration: none; }
-.mmcat .k0 { background: #a3005a; border-radius: 5px 0 0 5px; } .mmcat .k1 { background: #e6007e; } .mmcat .k2 { background: #f06aae; } .mmcat .k3 { background: #f6a8cf; color: #5c0033; border-radius: 0 5px 5px 0; }
+.mmcat .k0 { background: #a3005a; border-radius: 5px 0 0 5px; } .mmcat .k1 { background: #dd0079; } .mmcat .k2 { background: #f06aae; color: #3d0022; } .mmcat .k3 { background: #f6a8cf; color: #5c0033; border-radius: 0 5px 5px 0; }
 .mmcat span:hover { filter: brightness(1.1); }
 .mmcatc { display: flex; gap: 3px; margin-top: 6px; }
 .mmcatc > div { min-width: 0; font-size: 12px; } .mmcatc > div > b { display: block; font-size: 12px; margin-bottom: 2px; }
@@ -837,7 +838,18 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
 .manend > div { border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; }
 .manend small { display: block; font-size: 12px; font-weight: 700; color: var(--ink-2); } .manend b { display: block; font-size: 22px; } .manend span { font-size: 12px; color: var(--ink-2); }
 .manend .hot { background: var(--accent-deep); border-color: var(--accent-deep); color: #fff; } .manend .hot small, .manend .hot span { color: rgba(255,255,255,.85); }
-.i2tl .tl-m i { height: 330px; }
+.i2tl .tl-m i { height: 200px; }
+.i2h { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; margin: 16px 0 8px; font-size: 15px; }
+.i2h i { font-style: normal; display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: var(--ink); color: #fff; font-size: 12px; margin-left: 4px; }
+.i2h i:first-child { margin-left: 0; } .i2h small { font-size: 12.5px; font-weight: 500; color: var(--ink-2); }
+.prec { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 10px; border: 1.5px dashed var(--ink-3); border-radius: 10px; background: var(--wash, #f4f2f6); }
+.pre-c { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; text-align: left; padding: 8px 11px 9px; border: 1px solid var(--line); border-left: 4px solid #b0103f; border-radius: 6px; background: var(--paper); font: inherit; color: inherit; cursor: pointer; }
+.pre-c.part { border-left-color: #c58a00; } .pre-c.ok { border-left-color: #0a7a4b; opacity: .85; }
+.pre-c:hover { border-color: var(--ink); } .pre-t { display: flex; gap: 6px; align-items: center; } .pre-t .bst { margin: 0; }
+.pre-c b { font-size: 14px; } .pre-s { font-size: 12.5px; color: var(--ink-2); } .pre-u { font-size: 12px; font-weight: 700; color: var(--accent-deep); }
+.trk.k0 { border-left-color: var(--ink); } .trk.k2 { border-left-style: dashed; border-left-color: var(--ink-3); }
+@media (max-width: 980px) { .prec { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 600px) { .prec { grid-template-columns: 1fr; } }
 .i2pl { margin-top: 12px; display: grid; grid-template-columns: 1.7fr 1fr; gap: 16px; align-items: start; }
 .apx-g { margin-top: 16px; font-size: 14px; color: var(--ink-2); }
 @media (max-width: 980px) {
@@ -869,9 +881,26 @@ a.bst:hover { text-decoration: underline; }
 .bar-in .nav { order: 0; flex: 1 1 auto; flex-basis: auto; flex-wrap: nowrap; min-width: 0; overflow-x: auto; scrollbar-width: none; white-space: nowrap; }
 .bar-in .nav::-webkit-scrollbar { display: none; }
 @media (max-width: 1500px) { .bar-in .brand span { display: none; } }
-@media (max-width: 1700px) { #pg-back:not([hidden]) ~ .brand { display: none; } }
 @media (max-width: 1400px) { .bar-in .nav a { padding: 6px 7px; font-size: 13px; } .bar-in { gap: 10px; } .bar-in .brand { display: none; } }
 @media (max-width: 979px) { .bar-in { flex-wrap: wrap; } .bar-in .nav { order: 3; flex-basis: 100%; } }
+/* Item1 ② 보기 전환: 기존 계획 / 변경(월별) / 추가 청구분만 */
+.mmctl { display: flex; align-items: center; gap: 10px; }
+.fbtn { display: inline-flex; align-items: center; gap: 7px; min-height: 36px; padding: 6px 14px; border-radius: 999px; border: 1.5px solid #a3005a; background: var(--paper); color: #a3005a; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
+.fbtn .fdot { width: 10px; height: 10px; border-radius: 50%; border: 2px solid currentColor; }
+.fbtn[aria-pressed="true"] { background: #a3005a; color: #fff; } .fbtn[aria-pressed="true"] .fdot { background: #fff; border-color: #fff; }
+.r5-fx { opacity: 0; transition: opacity .3s; pointer-events: none; }
+.mmchart.focus .r5svg rect, .mmchart.focus .r5svg text, .mmchart.focus .r5svg path, .mmchart.focus .r5svg line { opacity: .12 !important; transition: opacity .3s; }
+.mmchart.focus .r5svg .r5-claim, .mmchart.focus .r5svg .r5-fx, .mmchart.focus .r5svg .r5-fx * { opacity: 1 !important; }
+.mmchart.focus .c-legend > span:not(.lg-claim) { opacity: .3; }
+[data-mode="plan"] #i1-mm .r5-act { transform: scaleY(0); opacity: 0; }
+[data-mode="plan"] #i1-mm .r5-strike, [data-mode="plan"] #i1-mm .r5-s2, [data-mode="plan"] #i1-mm .r5-s3, [data-mode="plan"] #i1-mm .r5-head, [data-mode="plan"] #i1-mm .r5-rolelab { opacity: 0; transition-delay: 0s; }
+[data-mode="plan"] #i1-mm .r5-arc { stroke-dashoffset: 100; opacity: 0; transition-delay: 0s; }
+[data-mode="plan"] #i1-mm .r5-pl { opacity: 1; }
+/* 이전 화면: 장표 우상단 */
+#app > section { position: relative; }
+#app > section > #pg-back { position: absolute; top: 18px; right: 22px; z-index: 6; min-height: 34px; box-shadow: 0 2px 10px rgba(23, 20, 26, .12); }
+.backon .sh-top, .backon > .sheet-no { padding-right: 128px; }
+.mmchart.focus .r5svg defs * { opacity: 1 !important; }
 </style>
 </head>
 <body data-mode="changed">
@@ -994,7 +1023,7 @@ a.bst:hover { text-decoration: underline; }
     var sp = E.split, w1 = sp.parts[0].v / (sp.parts[0].v + sp.parts[1].v) * 100;
     return '<section class="sheet" id="effort"><div class="sh-top"><span class="sheet-no"><span class="pill main">메인</span><b>3</b> / 5 · 월별 투입 공수</span>' + seg() + '</div>' +
       '<h2>계약 대비 순증 37.10&nbsp;MM 중 청구는 18.20&nbsp;MM입니다: 8&nbsp;~&nbsp;9월 ACOS 추가 개발 8.10&nbsp;MM + 10&nbsp;~&nbsp;11월 변경 · 연동 대응 10.10&nbsp;MM (DVT 시험 · 결함 17.95는 인지, uCUBE 0.95는 LGU+ 부담)</h2>' + storyBar() +
-      '<div class="eff"><div class="chart"><div class="c-legend"><span><i style="background:var(--plan)"></i>계획 (계약 시점)</span><span><i style="background:var(--ink)"></i>계약 범위 투입</span><span><i style="background:#e6007e"></i>청구</span><span><i style="background:#fff;border:1px solid #e6007e"></i>uCUBE (LGU+)</span><span><i style="background:#f6c2dc"></i>인지</span><span>단위 MM</span></div>' +
+      '<div class="eff"><div class="chart"><div class="c-legend"><span><i style="background:var(--plan)"></i>계획 (계약 시점)</span><span><i style="background:var(--ink)"></i>계약 범위 투입</span><span><i style="background:#dd0079"></i>청구</span><span><i style="background:#fff;border:1px solid #dd0079"></i>uCUBE (LGU+)</span><span><i style="background:#f6c2dc"></i>인지</span><span>단위 MM</span></div>' +
       '<div class="plot" id="plot">' + grid + '<div class="cols">' + cols + '</div><div class="tip" id="tip"></div></div>' +
       '<div class="xlab">' + E.months.map(function (m) { return '<span>' + m + '</span>'; }).join("") + '</div><div class="brackets">' + brk + '</div><ul class="notes">' + E.notes.map(function (n) { return '<li>' + esc(n) + '</li>'; }).join("") + '</ul></div>' +
       '<div class="side"><h3>청구 구성</h3><div class="sum-eq num"><div><span data-sp="p3eq" data-v="8.10">8.10</span><small>8 ~ 9월 ACOS 추가 개발</small></div><span>+</span><div><span data-sp="p3eq" data-v="10.10">10.10</span><small>10 ~ 11월 변경 · 연동</small></div><span>=</span><div class="t"><mark data-sum="p3eq">18.20 MM</mark><small>+ 콜버튼 3.86 = 요청 합계 22.06</small></div></div>' +
@@ -1013,11 +1042,11 @@ a.bst:hover { text-decoration: underline; }
     var P = E.planTotal, A2 = E.actualTotal, Dl = E.deltaTotal, K = 7.4, BASE = 300, cx = [175, 455, 735, 1015], bw = 88;
     var aSum = function (cat, m) { return Math.round(E.actual.filter(function (r) { return r.cat === cat; }).reduce(function (s, r) { return s + r.v[m]; }, 0) * 10) / 10; };
     var y = function (v) { return BASE - v * K; };
-    var head = function (x, yy, cls) { return '<path class="r5-head ' + cls + '" d="M' + (x - 6.5) + ' ' + (yy - 11) + 'L' + (x + 6.5) + ' ' + (yy - 11) + 'L' + x + ' ' + (yy + 1) + 'z" fill="#e6007e"/>'; };
+    var head = function (x, yy, cls) { return '<path class="r5-head ' + cls + '" d="M' + (x - 6.5) + ' ' + (yy - 11) + 'L' + (x + 6.5) + ' ' + (yy - 11) + 'L' + x + ' ' + (yy + 1) + 'z" fill="#dd0079"/>'; };
     var tx = function (x, yy, t, o) { o = o || {}; return '<text x="' + x + '" y="' + yy + '" text-anchor="' + (o.a || "middle") + '" font-size="' + (o.fs || 13) + '" font-weight="' + (o.fw || 600) + '" fill="' + (o.c || "var(--ink)") + '"' + (o.cls ? ' class="' + o.cls + '"' : "") + (o.halo ? ' stroke="var(--paper)" stroke-width="5" paint-order="stroke"' : "") + (o.attr || "") + '>' + t + '</text>'; };
-    var svg = '<svg class="r5svg" viewBox="0 0 1180 382" role="img" aria-label="8 ~ 9월 계약 인력은 ACOS 변경 개발을 수행했고, 10 ~ 11월 DVT는 계획에 없던 신규 투입으로 수행"><defs>' +
-      '<pattern id="r5hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="7" height="7" fill="#2460bf"/><line x1="0" y1="0" x2="0" y2="7" stroke="#e6007e" stroke-width="3"/></pattern>' +
-      '<marker id="r5arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#e6007e"/></marker></defs>';
+    var svg = '<svg class="r5svg" viewBox="0 0 1180 382" role="group" aria-label="8 ~ 9월 계약 인력은 ACOS 변경 개발을 수행했고, 10 ~ 11월 DVT는 계획에 없던 신규 투입으로 수행"><defs>' +
+      '<pattern id="r5hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="7" height="7" fill="#2460bf"/><line x1="0" y1="0" x2="0" y2="7" stroke="#dd0079" stroke-width="3"/></pattern>' +
+      '<marker id="r5arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#dd0079"/></marker></defs>';
     [0, 10, 20, 30].forEach(function (v) { svg += '<line x1="48" x2="1170" y1="' + y(v) + '" y2="' + y(v) + '" stroke="var(--line)"/>' + tx(40, y(v) + 4, v, { a: "end", fs: 11.5, fw: 400, c: "var(--ink-3)" }); });
     svg += '<line x1="48" x2="1170" y1="' + BASE + '" y2="' + BASE + '" stroke="var(--ink)" stroke-width="1.5"/>';
     svg += '<line x1="595" x2="595" y1="40" y2="' + (BASE + 70) + '" stroke="var(--line)" stroke-dasharray="3 4"/>';
@@ -1027,8 +1056,8 @@ a.bst:hover { text-decoration: underline; }
       svg += '<g class="r5-plan"><rect x="' + px + '" y="' + y(p) + '" width="' + pw + '" height="' + p * K + '" rx="4" fill="var(--plan-wash)" stroke="var(--plan)" stroke-width="1.5"/>' +
         tx(px + pw / 2, y(p) - 8, '<tspan data-sp="r5p' + (early ? 0 : 1) + '">' + f1(p) + '</tspan>', { c: "var(--ink-2)", halo: 1 });
       if (early) svg += tx(px + pw / 2, y(p) + 30, "DVT 개발", { fs: 13, c: "var(--ink-2)", cls: "r5-pl" }) + tx(px + pw / 2, y(p) + 48, "· 대응", { fs: 13, c: "var(--ink-2)", cls: "r5-pl" }) +
-        '<line class="r5-strike" x1="' + (px + 10) + '" x2="' + (px + pw - 10) + '" y1="' + (y(p) + 34) + '" y2="' + (y(p) + 34) + '" stroke="#e6007e" stroke-width="2.5"/>' +
-        (function () { var x1 = px + pw * 0.72, y1 = y(p) - 26, x2 = ax + aw / 2, y2 = y(a) - 28, pk = Math.min(y1, y2) - 34; return '<path class="r5-arc r5-role" pathLength="100" d="M' + x1 + ' ' + y1 + ' C ' + x1 + ' ' + pk + ', ' + x2 + ' ' + pk + ', ' + x2 + ' ' + y2 + '" fill="none" stroke="#e6007e" stroke-width="2.2"/>' + head(x2, y2, "r5-role-h") + tx((x1 + x2) / 2, pk + 4, "역할 변경", { fs: 12, c: "#a3005a", cls: "r5-s2 r5-rolelab", halo: 1 }); })();
+        '<line class="r5-strike" x1="' + (px + 10) + '" x2="' + (px + pw - 10) + '" y1="' + (y(p) + 34) + '" y2="' + (y(p) + 34) + '" stroke="#dd0079" stroke-width="2.5"/>' +
+        (function () { var x1 = px + pw * 0.72, y1 = y(p) - 26, x2 = ax + aw / 2, y2 = y(a) - 28, pk = Math.min(y1, y2) - 34; return '<path class="r5-arc r5-role" pathLength="100" d="M' + x1 + ' ' + y1 + ' C ' + x1 + ' ' + pk + ', ' + x2 + ' ' + pk + ', ' + x2 + ' ' + y2 + '" fill="none" stroke="#dd0079" stroke-width="2.2"/>' + head(x2, y2, "r5-role-h") + tx((x1 + x2) / 2, pk + 4, "역할 변경", { fs: 12, c: "#a3005a", cls: "r5-s2 r5-rolelab", halo: 1 }); })();
       else svg += tx(px + pw / 2, y(p) - 26, "E2E 계약", { fs: 11.5, fw: 500, c: "var(--ink-2)" });
       svg += '</g>';
       svg += '<line class="r5-lvl" x1="' + (px - 8) + '" x2="' + (ax + aw + 8) + '" y1="' + y(p) + '" y2="' + y(p) + '" stroke="var(--ink)" stroke-width="1.5" stroke-dasharray="5 4"/>';
@@ -1039,34 +1068,39 @@ a.bst:hover { text-decoration: underline; }
         svg += '<rect x="' + ax + '" y="' + (yy - ux * K) + '" width="' + aw + '" height="' + ux * K + '" fill="#6f45b8"/>'; yy -= ux * K;
         svg += '<rect x="' + ax + '" y="' + (yy - qa * K) + '" width="' + aw + '" height="' + qa * K + '" fill="#b55708"/>' + tx(ax + aw / 2, yy - qa * K / 2 + 5, f1(qa), { c: "#fff", fs: 12 }); yy -= qa * K;
         svg += '<rect x="' + ax + '" y="' + (yy - dv * K) + '" width="' + aw + '" height="' + dv * K + '" fill="#2460bf"/>';
-        if (a > p) svg += '<rect x="' + ax + '" y="' + y(a) + '" width="' + aw + '" height="' + (a - p) * K + '" fill="url(#r5hatch)" opacity=".55"/>';
+        if (a > p) svg += '<rect class="r5-claim" x="' + ax + '" y="' + y(a) + '" width="' + aw + '" height="' + (a - p) * K + '" fill="url(#r5hatch)" opacity=".55"/>';
         var mid = a > p ? (y(p) + yy) / 2 - 2 : yy - dv * K / 2;
         svg += tx(ax + aw / 2, mid - 18, "GS · e-Care", { c: "#fff", fs: 12 }) + tx(ax + aw / 2, mid - 2, "변경 개발 ·", { c: "#fff", fs: 12 }) + tx(ax + aw / 2, mid + 14, "내부 테스트", { c: "#fff", fs: 12 }) + tx(ax + aw / 2, mid + 32, f1(dv), { c: "#fff", fs: 12 });
       } else {
         // 순증을 수행 업무별로 쌓음 (청구 구분은 보조 표기): 계약 E2E → DVT 시험 · 결함(인지) → uCUBE(LGU+ 부담) → 변경 · 연동(청구)
         var b = R5BD.months[m - 2], yk = y(p), hk = b.ack * K, hu = b.ucube * K, hc = b.claim * K, cxm = ax + aw / 2;
-        svg += '<g data-panel="r5bd" class="r5bdbar" role="button" aria-label="' + E.months[m] + ' 신규 투입 세부 내역 보기">';
+        svg += '<g data-panel="r5bd" class="r5bdbar" role="button" tabindex="0" aria-label="' + E.months[m] + ' 신규 투입 세부 내역 보기">';
         svg += '<rect x="' + ax + '" y="' + y(p) + '" width="' + aw + '" height="' + p * K + '" fill="var(--plan)"/>' + tx(cxm, y(p) + p * K / 2 + 4, "E2E 대응 " + f1(p) + " · 계약", { c: "#fff", fs: 10.5 });
         svg += '<rect x="' + ax + '" y="' + (yk - hk) + '" width="' + aw + '" height="' + hk + '" fill="#f6c2dc"/>' +
           tx(cxm, yk - hk / 2 - 9, "DVT 시험 · 결함 대응 " + f2(b.ack), { c: "#5c0033", fs: 12 }) + tx(cxm, yk - hk / 2 + 6, b.ackWork, { c: "#7a0044", fs: 10.5, fw: 500 }) + tx(cxm, yk - hk / 2 + 21, "인지 (미청구)", { c: "#a3005a", fs: 10.5 });
         yk -= hk;
-        svg += '<rect x="' + ax + '" y="' + (yk - hu) + '" width="' + aw + '" height="' + hu + '" fill="#fff" stroke="#e6007e" stroke-width="1"/>';
+        svg += '<rect x="' + ax + '" y="' + (yk - hu) + '" width="' + aw + '" height="' + hu + '" fill="#fff" stroke="#dd0079" stroke-width="1"/>';
         svg += '<line x1="' + (ax - 3) + '" x2="' + (ax - 12) + '" y1="' + (yk - hu / 2) + '" y2="' + (yk - hu / 2) + '" stroke="#a3005a"/>' + tx(ax - 15, yk - hu / 2 - 2, "uCUBE 연계 " + f2(b.ucube), { a: "end", fs: 10.5, c: "#a3005a", halo: 1 }) + tx(ax - 15, yk - hu / 2 + 11, "LGU+ 부담", { a: "end", fs: 10.5, fw: 500, c: "#a3005a", halo: 1 });
         yk -= hu;
         var cl = ["변경 · 연동 대응 " + f2(b.claim) + " · 청구"].concat(b.claimWork), lh = hc >= 40 ? 13 : 11.5, top = yk - hc / 2 - (cl.length - 1) * lh / 2 + 4;
-        svg += '<rect x="' + ax + '" y="' + (yk - hc) + '" width="' + aw + '" height="' + hc + '" fill="#e6007e"/>' + cl.map(function (t, k) { return tx(cxm, top + k * lh, t, { c: "#fff", fs: k ? 10 : 11.5, fw: k ? 500 : 700 }); }).join("");
+        svg += '<rect class="r5-claim" x="' + ax + '" y="' + (yk - hc) + '" width="' + aw + '" height="' + hc + '" fill="#dd0079"/>' + cl.map(function (t, k) { return tx(cxm, top + k * lh, t, { c: "#fff", fs: k ? 10 : 11.5, fw: k ? 500 : 700, cls: "r5-claim" }); }).join("");
         svg += '</g>';
       }
       svg += tx(ax + aw / 2, y(a) - 8, f1(a), { halo: 1 }) + '</g>';
       // contract level line + delta
-      svg += tx(ax + aw + (early ? 12 : 8), (early ? (Dl[m] > 0 ? (y(a) + y(p)) / 2 : y(a)) : y(a) + 14) + 5, '<tspan data-sp="r5d' + (early ? 0 : 1) + '" data-v="' + sg(Dl[m]) + '">' + sg(Dl[m]) + '</tspan>', { a: "start", fs: 13, c: Dl[m] > 0 ? "#a3005a" : "var(--ink-3)", cls: early ? "r5-s2" : "r5-s3" });
+      svg += tx(ax + aw + (early ? 12 : 8), (early ? (Dl[m] > 0 ? (y(a) + y(p)) / 2 : y(a)) : y(a) + 14) + 5, '<tspan data-sp="r5d' + (early ? 0 : 1) + '" data-v="' + sg(Dl[m]) + '">' + sg(Dl[m]) + '</tspan>', { a: "start", fs: 13, c: Dl[m] > 0 ? "#a3005a" : "var(--ink-3)", cls: early ? "r5-s2 r5-claim" : "r5-s3" });
       svg += tx(px + pw / 2, BASE + 20, "계약", { fs: 12, fw: 500, c: "var(--ink-2)" }) + tx(ax + aw / 2, BASE + 20, "수행", { fs: 12, fw: 500, c: "var(--ink-2)" }) + tx(c, BASE + 44, E.months[m], { fs: 15 });
     });
     // DVT work moves right: arcs from the 8 · 9월 contract bars to the 10 · 11월 bars
-    var arc = function (m1, m2, peak, lab, lx, ly, n) { var x1 = cx[m1] - bw - 6 + bw * 0.28, y1 = y(P[m1]) - 26, x2 = cx[m2] + 20, y2 = y(A2[m2]) - 28; return '<path class="r5-arc r5-move m' + n + '" pathLength="100" d="M' + x1 + ' ' + y1 + ' C ' + x1 + ' ' + peak + ', ' + x2 + ' ' + peak + ', ' + x2 + ' ' + y2 + '" fill="none" stroke="#e6007e" stroke-width="2.2"/>' + head(x2, y2, "r5-move-h m" + n) + tx(lx, ly, lab, { fs: 12.5, c: "#a3005a", cls: "r5-s3 r5-arclab", halo: 1 }); };
+    var arc = function (m1, m2, peak, lab, lx, ly, n) { var x1 = cx[m1] - bw - 6 + bw * 0.28, y1 = y(P[m1]) - 26, x2 = cx[m2] + 20, y2 = y(A2[m2]) - 28; return '<path class="r5-arc r5-move m' + n + '" pathLength="100" d="M' + x1 + ' ' + y1 + ' C ' + x1 + ' ' + peak + ', ' + x2 + ' ' + peak + ', ' + x2 + ' ' + y2 + '" fill="none" stroke="#dd0079" stroke-width="2.2"/>' + head(x2, y2, "r5-move-h m" + n) + tx(lx, ly, lab, { fs: 12.5, c: "#a3005a", cls: "r5-s3 r5-arclab", halo: 1 }); };
     svg += arc(0, 2, -14, "8월에 못 한 DVT 개발 업무", 545, 16, 0) + arc(1, 3, 14, "9월에 못 한 DVT 개발 업무", 1010, 56, 1);
     svg += '<g class="r5-s2">' + tx(315, BASE + 72, "① 같은 인력 · 업무 변경: DVT 개발 → ACOS 규격에 따른 GS · e-Care 변경 개발 · 내부 테스트", { fs: 13, c: "#2460bf" }) + '</g>';
-    svg += '<g class="r5-s3">' + tx(875, BASE + 72, "② 인력 계획이 없던 기간에 신규 투입 = 추가 개발", { fs: 13, c: "#a3005a" }) + '</g></svg>';
+    svg += '<g class="r5-s3">' + tx(875, BASE + 72, "② 인력 계획이 없던 기간에 신규 투입 = 추가 개발", { fs: 13, c: "#a3005a" }) + '</g>';
+    var bd0 = R5BD.months[0], bd1 = R5BD.months[1];
+    svg += '<g class="r5-fx" aria-hidden="true">' +
+      '<rect x="150" y="24" width="330" height="52" rx="8" fill="var(--paper)" stroke="#a3005a" stroke-width="1.5"/>' + tx(315, 46, "8 ~ 9월 추가 청구 8.10 MM", { fs: 16, fw: 800, c: "#a3005a" }) + tx(315, 66, "계약 " + f1(P[0] + P[1]) + " → 투입 " + f1(A2[0] + A2[1]) + " 순증 (8월 " + sg(Dl[0]) + " · 9월 " + sg(Dl[1]) + ")", { fs: 12, fw: 600, c: "var(--ink)" }) +
+      '<rect x="690" y="24" width="370" height="52" rx="8" fill="var(--paper)" stroke="#a3005a" stroke-width="1.5"/>' + tx(875, 46, "10 ~ 11월 추가 청구 10.10 MM", { fs: 16, fw: 800, c: "#a3005a" }) + tx(875, 66, "변경 · 연동 대응 10월 " + f2(bd0.claim) + " + 11월 " + f2(bd1.claim) + " (나머지는 인지 · LGU+ 부담)", { fs: 12, fw: 600, c: "var(--ink)" }) +
+      '</g></svg>';
 
     R5SVG = svg;
     var steps = [
@@ -1086,7 +1120,7 @@ a.bst:hover { text-decoration: underline; }
     return '<section class="sheet" id="reading"><div class="sh-top"><span class="sheet-no"><span class="pill main">메인</span><b>5</b> / 5 · 양사 시각 정리</span></div>' +
       '<h2>8 ~ 9월은 같은 인력의 업무 변경, 10 ~ 11월은 계획에 없던 신규 투입입니다</h2>' +
       '<p class="lede">TMKR은 8 ~ 9월 순증 8.10 MM만 추가 개발로 보는 것으로 이해합니다. 공수 숫자는 그대로이며, 같은 숫자를 당사가 어떻게 읽는지 정리했습니다.</p>' +
-      stepper + '<div class="r5stage st1" id="r5stage"><div class="c-legend"><span><i style="background:var(--plan-wash);border:1.5px solid var(--plan)"></i>계약 계획</span><span><i class="sw c-dev"></i>GS · e-Care 변경 개발 · 내부 테스트</span><span><i class="sw c-dvt"></i>품질</span><span><i class="sw c-ux"></i>기획</span><span><i style="background:#e6007e"></i>변경 · 연동 대응 (청구)</span><span><i style="background:#fff;border:1px solid #e6007e"></i>uCUBE 연계 (LGU+ 부담)</span><span><i style="background:#f6c2dc"></i>DVT 시험 · 결함 대응 (인지)</span><span><i style="border-top:2px dashed var(--ink);height:0;width:16px;border-radius:0;vertical-align:3px"></i>계약 수준</span><span>단위 MM</span></div>' + svg + '</div>' +
+      stepper + '<div class="r5stage st1" id="r5stage"><div class="c-legend"><span><i style="background:var(--plan-wash);border:1.5px solid var(--plan)"></i>계약 계획</span><span><i class="sw c-dev"></i>GS · e-Care 변경 개발 · 내부 테스트</span><span><i class="sw c-dvt"></i>품질</span><span><i class="sw c-ux"></i>기획</span><span><i style="background:#dd0079"></i>변경 · 연동 대응 (청구)</span><span><i style="background:#fff;border:1px solid #dd0079"></i>uCUBE 연계 (LGU+ 부담)</span><span><i style="background:#f6c2dc"></i>DVT 시험 · 결함 대응 (인지)</span><span><i style="border-top:2px dashed var(--ink);height:0;width:16px;border-radius:0;vertical-align:3px"></i>계약 수준</span><span>단위 MM</span></div>' + svg + '</div>' +
       box + '</section>';
   }
   /* 10 ~ 11월 신규 투입 세부 내역: 청구 영역의 월 배분은 다산 산정 기간(10.01 ~ 11.17) 근무일 비례 추정 (10월 21일 · 11월 12일) */
@@ -1220,7 +1254,7 @@ a.bst:hover { text-decoration: underline; }
   function bVdp() { var v = A.vdp; return table(["일자", "경과", "결과"], v.rows, { nowrap: [0] }) + '<div class="cols3" style="margin-top:16px">' + v.cards.map(function (c) { return '<div class="card"><h5>' + esc(c.k) + '</h5><ul class="plain">' + c.v.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join("") + '</ul></div>'; }).join("") + '</div>'; }
   function storyBar() {
     var t = A.dvtChg.story, tot = +t.total, k = (+t.ack / tot * 100).toFixed(2), r = (10.10 / tot * 100).toFixed(2);
-    return '<div class="story"><p>' + esc(t.lead) + '</p><div class="bar3 num"><div class="k" style="width:' + k + '%">DVT 시험 · 결함 대응 ' + t.ack + ' · 인지</div><div class="r" style="flex:1;border-radius:0">변경 · 연동 대응 10.10 · 청구</div><div style="flex:none;width:92px;padding:0 6px;background:#fff;border:1.5px solid #e6007e;border-radius:0 5px 5px 0;color:#a3005a;justify-content:center;font-size:12.5px" title="uCUBE 연계 대응 0.95 MM, LGU+ 부담">uCUBE 0.95</div></div>' +
+    return '<div class="story"><p>' + esc(t.lead) + '</p><div class="bar3 num"><div class="k" style="width:' + k + '%">DVT 시험 · 결함 대응 ' + t.ack + ' · 인지</div><div class="r" style="flex:1;border-radius:0">변경 · 연동 대응 10.10 · 청구</div><div style="flex:none;width:92px;padding:0 6px;background:#fff;border:1.5px solid #dd0079;border-radius:0 5px 5px 0;color:#a3005a;justify-content:center;font-size:12.5px" title="uCUBE 연계 대응 0.95 MM, LGU+ 부담">uCUBE 0.95</div></div>' +
       '<div class="cap3"><span style="width:' + k + '%">1 ~ 3차 시험 수행, 결함 분석 · 수정 · 재시험 (인지 요청)</span><span style="flex:1">ACOS 추가 변경 · TMC 서버 · 환경 지연 · TMKR 연계 변경 · DVT 영향 분석 (uCUBE 0.95는 LGU+ 부담) · <a href="#dvt-chg">A13</a> · <a href="#chg-plan">A16 예정 vs 실제</a></span></div>' +
       '<div style="margin-top:10px">' + chain10() + '</div></div>';
   }
@@ -1521,10 +1555,10 @@ a.bst:hover { text-decoration: underline; }
       '<tr><td>8 ~ 9월</td><td class="r">42.2 → 50.3</td><td class="r">' + cv("8.10", "8.10") + '</td><td class="r">–</td><td class="r">–</td><td class="r pos">' + cv("8.10", "8.10") + '</td></tr>' +
       '<tr><td>10 ~ 11월</td><td class="r">' + cv("6.0", "6.0") + ' → ' + cv("35.0", "35.0") + '</td><td class="r">' + cv("29.00", "29.00") + '</td><td class="r">' + cv("17.95", "17.95") + '</td><td class="r">' + cv("0.95", "0.95") + '</td><td class="r pos">' + cv("10.10", "10.10") + '</td></tr>' +
       '<tr class="tot"><td>합계</td><td class="r">48.2 → 85.3</td><td class="r">' + cv("37.10", "37.10") + '</td><td class="r">17.95</td><td class="r">0.95</td><td class="r pos">' + cv("18.20", "18.20") + '</td></tr></tbody></table>';
-    return '<section class="sheet" id="i1-mm">' + sheetHead("Item1 ②", "공수 산출 · 산식") +
+    return '<section class="sheet" id="i1-mm">' + sheetHead("Item1 ②", "공수 산출 · 산식", '<div class="mmctl"><button type="button" class="fbtn" data-mmfocus aria-pressed="false"><span class="fdot" aria-hidden="true"></span>추가 청구분만 보기</button>' + seg() + '</div>') +
       '<h2>계약 대비 순증 37.10&nbsp;MM 중 청구는 8.10 + 10.10 = 18.20&nbsp;MM이며, 콜버튼 3.86을 더한 요청 합계는 22.06&nbsp;MM입니다</h2>' +
       '<p class="lede">8 ~ 9월은 같은 인력의 업무 변경(초과분 8.10만 청구), 10 ~ 11월은 계획에 없던 신규 투입입니다. <b>숫자에 마우스를 올리면 산식</b>이 보이고, 10 · 11월 막대를 누르면 세부 내역이 열립니다.</p>' +
-      '<div class="mm2"><div class="r5stage st3 mmchart"><div class="c-legend"><span><i style="background:var(--plan-wash);border:1.5px solid var(--plan)"></i>계약 계획</span><span><i class="sw c-dev"></i>GS · e-Care 변경 개발 · 내부 테스트</span><span><i class="sw c-dvt"></i>품질</span><span><i class="sw c-ux"></i>기획</span><span><i style="background:#e6007e"></i>변경 · 연동 (청구)</span><span><i style="background:#fff;border:1px solid #e6007e"></i>uCUBE (LGU+)</span><span><i style="background:#f6c2dc"></i>DVT 시험 · 결함 (인지)</span><span>단위 MM</span></div>' + R5SVG + '</div>' +
+      '<div class="mm2"><div class="r5stage st3 mmchart"><div class="c-legend"><span><i style="background:var(--plan-wash);border:1.5px solid var(--plan)"></i>계약 계획</span><span><i class="sw c-dev"></i>GS · e-Care 변경 개발 · 내부 테스트</span><span><i class="sw c-dvt"></i>품질</span><span><i class="sw c-ux"></i>기획</span><span class="lg-claim"><i style="background:repeating-linear-gradient(45deg,#2460bf 0 3px,#dd0079 3px 5px)"></i>8 ~ 9월 순증 (청구)</span><span class="lg-claim"><i style="background:#dd0079"></i>변경 · 연동 (청구)</span><span><i style="background:#fff;border:1px solid #dd0079"></i>uCUBE (LGU+)</span><span><i style="background:#f6c2dc"></i>DVT 시험 · 결함 (인지)</span><span>단위 MM</span></div>' + R5SVG + '</div>' +
       '<div class="mmside"><h3>청구 구성</h3>' + tb + '<div class="mmbtn"><button type="button" class="r5evb" data-panel="r5bd">10 · 11월 세부 내역 ›</button><button type="button" class="r5evb" data-panel="r5ev:0">8 ~ 9월 근거 ›</button><button type="button" class="r5evb" data-panel="r5ev:1">10 ~ 11월 근거 ›</button><button type="button" class="r5evb" data-panel="principle">산정 원칙 ›</button><a class="r5evb" href="#sheet">B1 월별 공수 표 ›</a></div></div></div>' +
       '<div class="mmcalc"><h3>청구 10.10 MM 산출 <small>각 숫자에 마우스를 올리면 계산식 · 근거</small></h3>' + chain +
       '<h3 style="margin-top:12px">10.10 MM = 4개 분류 · 10개 영역 <small>10월 ' + cv("6.43", "6.43") + ' + 11월 ' + cv("3.67", "3.67") + ' (근무일 비례)</small></h3>' + catBar + '</div></section>';
@@ -1569,13 +1603,15 @@ a.bst:hover { text-decoration: underline; }
         return '<button type="button" class="tl-b ' + b.t + (b.dash ? " dash" : "") + '" style="left:' + (l / N2 * 100).toFixed(3) + '%;width:' + (wd / N2 * 100).toFixed(3) + '%;top:' + (i % 2 ? 40 : 6) + 'px"' + (b.ev ? ' data-panel="' + b.ev + '"' : "") + ' title="' + esc(b.l) + '"><span>' + esc(b.l) + '</span></button>';
       }).join("") + '</div></div>';
     }).join("");
+    var stl = { ok: "해소", part: "진행 중", no: "미해소" }, OC = { TMC: "var(--o-tmc)", TMKR: "var(--o-tck)" };
+    var preBlk = '<h3 class="i2h"><i>1</i>외부 선행 조건 <small>TMC · TMKR 측이 풀어야 DVT 재수행 · E2E 범위가 넓어짐</small></h3><div class="prec">' + t.pre.map(function (c) { return '<button type="button" class="pre-c ' + c.st + '" data-panel="' + c.ev + '"><span class="pre-t"><span class="otag" style="--oc:' + OC[c.o] + '">' + esc(c.o) + '</span><span class="bst ' + c.st + '">' + stl[c.st] + '</span></span><b>' + esc(c.h) + '</b><span class="pre-s">' + esc(c.s) + '</span><span class="pre-u">풀리면 → ' + esc(c.u) + '</span></button>'; }).join("") + '</div>';
     var ticks = ""; for (var k = 0; k <= N2; k += 7) ticks += '<i style="left:' + (k / N2 * 100).toFixed(2) + '%"></i>';
-    return '<section class="sheet i2" id="i2-plan">' + sheetHead("Item2 ④", s.kicker.replace(/^Item2 · /, "")) + '<h2>' + esc(s.title) + '</h2><p class="lede">' + esc(s.lede) + '</p>' +
-      '<div class="tl i2tl"><div class="tl-head"><span></span><div class="tl-ax">' + weeks.join("") + marks + '</div></div><div class="tl-body"><div class="tl-grid"><span></span><div>' + ticks + '</div></div>' + lanes + '</div></div>' +
-      '<div class="lg" style="margin-top:6px"><span><i class="sw2" style="background:var(--ink)"></i>DVT 잔여 이슈 관리</span><span><i class="sw2" style="background:var(--accent)"></i>종료 연장 가능 구간</span><span><i class="sw2" style="background:#8d8793"></i>외부 선행 조건</span><span><i class="sw2" style="background:#00856a"></i>E2E</span><span><i class="sw2" style="background:none;box-shadow:inset 0 0 0 1.5px var(--ink-3)"></i>미확정</span></div>' +
+    return '<section class="sheet i2" id="i2-plan">' + sheetHead("Item2 ④", s.kicker.replace(/^Item2 · /, "")) + '<h2>' + esc(s.title) + '</h2><p class="lede">' + esc(s.lede) + '</p>' + preBlk +
+      '<h3 class="i2h"><i>2</i>DVT 대응 · <i>3</i>Kensho E2E 일정</h3><div class="tl i2tl"><div class="tl-head"><span></span><div class="tl-ax">' + weeks.join("") + marks + '</div></div><div class="tl-body"><div class="tl-grid"><span></span><div>' + ticks + '</div></div>' + lanes + '</div></div>' +
+      '<div class="lg" style="margin-top:6px"><span><i class="sw2" style="background:var(--ink)"></i>DVT 잔여 이슈 관리</span><span><i class="sw2" style="background:var(--accent)"></i>종료 연장 가능 구간</span><span><i class="sw2" style="background:#00856a"></i>Kensho E2E (GS TC)</span><span><i class="sw2" style="background:none;box-shadow:inset 0 0 0 1.5px var(--ink-3)"></i>미확정</span></div>' +
       '<div class="i2pl"><div class="scroll"><table class="tbl prem"><thead><tr>' + s.premHead.map(function (h) { return '<th>' + esc(h) + '</th>'; }).join("") + '</tr></thead><tbody>' +
       s.prem.map(function (r, i) { return '<tr data-panel="' + s.premEv[i] + '" tabindex="0">' + r.map(function (c, j) { return '<td' + (j === 0 ? ' class="nw"' : "") + '>' + (j === 1 ? '<b>' + esc(c) + '</b>' : esc(c)) + '</td>'; }).join("") + '</tr>'; }).join("") + '</tbody></table></div>' +
-      '<div class="tracks">' + s.tracks.map(function (tk) { return '<button type="button" class="trk" data-panel="' + tk.ev + '"><b>' + esc(tk.h) + '</b><span>' + esc(tk.b) + '</span></button>'; }).join("") + '</div></div></section>';
+      '<div class="tracks">' + s.tracks.map(function (tk, i) { return '<button type="button" class="trk k' + i + '" data-panel="' + tk.ev + '"><b>' + esc(tk.h) + '</b><span>' + esc(tk.b) + '</span></button>'; }).join("") + '</div></div></section>';
   }
 
   /* ── 부록: E1 증적 요청 대응표 · E2 항목별 지연 사유 · 증적 · B1 공수 표 · Item2 부록 ── */
@@ -1653,7 +1689,7 @@ a.bst:hover { text-decoration: underline; }
 
   /* ── 산식 툴팁 ── */
   (function () {
-    var tip = document.createElement("div"); tip.id = "ctip"; tip.setAttribute("role", "tooltip"); document.body.appendChild(tip);
+    var tip = document.createElement("div"); tip.id = "ctip"; tip.setAttribute("role", "tooltip"); tip.setAttribute("aria-label", "계산 근거"); document.body.appendChild(tip);
     var on = null;
     function show(el) {
       var c = CALC[el.getAttribute("data-calc")]; if (!c) return;
@@ -1734,15 +1770,23 @@ a.bst:hover { text-decoration: underline; }
     Array.prototype.forEach.call(links, function (a) { a.classList.toggle("on", a.getAttribute("href") === "#" + sec); });
     $("count").innerHTML = i < NMAIN ? "메인<br>" + (i + 1) + " / " + NMAIN : "Appendix<br>" + (i - NMAIN + 1) + " / " + (pages.length - NMAIN);
     $("prev").disabled = i === 0; $("next").disabled = i === pages.length - 1;
-    $("pg-back").hidden = trail.length === 0;
+    var bk = $("pg-back"); bk.hidden = trail.length === 0;
+    pages.forEach(function (p) { p.classList.remove("backon"); });
+    if (!bk.hidden) { pages[i].appendChild(bk); pages[i].classList.add("backon"); } /* 장표 우상단 · 마지막 자식으로 붙여 화면 편집 경로에 영향 없음 */
     window.scrollTo(0, 0); fit(); pages[i].scrollTop = 0;
-    if (!opt.keepHash) { try { history.replaceState(null, "", "#" + pages[i].id); } catch (e) { /* hash is optional */ } }
+    if (!opt.keepHash) { try { if (opt.push && trail.length) history.pushState({ deck: 1 }, "", "#" + pages[i].id); else history.replaceState(null, "", "#" + pages[i].id); } catch (e) { /* hash is optional */ } }
     if (pages[i].id === "reading") r5set(1);
   }
   function goId(id, opt) { for (var k = 0; k < pages.length; k++) if (pages[k].id === id) { go(k, opt); return true; } return false; }
   $("prev").addEventListener("click", function () { go(cur - 1); });
   $("next").addEventListener("click", function () { go(cur + 1); });
-  $("pg-back").addEventListener("click", function () { if (trail.length) go(trail.pop()); });
+  $("pg-back").addEventListener("click", function () { if (!trail.length) return; if (history.state && history.state.deck) history.back(); else go(trail.pop()); });
+  /* 브라우저 · 마우스 뒤로/앞으로 버튼 */
+  window.addEventListener("popstate", function () {
+    var id = location.hash.slice(1) || pages[0].id; if (pages[cur].id === id) return;
+    var k = -1; for (var n = 0; n < pages.length; n++) if (pages[n].id === id) k = n; if (k < 0) return;
+    if (trail.length && trail[trail.length - 1] === k) { trail.pop(); go(k, { keepHash: true }); } else go(k, { keepHash: true, push: true });
+  });
   window.addEventListener("hashchange", function () { var id = location.hash.slice(1); if (id && pages[cur].id !== id) goId(id, { push: true }); });
   var rz = null; window.addEventListener("resize", function () { clearTimeout(rz); rz = setTimeout(fit, 120); });
   if (!(location.hash && goId(location.hash.slice(1)))) go(0, { keepHash: true });
@@ -1767,7 +1811,8 @@ a.bst:hover { text-decoration: underline; }
     if (sumEl) { var hit = ev.target.closest("[data-sum]"), again = hit === sumEl; clearSum(); ev.preventDefault(); if (!again && hit && pages[cur].contains(hit)) showSum(hit); return; }
     var sm = ev.target.closest("[data-sum]"); if (sm && pages[cur].contains(sm) && !document.body.classList.contains("open")) { ev.preventDefault(); showSum(sm); return; }
     var r5b = ev.target.closest(".r5steps [data-step]"); if (r5b) { r5set(+r5b.getAttribute("data-step")); return; }
-    var m = ev.target.closest("[data-set]"); if (m) { setMode(m.getAttribute("data-set")); return; }
+    var fb = ev.target.closest("[data-mmfocus]"); if (fb) { var on = fb.getAttribute("aria-pressed") !== "true"; fb.setAttribute("aria-pressed", String(on)); var ch = document.querySelector("#i1-mm .mmchart"); if (ch) ch.classList.toggle("focus", on); if (on) setMode("changed"); return; }
+    var m = ev.target.closest("[data-set]"); if (m) { setMode(m.getAttribute("data-set")); if (m.getAttribute("data-set") === "plan") { var f2b = document.querySelector("[data-mmfocus]"); if (f2b) { f2b.setAttribute("aria-pressed", "false"); var c2 = document.querySelector("#i1-mm .mmchart"); if (c2) c2.classList.remove("focus"); } } return; }
     var g = ev.target.closest("[data-go]"); if (g) { go(+g.getAttribute("data-go"), { push: true }); return; }
     var t = ev.target.closest("[data-panel]");
     if (t) { ev.preventDefault(); openPanel(t.getAttribute("data-panel")); return; }
@@ -1781,6 +1826,7 @@ a.bst:hover { text-decoration: underline; }
     if (open || ev.altKey || ev.ctrlKey || ev.metaKey) return;
     var tag = ev.target && ev.target.tagName;
     if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
+    if ((k === "Enter" || k === " ") && ev.target.closest && ev.target.closest("button, a[href], [role=button]")) { var ctl = ev.target.closest("button, a[href], [role=button]"); if (ctl.tagName !== "BUTTON" && ctl.tagName !== "A") { ev.preventDefault(); ctl.dispatchEvent(new MouseEvent("click", { bubbles: true })); } return; }
     var doc = document.documentElement, sc = document.body.classList.contains("staged") ? pages[cur] : null;
     var atEnd = sc ? sc.scrollTop + sc.clientHeight >= sc.scrollHeight - 4 : window.innerHeight + window.scrollY >= doc.scrollHeight - 4, atTop = sc ? sc.scrollTop <= 2 : window.scrollY <= 2;
     if (k === "ArrowRight" || k === "PageDown") { ev.preventDefault(); go(cur + 1); }
