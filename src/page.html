@@ -723,7 +723,9 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
 .blk-t { margin-top: 18px; font-size: 16px; }
 .blk-foot { margin-top: 6px; font-size: 12.5px; color: var(--ink-2); }
 @media (max-width: 980px) { .blk5 { grid-template-columns: 1fr; } .ccb-cols { grid-template-columns: 1fr; } }
-.man-cols { margin-top: 16px; display: grid; grid-template-columns: 1fr 1.35fr; gap: 24px; align-items: start; }
+.man-cols { margin-top: 16px; display: grid; grid-template-columns: 1fr 1.3fr; gap: 36px; align-items: start; }
+.man-ul { margin: 14px 0 0; padding-left: 18px; font-size: 13.5px; line-height: 1.6; color: var(--ink-2); } .man-ul li + li { margin-top: 7px; } .man-ul li:last-child { color: var(--ink); font-weight: 600; }
+#i2-man .man-cards { gap: 12px; } #i2-man .man-cards .mc { padding: 12px 16px; } #i2-man .manend { gap: 12px; } #i2-man .manend > div { padding: 12px 16px; }
 .man-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
 .man-cards .mc { border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; }
 .man-cards .mc small { display: block; font-size: 12px; color: var(--ink-2); }
@@ -731,7 +733,7 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
 .man-cards .mc span { display: block; font-size: 12px; color: var(--ink-2); }
 .man-cards .mc.hot { background: var(--accent-deep); border-color: var(--accent-deep); color: #fff; }
 .man-cards .mc.hot small, .man-cards .mc.hot span { color: rgba(255,255,255,.85); }
-.man-ul { margin: 12px 0 10px 18px; font-size: 13px; line-height: 1.55; }
+
 @media (max-width: 980px) { .man-cols { grid-template-columns: 1fr; } }
 @media (max-width: 980px) { .kpi4 { grid-template-columns: 1fr 1fr; } .kpi4 > * + * { border-left: 0; padding-left: 0; } }
 /* 산식 툴팁 */
@@ -1621,8 +1623,8 @@ a.bst:hover { text-decoration: underline; }
     var s = XK.man;
     return '<section class="sheet i2" id="i2-man">' + sheetHead("Item2 ②", s.kicker.replace(/^Item2 · /, "")) + '<h2>' + esc(s.title) + '</h2><p class="lede">' + esc(s.lede) + '</p>' +
       '<div class="man-cols"><div><h3 class="blk-t" style="margin-top:0">' + esc(s.baseTitle) + '</h3><div class="man-cards">' + s.cards.map(function (c) { return '<div class="mc' + (c.hot ? " hot" : "") + '"><small>' + esc(c.small) + '</small><b>' + esc(c.v) + '</b><span>' + esc(c.d) + '</span></div>'; }).join("") + '</div>' +
-      '<ul class="man-ul">' + s.bullets.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join("") + '</ul>' + table(s.perHead, s.perRows, { nowrap: [0, 1, 2], right: [1, 2], rowCls: function (r) { return r[0] === "합계" ? "tot" : ""; } }) +
-      '<div class="manend"><div><small>12월 말 종료 시</small><b class="num">15.00 MM</b><span>11월 5 + 12월 10</span></div><div class="hot"><small>1월 말 종료 시</small><b class="num">25.00 MM</b><span>+ 1월 10</span></div></div></div>' +
+      '<ul class="man-ul">' + s.bullets.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join("") + '</ul>' +
+      '<h3 class="blk-t">종료 시점별 청구 (대기 · 운영 월 15명 유지)</h3><div class="manend"><div><small>12월 말 종료 시</small><b class="num">15.00 MM</b><span>11월 5 + 12월 10</span></div><div class="hot"><small>1월 말 종료 시</small><b class="num">25.00 MM</b><span>+ 1월 10</span></div></div></div>' +
       '<div>' + table(s.areaHead, s.areaRows, { nowrap: [0, 1, 3, 4, 5, 6], right: [3, 4, 5, 6], rowCls: function (r) { return r[0] === "합계" ? "tot" : ""; } }) + '<p class="blk-foot">' + esc(s.foot) + '</p></div></div></section>';
   }
   function dayN2(d) { return (Date.UTC(d[0], d[1] - 1, d[2]) - Date.UTC(XK.tl.start[0], XK.tl.start[1] - 1, XK.tl.start[2])) / 864e5; }
