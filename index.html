@@ -530,7 +530,7 @@ body.sumon #sumfx-f { display: block; }
 
 /* ── side panel ── */
 .scrim { position: fixed; inset: 0; background: rgba(23, 20, 26, .38); opacity: 0; pointer-events: none; transition: opacity .3s; z-index: 40; }
-.panel { position: fixed; top: 0; right: 0; bottom: 0; width: min(600px, 100%); background: var(--paper); z-index: 41; transform: translateX(102%); transition: transform .4s var(--ease); display: flex; flex-direction: column; box-shadow: -12px 0 40px rgba(23, 20, 26, .16); }
+.panel { position: fixed; top: 0; right: 0; bottom: 0; width: min(720px, 100%); background: var(--paper); z-index: 41; transform: translateX(102%); transition: transform .4s var(--ease); display: flex; flex-direction: column; box-shadow: -12px 0 40px rgba(23, 20, 26, .16); }
 body.open .scrim { opacity: 1; pointer-events: auto; }
 body.open .panel { transform: none; }
 .p-head { padding: 16px 22px 14px; border-bottom: 1px solid var(--line); display: flex; gap: 12px; align-items: flex-start; }
@@ -544,6 +544,20 @@ body.open .panel { transform: none; }
 .p-body h4:first-child { margin-top: 0; }
 .p-body p { margin: 0 0 10px; color: var(--ink-2); }
 .p-body .tbl { font-size: 13px; }
+.tbl.wk td.wk-l, .tbl.wk th.wk-l { min-width: 250px; white-space: normal; }
+.tbl.wk .wk-m { font-size: 12px; color: var(--ink-2); white-space: nowrap; }
+.tbl.wk .wk-w { font-size: 12.5px; color: var(--ink-2); }
+/* 드로어에서 열이 많아 글이 한두 단어씩 꺾이는 표는 행 단위 카드로 표시 */
+.p-body .tbl.stk thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.p-body .tbl.stk, .p-body .tbl.stk tbody { display: block; }
+.p-body .tbl.stk tr { display: grid; grid-template-columns: 124px 1fr; gap: 3px 12px; padding: 10px 2px; border-bottom: 1px solid var(--line); }
+.p-body .tbl.stk td { display: contents; }
+.p-body .tbl.stk td > .stk-l { font-size: 12px; font-weight: 600; color: var(--ink-3); }
+.p-body .tbl.stk td > .stk-v { min-width: 0; text-align: left; white-space: normal; }
+.p-body .tbl.stk td:first-child > .stk-l { display: none; }
+.p-body .tbl.stk td:first-child > .stk-v { grid-column: 1 / -1; font-weight: 700; color: var(--ink); font-size: 13.5px; }
+.p-body .tbl.stk td.stk-empty { display: none; }
+.p-body .tbl.stk tr.tot { border-top: 1.5px solid var(--ink); border-bottom: 1.5px solid var(--ink); }
 .asto { display: grid; grid-template-columns: 4.6em 1fr; gap: 6px 12px; font-size: 13.5px; margin: 0; }
 .asto dt { font-weight: 700; color: var(--ink-3); }
 .asto dd { margin: 0; }
@@ -1278,8 +1292,8 @@ a.bst:hover { text-decoration: underline; }
   function bDvt() {
     var d = A.dvt;
     return '<h4>일정 변경 비교</h4>' + table(["항목", "기존 일정 (계약 기준)", "변경 일정 (10.04 TMC 기준)"], G.compare, { nowrap: [1, 2] }) + '<p style="margin-top:8px;font-size:13px;color:var(--ink-2)">' + esc(d.regression) + '</p>' +
-      '<h4>DVT 수행 일정 (2026.10.06 ~ 11.17)</h4><div class="scroll"><table class="tbl wk"><thead><tr><th>단계</th><th>기간</th><th>대상</th><th>주요 업무</th>' + d.weeks.map(function (w) { return '<th class="w num">' + w + '</th>'; }).join("") + '</tr></thead><tbody>' +
-      d.stages.map(function (s) { return '<tr><td class="nw"><b>' + esc(s.name) + '</b></td><td class="nw num">' + esc(s.period) + '</td><td class="nw">' + esc(s.target) + '</td><td>' + esc(s.work) + '</td>' + s.cells.map(function (c) { return '<td class="w' + (c ? " f" + c : "") + '"></td>'; }).join("") + '</tr>'; }).join("") + '</tbody></table></div>' +
+      '<h4>DVT 수행 일정 (2026.10.06 ~ 11.17)</h4><div class="scroll"><table class="tbl wk"><thead><tr><th class="wk-l">단계 · 기간 · 대상 · 주요 업무</th>' + d.weeks.map(function (w) { return '<th class="w num">' + w + '</th>'; }).join("") + '</tr></thead><tbody>' +
+      d.stages.map(function (s) { return '<tr><td class="wk-l"><b>' + esc(s.name) + '</b> <span class="num wk-m">' + esc(s.period) + ' · ' + esc(s.target) + '</span><br><span class="wk-w">' + esc(s.work) + '</span></td>' + s.cells.map(function (c) { return '<td class="w' + (c ? " f" + c : "") + '"></td>'; }).join("") + '</tr>'; }).join("") + '</tbody></table></div>' +
       '<p style="margin-top:8px;font-size:12.5px;color:var(--ink-2)"><i class="k-dvt" style="display:inline-block;width:12px;height:12px;vertical-align:-1px;margin-right:5px"></i>시험 · 수정 기간 <i class="k-add" style="display:inline-block;width:12px;height:12px;vertical-align:-1px;margin:0 5px 0 12px"></i>리뷰 · ' + esc(d.note) + '</p>' +
       '<h4>영역별 업무</h4><div class="cols3">' + d.scope.map(function (s) { return '<div class="card"><h5>' + esc(s.k) + '</h5><p style="font-size:13px;color:var(--ink-2)">' + esc(s.v) + '</p></div>'; }).join("") + '</div>';
   }
@@ -1881,7 +1895,19 @@ a.bst:hover { text-decoration: underline; }
   var lastFocus = null, pStack = [], pKey = null;
   function renderPanel(key) {
     var c = panelContent(key); if (!c) return false;
-    pKey = key; $("p-kicker").textContent = c.kicker; $("p-title").textContent = c.title; $("p-body").innerHTML = c.html; normLinks($("p-body")); $("p-body").scrollTop = 0; return true;
+    pKey = key; $("p-kicker").textContent = c.kicker; $("p-title").textContent = c.title; $("p-body").innerHTML = c.html; normLinks($("p-body")); stackTables($("p-body")); $("p-body").scrollTop = 0; return true;
+  }
+  function stackTables(root) {
+    Array.prototype.forEach.call(root.querySelectorAll("table.tbl:not(.wk):not(.stk)"), function (t) {
+      var heads = Array.prototype.map.call(t.querySelectorAll("thead th"), function (th) { return th.textContent.trim(); });
+      if (heads.length < 3) return;
+      var tight = Array.prototype.some.call(t.querySelectorAll("tbody td:not(.r)"), function (td) { var lh = parseFloat(getComputedStyle(td).lineHeight) || 20; return td.clientWidth < 150 && td.clientHeight / lh > 4; });
+      if (!tight && t.parentElement.scrollWidth <= t.parentElement.clientWidth + 2) return;
+      t.classList.add("stk");
+      Array.prototype.forEach.call(t.querySelectorAll("tbody tr"), function (tr) {
+        Array.prototype.forEach.call(tr.children, function (td, i) { if (!td.textContent.trim()) { td.classList.add("stk-empty"); return; } td.innerHTML = '<span class="stk-l">' + esc(heads[i] || "") + '</span><span class="stk-v">' + td.innerHTML + '</span>'; });
+      });
+    });
   }
   function openPanel(key) {
     var isOpen = document.body.classList.contains("open"), prev = pKey;
