@@ -1032,7 +1032,7 @@ a.bst:hover { text-decoration: underline; }
   }
   function chain10() {
     var c = function (t, sub, cls) { return '<span class="r5c' + (cls || "") + '"><b>' + t + '</b><small>' + sub + '</small></span>'; };
-    return '<div class="r5chain num">' + c("35.0", "10 ~ 11월 수행") + '<i>−</i>' + c("6.0", "계약 E2E") + '<i>=</i>' + c("29.00", "신규 투입") + '<i>−</i>' + c("17.95", "DVT 시험 · 결함 인지") + '<i>=</i>' + c("11.05", "변경 · 연동 (투입 산정)") + '<i>−</i>' + c("0.95", "uCUBE (LGU+ 부담)") + '<i>=</i>' + c("10.10 MM", "고객사 청구", " fin") + '</div>';
+    return '<div class="r5chain num">' + c("35.0", "10 ~ 11월 수행") + '<i>−</i>' + c("6.0", "계약 E2E") + '<i>=</i>' + c("29.00", "신규 투입") + '<i>−</i>' + c("17.95", "DVT 시험 · 결함 인지") + '<i>=</i>' + c("11.05", "변경 · 연동") + '<i>−</i>' + c("0.95", "uCUBE (LGU+ 부담)") + '<i>=</i>' + c("10.10 MM", "고객사 청구", " fin") + '</div>';
   }
   function vEffort() {
     var cols = E.months.map(function (mn, i) {
@@ -1142,7 +1142,7 @@ a.bst:hover { text-decoration: underline; }
     var box = '<div class="r5box"><table class="tbl r5cmp"><thead><tr><th>구간</th><th>TMKR이 보는 관점 (당사 이해)</th><th>당사 입장</th><th>근거</th></tr></thead><tbody>' +
       '<tr><td class="nw"><b>8 ~ 9월</b><br><span class="num">계약 ' + f1(P[0] + P[1]) + ' → 수행 ' + f1(A2[0] + A2[1]) + '</span></td><td>계약 인력 ' + f1(P[0] + P[1]) + ' MM은 계약 범위이고, 초과분 8.10 MM만 ACOS 추가 개발</td><td><b>같은 생각입니다.</b> 다만 계약 인력 ' + f1(P[0] + P[1]) + ' MM은 DVT가 아닌 ACOS 규격에 따른 GS · e-Care 변경 개발 · 내부 테스트에 쓰였습니다. 인력은 그대로, 업무만 바뀌었습니다.</td><td>' + evb(0) + '</td></tr>' +
       '<tr><td class="nw"><b>10 ~ 11월</b><br><span class="num">계약 ' + f1(P[2] + P[3]) + ' → 수행 ' + f1(A2[2] + A2[3]) + '</span></td><td>8 ~ 9월 DVT가 뒤로 밀린 것(순연)이므로 계약 범위</td><td>DVT 업무는 밀렸지만, 이를 맡을 계약 인력은 8 ~ 9월에 이미 변경 개발에 투입되었습니다. E2E 최소 인력 ' + f1(P[2] + P[3]) + ' MM만 계획된 기간에 인력을 새로 투입했으므로 <b>순연이 아닌 추가 개발</b>입니다.</td><td>' + evb(1) + '<button type="button" class="r5evb" style="margin-top:6px" data-panel="r5bd">세부 내역 <span aria-hidden="true">›</span></button></td></tr>' +
-      '<tr class="r5calc"><td class="nw"><b>청구 10.10 산출</b></td><td colspan="3"><div class="r5chain num"><span class="r5c"><b>35.0</b><small>10 ~ 11월 수행</small></span><i>−</i><span class="r5c"><b>6.0</b><small>계약 E2E</small></span><i>=</i><span class="r5c"><b>29.00</b><small>신규 투입</small></span><i>−</i><span class="r5c"><b>17.95</b><small>DVT 시험 · 결함 인지</small></span><i>=</i><span class="r5c"><b>11.05</b><small>변경 · 연동 (투입 산정)</small></span><i>−</i><span class="r5c"><b>0.95</b><small>uCUBE (LGU+ 부담)</small></span><i>=</i><span class="r5c fin"><b>10.10 MM</b><small>고객사 청구</small></span></div></td></tr>' +
+      '<tr class="r5calc"><td class="nw"><b>청구 10.10 산출</b></td><td colspan="3"><div class="r5chain num"><span class="r5c"><b>35.0</b><small>10 ~ 11월 수행</small></span><i>−</i><span class="r5c"><b>6.0</b><small>계약 E2E</small></span><i>=</i><span class="r5c"><b>29.00</b><small>신규 투입</small></span><i>−</i><span class="r5c"><b>17.95</b><small>DVT 시험 · 결함 인지</small></span><i>=</i><span class="r5c"><b>11.05</b><small>변경 · 연동</small></span><i>−</i><span class="r5c"><b>0.95</b><small>uCUBE (LGU+ 부담)</small></span><i>=</i><span class="r5c fin"><b>10.10 MM</b><small>고객사 청구</small></span></div></td></tr>' +
       '<tr class="tot r5big"><td>청구 공수<small style="display:block;font-size:11.5px;font-weight:500;color:var(--ink-2)">콜버튼 3.86 포함 시 22.06</small></td><td class="num">8.10 MM</td><td class="num" colspan="2"><span data-sum="r5d0" data-sp="r5tot" data-v="8.10">8.10</span> + <span data-sp="r5tot" data-v="10.10">10.10</span> = <mark data-sum="r5tot">18.20 MM</mark><small style="font-size:12.5px;font-weight:500;color:var(--ink-2);margin-left:12px">순증 37.10 (8.10 + 29.00) 중</small></td></tr></tbody></table></div>';
 
     return '<section class="sheet" id="reading"><div class="sh-top"><span class="sheet-no"><span class="pill main">메인</span><b>5</b> / 5 · 양사 시각 정리</span></div>' +
@@ -1318,7 +1318,7 @@ a.bst:hover { text-decoration: underline; }
   function bChgPlan() {
     var d = A.chgPlan, s4 = d.rows.reduce(function (a, r) { return a + r[4]; }, 0), s5 = d.rows.reduce(function (a, r) { return a + r[5]; }, 0);
     var st = function (t) { return /^미해소/.test(t) ? '<b style="color:#a3005a">' + esc(t) + '</b>' : esc(t); };
-    return table(d.head, d.rows.map(function (r) { return [esc(r[0]), esc(r[1]), esc(r[2]), st(r[3]), r[4] ? f2(r[4]) : "–", f2(r[5])]; }).concat([["<b>합계</b>", "", "", "uCUBE 제외 (LGU+ 부담 0.95 · 2.00)", "<b>" + f2(s4) + "</b>", "<b>" + f2(s5) + "</b>"]]), { right: [4, 5], nowrap: [0], raw: 1 }) +
+    return table(d.head, d.rows.map(function (r) { return [esc(r[0]), esc(r[1]), esc(r[2]), st(r[3]), r[4] ? f2(r[4]) : "–", f2(r[5])]; }).concat([["<b>합계</b>", "", "", "uCUBE 제외 (LGU+ 부담 0.95)", "<b>" + f2(s4) + "</b>", "<b>" + f2(s5) + "</b>"]]), { right: [4, 5], nowrap: [0], raw: 1 }) +
       '<ul class="notes">' + d.notes.map(function (n) { return '<li>' + esc(n) + '</li>'; }).join("") + '</ul>';
   }
   function bCallbtn() {
@@ -1576,7 +1576,7 @@ a.bst:hover { text-decoration: underline; }
   function vI1Mm() {
     vReading(); /* R5SVG 생성 */
     var b = MG.why1010, cats = b.cats, tot = 10.10;
-    var chain = '<div class="r5chain num mmchain">' + [["35.0", "10 ~ 11월 수행"], "−", ["6.0", "계약 E2E"], "=", ["29.00", "신규 투입"], "−", ["17.95", "DVT 시험 · 결함 인지"], "=", ["11.05", "변경 · 연동 (투입 산정)"], "−", ["0.95", "uCUBE (LGU+ 부담)"], "="].map(function (x) { return typeof x === "string" ? '<i>' + x + '</i>' : '<span class="r5c cx" data-calc="' + x[0] + '" tabindex="0"><b>' + x[0] + '</b><small>' + x[1] + '</small></span>'; }).join("") + '<span class="r5c fin cx" data-calc="10.10" tabindex="0"><b>10.10 MM</b><small>고객사 청구</small></span></div>';
+    var chain = '<div class="r5chain num mmchain">' + [["35.0", "10 ~ 11월 수행"], "−", ["6.0", "계약 E2E"], "=", ["29.00", "신규 투입"], "−", ["17.95", "DVT 시험 · 결함 인지"], "=", ["11.05", "변경 · 연동"], "−", ["0.95", "uCUBE (LGU+ 부담)"], "="].map(function (x) { return typeof x === "string" ? '<i>' + x + '</i>' : '<span class="r5c cx" data-calc="' + x[0] + '" tabindex="0"><b>' + x[0] + '</b><small>' + x[1] + '</small></span>'; }).join("") + '<span class="r5c fin cx" data-calc="10.10" tabindex="0"><b>10.10 MM</b><small>고객사 청구</small></span></div>';
     var catBar = '<div class="mmcat num">' + cats.map(function (c, i) { return '<span class="k' + i + ' cx" data-calc="c:' + c.k + '" tabindex="0" style="flex:' + c.mm + '"><b>' + c.k + ' ' + c.mm + '</b></span>'; }).join("") + '</div>' +
       '<div class="mmcatc">' + cats.map(function (c, i) { return '<div style="flex:' + c.mm + '"><b>' + esc(c.h) + '</b>' + c.rows.map(function (r) { return '<span class="cx ar" data-calc="a:' + esc(r.a) + '" tabindex="0">' + esc(r.a) + ' <b class="num">' + r.mm + '</b></span>'; }).join("") + '</div>'; }).join("") + '</div>';
     var tb = '<table class="tbl num mmtb"><thead><tr><th>구간</th><th class="r">계획 → 투입</th><th class="r">순증</th><th class="r">인지</th><th class="r">LGU+</th><th class="r">청구</th></tr></thead><tbody>' +
@@ -1662,8 +1662,8 @@ a.bst:hover { text-decoration: underline; }
       table(["일자", "규격 배포 · 변경", "출처"], A.history.rows.filter(function (r) { return r[1] === "규격"; }).map(function (r) { return [r[0], r[2], r[3]]; }), { nowrap: [0] }) +
       '<p style="margin-top:8px">' + evLinks(a.ev) + '</p>';
     h += '<h4>' + esc(b.h) + ' · ' + esc(b.per) + '</h4><p>' + esc(b.why) + '</p>';
-    h += table(["분류 · 영역", "언제 되었어야", "실제 (지연 내용)", "사유 · 확인 오류", "현재 상태 (11.21)", "MM", "증적"], A.dvtChg.rows.map(function (r) { var p = planRow(r[1]) || []; return ['<b>' + esc(r[0].replace(/ \(.*\)$/, "")) + '</b><br>' + esc(r[1]), esc(p[1] || ""), esc(p[2] || r[2]), esc(r[3]), esc(p[3] || ""), '<b class="num">' + f2(r[5]) + '</b>', areaEv(r[1])]; }).concat([["<b>합계</b>", "", "", "", "uCUBE 0.95 (LGU+ 부담) 제외", "<b>10.10</b>", ""]]), { raw: 1, right: [5], nowrap: [5] });
-    return h + '<ul class="notes"><li>증적의 A14 #번호는 07.27 최종 규격 이후 변경 · 정정 이력(발생일 · 주체 · 내용), CCB 자료 페이지는 개발 산정 내역(A4-1) 기준</li><li>DMS(10.28 사양 변경판)와 Digital Key(신규 연계 일자)는 발생 근거 메일 원본을 개발사에서 확보해 첨부 예정</li></ul>';
+    h += table(["분류 · 영역", "언제 되었어야", "실제 (지연 내용)", "사유 · 확인 오류", "MM", "증적"], A.dvtChg.rows.map(function (r) { var p = planRow(r[1]) || []; return ['<b>' + esc(r[0].replace(/ \(.*\)$/, "")) + '</b><br>' + esc(r[1]), esc(p[1] || ""), esc(p[2] || r[2]), esc(r[3]), '<b class="num">' + f2(r[5]) + '</b>', areaEv(r[1])]; }).concat([["<b>합계</b>", "", "", "uCUBE 0.95 (LGU+ 부담) 제외", "<b>10.10</b>", ""]]), { raw: 1, right: [4], nowrap: [4] });
+    return h + '<ul class="notes"><li>증적의 A14 #번호는 07.27 최종 규격 이후 변경 · 정정 이력(발생일 · 주체 · 내용), CCB 자료 페이지는 개발 산정 내역(A4-1) 기준</li><li>영역별 현재 상태는 <a class="evl" href="#chg-plan">A16 항목별 예정 vs 실제</a> 한 곳에서 관리합니다</li><li>DMS(10.28 사양 변경판)와 Digital Key(신규 연계 일자)는 발생 근거 메일 원본을 개발사에서 확보해 첨부 예정</li></ul>';
   }
   // Item2 부록 (DVT 장표에서 이식)
   function xNumTable(o) { var right = []; o.head.forEach(function (h, i) { if (i > 0 && /TC|Acted|Pass|Fail|NT|Remained|Planned|미수행|Total/.test(h)) right.push(i); }); return table(o.head, o.rows, { right: right, nowrap: [0], cls: "num", rowCls: function (r) { return r[0] === "합계" ? "tot" : ""; } }) + (o.notes ? '<ul class="notes">' + o.notes.map(function (n) { return '<li>' + esc(n) + '</li>'; }).join("") + '</ul>' : ""); }

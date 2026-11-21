@@ -19,8 +19,9 @@ module.exports = function (base) {
     "DMS": "VDP 실데이터 미수신으로 시뮬레이터 대체 시험. DMS 114 TC 중 Pass 78 · Fail 1 · NT 35",
     "DVT 영향 분석": "통합 992 TC 중 잔여 NT 334건 원인 분류 · 재수행 대기",
   };
+  A.dvtChg.head = A.dvtChg.head.map((h) => h === "수행 업무 → 현재 결과" ? "수행 업무 (현재 상태는 A16)" : h);
   A.dvtChg.rows.forEach((r) => {
-    if (now[r[1]]) r[4] = r[4].split("→")[0].trim() + " → " + now[r[1]];
+    r[4] = r[4].split("→")[0].trim(); /* 현재 상태는 A16 한 곳에서만 관리 (MECE) */
   });
   // A16: 현재 상태 최신화 + 향후 공수를 Item2 25.00 MM 산정(월 10 MM 청구) 기준으로 교체
   const fut = { "ACOS API": 2.2, "ACOS Provisioning": 3.5, "VDP Diag": 4.8, "VDP CoCo": 2.0, "MM/HU · DCM/ADF": 1.5, "Digital Key": 0, "CTI/TCK": 2.2, "Global/Local App": 1.7, "DMS": 2.0, "DVT 영향 분석": 2.6, "e-Care 기능 검증": 2.5 };
@@ -177,7 +178,7 @@ module.exports = function (base) {
 
   /* ── MECE 정리 (11/21): A2(B1과 같은 표) · A15(Item2 ② · D2 · E4 · D1과 중복)는 부록 페이지에서 제외하고 참조를 옮김 ── */
   (function deepFix(o) {
-    const fix = (t) => t.replace("추가 DVT 예측(A15)에서 관리", "Item2 추가 인력(D2)에서 관리").replace("상세는 A15 참조", "최신 통합 결과(11/20 개발 PM 확인)는 D1 참조");
+    const fix = (t) => t.replace("추가 DVT 예측(A15)에서 관리", "Item2 추가 인력(D2)에서 관리").replace("상세는 A15 참조", "최신 통합 결과(11/20 개발 PM 확인)는 D1 참조").replace("LGU+ 부담 0.95 · 2.00", "LGU+ 부담 0.95").replace("uCUBE 0.95 · 2.00 MM은", "uCUBE 0.95 MM은");
     Object.keys(o).forEach((k) => { const v = o[k]; if (typeof v === "string") o[k] = fix(v); else if (v && typeof v === "object") deepFix(v); });
   })(A);
   A.dvtRun.result.rows = A.dvtRun.result.rows.filter((r) => !/\(11\/17\)/.test(r[0]));
@@ -315,7 +316,7 @@ module.exports = function (base) {
   base.M = M;
   base.X = X;
   /* 고객사에 LGU+ 이름으로 나가는 자료: 요청 · 부담 주체를 LGU+로 통일 (변경 이력 meta는 원문 유지) */
-  const VOICE = [["개발사(다산)", "개발사"], ["다산 투입 · 산정 공수는 그대로", "투입 · 산정 공수는 그대로"], ["다산 산정 내역", "개발 산정 내역"], ["다산 산정 기간", "투입 산정 기간"], ["다산 산정", "투입 산정"], ["다산 투입 기준", "투입 기준"], ["다산 투입 11.05", "투입 11.05"], ["유휴분은 다산이 부담", "유휴분은 LGU+가 부담"], ["유휴는 다산 부담", "유휴분 LGU+ 부담"], ["유휴 인력 비용은 수행사가 부담", "유휴 인력 비용은 LGU+가 부담"], ["유휴분은 수행사 부담", "유휴분은 LGU+ 부담"], ["유휴분 수행사 부담", "유휴분 LGU+ 부담"], ["유휴분은 수행사가 부담", "유휴분은 LGU+가 부담"], ["LGU+ · 다산 개발 영역", "LGU+ 개발 영역"], ["다산 메일", "LGU+ 개발팀 메일"], ["DasanDMC 한국 개발팀", "LGU+ 개발팀"], ["결함은 개발사가 수정", "결함은 LGU+ 개발팀이 수정"], ["Dasan 측", "LGU+ 개발팀"], ["Dasan 회신", "LGU+ 개발팀 회신"], ["Dasan 정리표", "LGU+ 개발팀 정리표"], ["Dasan", "LGU+ 개발팀"]];
+  const VOICE = [["개발사(다산)", "개발사"], [" MM(다산 산정)", " MM"], ["(다산 산정)", ""], ["(다산 산정, ", "("], ["A13 다산 산정(", "A13 산정("], ["다산 투입 · 산정 공수는 그대로", "투입 · 산정 공수는 그대로"], ["다산 산정 내역", "개발 산정 내역"], ["다산 산정 기간", "투입 산정 기간"], ["다산 산정", "투입 산정"], ["다산 투입 기준", "투입 기준"], ["다산 투입 11.05", "투입 11.05"], ["유휴분은 다산이 부담", "유휴분은 LGU+가 부담"], ["유휴는 다산 부담", "유휴분 LGU+ 부담"], ["유휴 인력 비용은 수행사가 부담", "유휴 인력 비용은 LGU+가 부담"], ["유휴분은 수행사 부담", "유휴분은 LGU+ 부담"], ["유휴분 수행사 부담", "유휴분 LGU+ 부담"], ["유휴분은 수행사가 부담", "유휴분은 LGU+가 부담"], ["LGU+ · 다산 개발 영역", "LGU+ 개발 영역"], ["다산 메일", "LGU+ 개발팀 메일"], ["DasanDMC 한국 개발팀", "LGU+ 개발팀"], ["결함은 개발사가 수정", "결함은 LGU+ 개발팀이 수정"], ["Dasan 측", "LGU+ 개발팀"], ["Dasan 회신", "LGU+ 개발팀 회신"], ["Dasan 정리표", "LGU+ 개발팀 정리표"], ["Dasan", "LGU+ 개발팀"]];
   (function voice(o) { Object.keys(o).forEach((k) => { if (o === base && k === "meta") return; const v = o[k]; if (typeof v === "string") o[k] = VOICE.reduce((t, r) => t.split(r[0]).join(r[1]), v); else if (v && typeof v === "object") voice(v); }); })(base);
   return base;
 };
