@@ -2410,7 +2410,7 @@ a.bst:hover { text-decoration: underline; }
       if (h && (s = byId(selShape))) { drag = { m: "h", h: h.getAttribute("data-h"), s: s, o: JSON.parse(JSON.stringify(s)), p: p, pg: pg, pre: JSON.stringify(S) }; }
       else if (tool !== "sel") {
         var line = tool === "line" || tool === "arrow";
-        s = { id: nid++, p: pg.id, k: tool, x: r1(p.x), y: r1(p.y), sw: line ? 3 : 2, st: tool === "text" ? "none" : "#e6007e", fill: tool === "rect" || tool === "ellipse" ? "#fde9f3" : "none", tc: "#17141a", t: "" };
+        s = { id: Math.max(nid++, Date.now() % 1e9 + Math.floor(Math.random() * 1000)), p: pg.id, k: tool, x: r1(p.x), y: r1(p.y), sw: line ? 3 : 2, st: tool === "text" ? "none" : "#e6007e", fill: tool === "rect" || tool === "ellipse" ? "#fde9f3" : "none", tc: "#17141a", t: "" };
         if (line) { s.x2 = s.x; s.y2 = s.y; } else { s.w = 0; s.h = 0; }
         drag = { m: "new", s: s, p: p, pg: pg, pre: JSON.stringify(S) }; S.shapes.push(s); selShape = s.id; renderShapes();
       }
@@ -2511,23 +2511,67 @@ a.bst:hover { text-decoration: underline; }
       var v = prompt("GitHub 토큰을 입력하세요.\n· " + REPO + " 저장소의 Contents: Read and write 권한만 있는 fine-grained 토큰을 권장합니다.\n· 이 브라우저에만 저장됩니다. 비우면 삭제됩니다.", token());
       if (v === null) return ""; try { v ? localStorage.setItem(TK, v.trim()) : localStorage.removeItem(TK); } catch (e) {} return v.trim();
     }
+    /* ── 공동 편집: 저장할 때 다른 사람이 그사이 저장한 수정과 항목 단위로 합치고, 편집 중에는 20초마다 다른 사람 수정을 받아 옴 ── */
+    var NK = "ccb_editor", API = "https://api.github.com/repos/" + REPO + "/contents/" + FILE;
+    var editor = function () { try { return localStorage.getItem(NK) || ""; } catch (e) { return ""; } };
+    function askName() { var v = prompt("편집자 이름 (저장 기록에 남습니다)", editor()); if (v !== null && v.trim()) { try { localStorage.setItem(NK, v.trim().slice(0, 30)); } catch (e) {} } return editor(); }
+    function hdr(tk) { return { Authorization: "Bearer " + tk, Accept: "application/vnd.github+json" }; }
+    async function remoteGet(tk) {
+      var g = await fetch(API + "?ref=" + BRANCH + "&t=" + Date.now(), { headers: hdr(tk), cache: "no-store" });
+      if (g.status === 404) return { sha: undefined, text: "" };
+      if (g.status !== 200) throw new Error(g.status === 401 || g.status === 403 ? "토큰 권한 오류(" + g.status + ")" : "조회 실패(" + g.status + ")");
+      var j = await g.json(); return { sha: j.sha, text: new TextDecoder().decode(Uint8Array.from(atob(j.content.replace(/\s/g, "")), function (c) { return c.charCodeAt(0); })) };
+    }
+    function parse(t) { try { return t ? JSON.parse(t) : {}; } catch (e) { return {}; } }
+    function merge3(base, mine, theirs) { /* 항목(장표 경로 · 도형 id) 단위 3-way 병합: 내가 안 바꾼 항목은 상대 것을, 내가 바꾼 항목은 내 것을 */
+      var out = { v: 1 }, conflicts = 0;
+      [["texts", function (x) { return x.p + "|" + x.path; }], ["styles", function (x) { return x.p + "|" + x.path; }], ["moves", function (x) { return x.p + "|" + x.path; }], ["shapes", function (x) { return "id" + x.id; }]].forEach(function (d) {
+        var f = d[0], kf = d[1], mp = function (o) { var m = {}; (o[f] || []).forEach(function (x) { if (x) m[kf(x)] = JSON.stringify(x); }); return m; };
+        var B = mp(base), M = mp(mine), T = mp(theirs), keys = {}, res = [];
+        [B, M, T].forEach(function (m) { Object.keys(m).forEach(function (k) { keys[k] = 1; }); });
+        Object.keys(keys).sort().forEach(function (k) {
+          var v = M[k] === B[k] ? T[k] : M[k];
+          if (M[k] !== B[k] && T[k] !== B[k] && T[k] !== M[k]) conflicts++;
+          if (v) res.push(JSON.parse(v));
+        });
+        out[f] = res;
+      });
+      return { obj: out, conflicts: conflicts };
+    }
+    function replaceState(obj) { S = { texts: {}, styles: {}, shapes: [], moves: {} }; load(JSON.stringify(obj)); applyAll(); }
     async function save() {
       stopEdit();
       var tk = token() || askToken(); if (!tk) return msg("토큰이 없어 저장하지 않았습니다.", 1);
-      var txt = JSON.stringify(serialize(), null, 1) + "\n", url = "https://api.github.com/repos/" + REPO + "/contents/" + FILE;
-      var H = { Authorization: "Bearer " + tk, Accept: "application/vnd.github+json" };
+      var who = editor() || askName();
       msg("저장 중…");
       try {
-        var g = await fetch(url + "?ref=" + BRANCH, { headers: H, cache: "no-store" }), sha, remote = "";
-        if (g.status === 200) { var j = await g.json(); sha = j.sha; remote = new TextDecoder().decode(Uint8Array.from(atob(j.content.replace(/\s/g, "")), function (c) { return c.charCodeAt(0); })); }
-        else if (g.status !== 404) throw new Error(g.status === 401 || g.status === 403 ? "토큰 권한 오류(" + g.status + ")" : "조회 실패(" + g.status + ")");
-        if (remote && remote !== loadedText && !confirm("이 화면을 연 뒤 다른 저장이 있었습니다. 내 수정으로 덮어쓸까요?")) return msg("저장을 취소했습니다.", 1);
-        var bin = ""; new TextEncoder().encode(txt).forEach(function (c) { bin += String.fromCharCode(c); });
-        var n = serialize(), p = await fetch(url, { method: "PUT", headers: H, body: JSON.stringify({ message: "화면 편집: 글자 " + n.texts.length + " · 서식 " + n.styles.length + " · 도형 " + n.shapes.length + " · 이동 " + n.moves.length, content: btoa(bin), branch: BRANCH, sha: sha }) });
-        if (!p.ok) throw new Error(p.status === 401 || p.status === 403 ? "토큰 권한 오류(" + p.status + ")" : p.status === 409 || p.status === 422 ? "다른 저장과 충돌했습니다. 다시 시도하세요(" + p.status + ")" : "저장 실패(" + p.status + ")");
-        var r = await p.json(); loadedText = txt; savedSig = sig(); msg("저장됨 · 커밋 " + String(r.commit.sha).slice(0, 7) + " (배포는 별도)"); refresh(true);
+        for (var tries = 0; tries < 3; tries++) {
+          var r0 = await remoteGet(tk), mine = serialize(), m = merge3(parse(loadedText), mine, parse(r0.text));
+          var txt = JSON.stringify(m.obj, null, 1) + "\n", bin = ""; new TextEncoder().encode(txt).forEach(function (c) { bin += String.fromCharCode(c); });
+          var n = m.obj, p = await fetch(API, { method: "PUT", headers: hdr(tk), body: JSON.stringify({ message: "화면 편집" + (who ? "(" + who + ")" : "") + ": 글자 " + n.texts.length + " · 서식 " + n.styles.length + " · 도형 " + n.shapes.length + " · 이동 " + n.moves.length, content: btoa(bin), branch: BRANCH, sha: r0.sha }) });
+          if (p.status === 409 || p.status === 422) continue; /* 그사이 또 저장됨 → 다시 받아 병합 */
+          if (!p.ok) throw new Error(p.status === 401 || p.status === 403 ? "토큰 권한 오류(" + p.status + ")" : "저장 실패(" + p.status + ")");
+          var other = !!r0.text && r0.text !== loadedText, r = await p.json(); loadedText = txt; remoteSha = r.content && r.content.sha;
+          if (other) replaceState(m.obj);
+          savedSig = sig();
+          return msg("저장됨 · 커밋 " + String(r.commit.sha).slice(0, 7) + (other ? " · 다른 편집자 수정과 합침" : "") + (m.conflicts ? " · 같은 곳을 함께 고친 " + m.conflicts + "건은 내 수정으로 저장" : "") + " · 사이트 반영 약 1분");
+        }
+        throw new Error("다른 저장과 계속 충돌했습니다. 잠시 후 다시 저장하세요");
       } catch (e) { msg(String(e.message || e), 1); }
     }
+    var remoteSha = null, pullT = null;
+    async function pull(quiet) {
+      var tk = token(); if (!tk || editing || drag) return;
+      try {
+        var r0 = await remoteGet(tk); if (r0.text === loadedText || (remoteSha && r0.sha === remoteSha)) { remoteSha = r0.sha; return; }
+        remoteSha = r0.sha;
+        var dirty = sig() !== savedSig, m = merge3(parse(loadedText), serialize(), parse(r0.text));
+        loadedText = r0.text; replaceState(m.obj);
+        if (!dirty) savedSig = sig();
+        msg("다른 편집자의 저장을 반영했습니다" + (dirty ? " · 내 수정은 아직 저장 안 됨" : ""));
+      } catch (e) { if (!quiet) msg(String(e.message || e), 1); }
+    }
+    function startPull(v) { clearInterval(pullT); pullT = null; if (v && token()) { pull(true); pullT = setInterval(function () { if (!document.hidden) pull(true); }, 20000); } }
 
     /* ── 툴바 ── */
     function msg(t, bad) { var m = $("ed-msg"); m.textContent = t; m.classList.toggle("bad", !!bad); }
@@ -2539,7 +2583,7 @@ a.bst:hover { text-decoration: underline; }
     function setOn(v) {
       if (v && !document.body.classList.contains("staged")) return;
       if (!v) { stopEdit(); deselect(); setTool("sel"); if (hov) hov.classList.remove("ed-hov"); }
-      on = v; document.body.classList.toggle("editing", v); $("ed-ui").hidden = !v; $("ed-toggle").setAttribute("aria-pressed", String(v)); if (v) refresh();
+      on = v; document.body.classList.toggle("editing", v); $("ed-ui").hidden = !v; $("ed-toggle").setAttribute("aria-pressed", String(v)); if (v) refresh(); startPull(v);
     }
     var ui = document.createElement("div");
     ui.id = "ed-ui"; ui.className = "ed-ui"; ui.hidden = true;
@@ -2550,6 +2594,9 @@ a.bst:hover { text-decoration: underline; }
       '<span class="sp"></span><button type="button" id="ed-save" class="pri">저장 (git)</button><button type="button" id="ed-tok" title="GitHub 토큰 입력/삭제">토큰</button></div><div class="ed-msg" id="ed-msg" role="status"></div>';
     document.body.appendChild(ui);
     var tg = document.createElement("button");
+    /* 편집 버튼은 편집자에게만: 이 브라우저에 토큰이 있거나 주소에 ?edit 를 붙여 연 경우 (고객사 화면에는 안 보임) */
+    var EDITOR_UI = !!token() || /[?&#]edit\b/.test(location.search + location.hash);
+    tg.hidden = !EDITOR_UI;
     tg.type = "button"; tg.id = "ed-toggle"; tg.className = "pg-back"; tg.setAttribute("aria-pressed", "false"); tg.title = "화면 편집 (글자 · 도형 · 색상)"; tg.textContent = "✎ 편집";
     $("fs").parentNode.insertBefore(tg, $("fs"));
     tg.addEventListener("click", function () { setOn(!on); });
@@ -2561,7 +2608,7 @@ a.bst:hover { text-decoration: underline; }
       else if (b.hasAttribute("data-z")) size(+b.getAttribute("data-z"));
       else if (b.hasAttribute("data-w")) width(+b.getAttribute("data-w"));
       else if (b.id === "ed-save") save();
-      else if (b.id === "ed-tok") { askToken(); msg(token() ? "토큰을 저장했습니다." : "토큰을 삭제했습니다."); }
+      else if (b.id === "ed-tok") { askToken(); if (token()) askName(); msg(token() ? "토큰을 저장했습니다" + (editor() ? " · 편집자 " + editor() : "") : "토큰을 삭제했습니다."); startPull(on); }
       else if (b.id === "ed-undo") undo();
       else if (b.id === "ed-del") { if (selShape) delShape(); }
       else if (b.id === "ed-mu" || b.id === "ed-md") move(b.id === "ed-mu" ? -1 : 1);
@@ -2580,7 +2627,7 @@ a.bst:hover { text-decoration: underline; }
     window.addEventListener("resize", function () { setTimeout(function () { if (on && !document.body.classList.contains("staged")) setOn(false); }, 250); });
 
     pages.forEach(layer);
-    fetch(FILE, { cache: "no-store" }).then(function (r) { return r.ok ? r.text() : ""; }).then(function (t) {
+    (token() ? remoteGet(token()).then(function (r) { remoteSha = r.sha; return r.text; }).catch(function () { return fetch(FILE, { cache: "no-store" }).then(function (r) { return r.ok ? r.text() : ""; }); }) : fetch(FILE, { cache: "no-store" }).then(function (r) { return r.ok ? r.text() : ""; })).then(function (t) {
       loadedText = t; if (t) { load(t); applyAll(); }
       savedSig = sig();
     }).catch(function () { savedSig = sig(); });
