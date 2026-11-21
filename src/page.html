@@ -1746,6 +1746,17 @@ a.bst:hover { text-decoration: underline; }
   var NAVS = [["overview", "요약"], ["i1-why", "Item1 ① 지연 사유"], ["i1-mm", "Item1 ② 공수 산출"], ["i2-plan", "Item2 ① 현황 · 진행 계획"], ["i2-man", "Item2 ② 추가 인력"]];
   $("nav").innerHTML = NAVS.map(function (n) { return '<a href="#' + n[0] + '">' + n[1] + '</a>'; }).join("") + '<span class="sep"></span><a href="#appendix">Appendix</a>';
   $("app").innerHTML = vOverview() + vI1Why() + vI1Mm() + vI2Plan() + vI2Man() + vAppendix();
+  /* 같은 부록으로 가는 링크는 어디서나 같은 이름: "코드 + 부록 제목(끝 괄호 설명 제외)" */
+  var LINKNAME = {};
+  NAVS.forEach(function (n) { var m = n[1].match(/^(Item\d [①②])/); if (m) LINKNAME[n[0]] = { code: m[1], name: n[1] }; });
+  Array.prototype.forEach.call(document.querySelectorAll("#app > section"), function (sec) { var c = sec.querySelector(".code"), t = sec.querySelector("h3.t"); if (c && t) { var code = c.textContent.replace("Appendix", "").trim(); if (code) LINKNAME[sec.id] = { code: code, name: code + " " + t.textContent.replace(/\s*\([^()]*\)\s*$/, "").trim() }; } });
+  function normLinks(root) {
+    Array.prototype.forEach.call(root.querySelectorAll('a[href^="#"]'), function (a) {
+      var L = LINKNAME[a.getAttribute("href").slice(1)], tx = a.textContent.trim(); if (!L || tx.indexOf("#") >= 0 || tx.indexOf(L.code + " ") !== 0) return;
+      a.textContent = L.name + (/[›→]\s*$/.test(tx) ? " ›" : "");
+    });
+  }
+  normLinks($("app"));
 
   /* ── mode switch (the control lives on the pages that use it) ── */
   function setMode(m) {
@@ -1837,7 +1848,7 @@ a.bst:hover { text-decoration: underline; }
   var lastFocus = null, pStack = [], pKey = null;
   function renderPanel(key) {
     var c = panelContent(key); if (!c) return false;
-    pKey = key; $("p-kicker").textContent = c.kicker; $("p-title").textContent = c.title; $("p-body").innerHTML = c.html; $("p-body").scrollTop = 0; return true;
+    pKey = key; $("p-kicker").textContent = c.kicker; $("p-title").textContent = c.title; $("p-body").innerHTML = c.html; normLinks($("p-body")); $("p-body").scrollTop = 0; return true;
   }
   function openPanel(key) {
     var isOpen = document.body.classList.contains("open"), prev = pKey;
