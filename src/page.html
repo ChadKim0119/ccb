@@ -754,7 +754,13 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
 .ovtot { margin-top: 8px; display: flex; align-items: baseline; gap: 6px; }
 .ovtot b { font-size: 38px; letter-spacing: -.02em; line-height: 1.05; }
 .ovtot small { font-size: 16px; font-weight: 700; } .ovtot > span { margin-left: 8px; font-size: 12.5px; color: var(--ink-2); }
-.rail .rg:not(.main) ol { display: grid; grid-template-columns: repeat(3, 24px); gap: 0; } .rail .rg:not(.main) .dot.sm { height: 24px; width: 24px; }
+.rail .rg:not(.main) ol { display: flex; flex-direction: column; gap: 0; }
+.rail .rg:not(.main) .dot.sm { height: 9px; width: 30px; border-radius: 2px; }
+.rail .rg:not(.main) .dot.sm::before { width: 20px; height: 2px; border-radius: 1px; background: var(--ink-3); }
+.rail .rg:not(.main) .dot.sm.key::before { height: 4px; background: var(--ink-2); }
+.rail .rg:not(.main) .dot.sm:hover::before { background: var(--ink); }
+.rail .rg:not(.main) .dot.sm.on::before { width: 20px; background: var(--accent); }
+.rail .rg:not(.main) .dot.sm.on:not(.key)::before { height: 2px; } .rail .rg:not(.main) .dot.sm.on.key::before { height: 4px; }
 .ov-bar { height: 36px; margin-top: 6px; } .ov-bar div { font-size: 16px; padding: 0 10px; }
 .ov-cap { font-size: 12px; } .ov-cap b { font-size: 12.5px; }
 .ovpts { margin: 10px 0 0; display: grid; grid-template-columns: 4.6em 1fr; gap: 5px 10px; font-size: 13px; line-height: 1.5; }
@@ -1724,9 +1730,11 @@ a.bst:hover { text-decoration: underline; }
   var pages = Array.prototype.slice.call(document.querySelectorAll("#app > section")), cur = 0, NMAIN = NAVS.length, trail = [];
   var labels = { appendix: "Appendix 목차" }; NAVS.forEach(function (n) { labels[n[0]] = n[1]; });
   pages.forEach(function (p) { p.classList.add("page"); });
+  /* 중요 부록(굵은 줄): 고객사 증적 대응 E1 ~ E4 · 월별 공수 표 B1 · 청구 산출 근거 A13 · A15 · DVT 통합 결과 D1 */
+  var APX_KEY = ["evreq", "delay-ev", "late-notice", "blk-dates", "sheet", "dvt-chg", "extra-dvt", "apx-total"];
   var dotHtml = function (p, i) {
     var main = i < NMAIN, lab = labels[p.id] || p.querySelector(".code").textContent.replace("Appendix", "") + " " + p.querySelector("h3.t").textContent;
-    return '<li><button type="button" class="dot' + (main ? "" : " sm") + '" data-go="' + i + '" data-label="' + esc(lab) + '" aria-label="' + esc(lab) + '">' + (main ? i + 1 : "") + '</button></li>';
+    return '<li><button type="button" class="dot' + (main ? "" : " sm") + (APX_KEY.indexOf(p.id) >= 0 ? " key" : "") + '" data-go="' + i + '" data-label="' + esc(lab) + '" aria-label="' + esc(lab) + '">' + (main ? i + 1 : "") + '</button></li>';
   };
   $("dots-main").innerHTML = pages.slice(0, NMAIN).map(dotHtml).join("");
   $("dots-apx").innerHTML = pages.slice(NMAIN).map(function (p, i) { return dotHtml(p, i + NMAIN); }).join("");
