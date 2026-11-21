@@ -639,6 +639,11 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
 .ed-ui[data-sel="el"] .c-st, .ed-ui[data-sel="el"] .c-sh, .ed-ui[data-sel="shape"] .c-el, .ed-ui[data-line="1"] .c-bg, .ed-ui[data-line="1"] .c-fg { display: none; }
 .ed-msg { margin-top: 5px; opacity: .85; }
 .ed-msg.bad { color: #ffb3d6; opacity: 1; }
+.ed-cred { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,.18); font-size: 12.5px; }
+.ed-cred[hidden] { display: none; }
+.ed-cred .ed-cred-t { flex-basis: 100%; color: #ffd6ea; }
+.ed-cred label { display: inline-flex; align-items: center; gap: 6px; }
+.ed-cred input { font: inherit; font-size: 13px; width: 140px; padding: 4px 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,.35); background: #fff; color: #17141a; }
 .ed-ui #ed-undo { padding: 5px 8px; }
 .ed-ui #ed-undo svg { display: block; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .ed-h[data-h=n], .ed-h[data-h=s] { cursor: ns-resize; }
@@ -2518,19 +2523,25 @@ a.bst:hover { text-decoration: underline; }
     var pw = function () { try { return localStorage.getItem(PK) || ""; } catch (e) { return ""; } };
     function askPw(again) { var v = prompt((again ? "비밀번호가 맞지 않습니다. " : "") + "편집 비밀번호를 입력하세요. (이 브라우저에만 저장됩니다. 비우면 삭제)", again ? "" : pw()); if (v === null) return pw(); try { v.trim() ? localStorage.setItem(PK, v.trim()) : localStorage.removeItem(PK); } catch (e) {} return v.trim(); }
     async function srvGet() { var r = await fetch(SRV + "?t=" + Date.now(), { cache: "no-store" }); if (!r.ok) throw new Error("편집 저장소 조회 실패(" + r.status + ")"); var j = await r.json(); return { sha: j.sha, text: j.text || "" }; }
+    /* 비밀번호 · 이름은 브라우저 팝업(prompt) 대신 툴바 안 입력칸으로 받음 (iPad · 앱 내 브라우저에서 팝업이 안 뜨는 경우 대비) */
+    function credForm(again, then) {
+      var f = $("ed-cred"); f.hidden = false; f.querySelector(".ed-cred-t").textContent = again ? "비밀번호가 맞지 않습니다. 다시 입력하세요." : "저장하려면 편집 비밀번호와 이름을 입력하세요. (이 브라우저에 저장됨)";
+      $("ed-pw").value = again ? "" : pw(); $("ed-nm").value = editor(); credThen = then; msgHold = Date.now() + 60000;
+      setTimeout(function () { (again || !pw() ? $("ed-pw") : $("ed-nm")).focus(); }, 0);
+    }
+    var credThen = null, msgHold = 0;
     async function srvSave() {
-      var who = editor() || askName(), key = pw() || askPw(); if (!key) return msg("비밀번호가 없어 저장하지 않았습니다.", 1);
+      var who = editor(), key = pw(); if (!key || !who) return credForm(false, srvSave);
       msg("저장 중…");
       try {
         for (var tries = 0; tries < 2; tries++) {
           var r = await fetch(SRV, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ pw: key, base: loadedText, mine: JSON.stringify(serialize()), name: who }) });
           var j = await r.json().catch(function () { return {}; });
-          if (r.status === 401) { key = askPw(true); if (!key) return msg("저장을 취소했습니다.", 1); continue; }
+          if (r.status === 401) { try { localStorage.removeItem(PK); } catch (e) {} return credForm(true, srvSave); }
           if (!r.ok) throw new Error(j.error || "저장 실패(" + r.status + ")");
           loadedText = j.text; remoteSha = j.sha; if (j.merged) replaceState(parse(j.text)); savedSig = sig();
           return msg("저장됨 · 커밋 " + String(j.commit || "").slice(0, 7) + (j.merged ? " · 다른 편집자 수정과 합침" : "") + (j.conflicts ? " · 같은 곳을 함께 고친 " + j.conflicts + "건은 내 수정으로 저장" : "") + " · 바로 모든 화면에 반영");
         }
-        msg("비밀번호가 맞지 않아 저장하지 않았습니다.", 1);
       } catch (e) { msg(String(e.message || e), 1); }
     }
     var editor = function () { try { return localStorage.getItem(NK) || ""; } catch (e) { return ""; } };
@@ -2581,7 +2592,7 @@ a.bst:hover { text-decoration: underline; }
     }
     var remoteSha = null, pullT = null;
     async function pull(quiet) {
-      var tk = token(); if ((!srvOn && !tk) || editing || drag) return;
+      var tk = token(); if ((!srvOn && !tk) || editing || drag || !$("ed-cred").hidden) return;
       try {
         var r0 = srvOn ? await srvGet() : await remoteGet(tk); if (r0.text === loadedText || (remoteSha && r0.sha === remoteSha)) { remoteSha = r0.sha; return; }
         remoteSha = r0.sha;
@@ -2594,10 +2605,11 @@ a.bst:hover { text-decoration: underline; }
     function startPull(v) { clearInterval(pullT); pullT = null; if (v && (srvOn || token())) { pull(true); pullT = setInterval(function () { if (!document.hidden) pull(true); }, 20000); } }
 
     /* ── 툴바 ── */
-    function msg(t, bad) { var m = $("ed-msg"); m.textContent = t; m.classList.toggle("bad", !!bad); }
+    function msg(t, bad) { var m = $("ed-msg"); m.textContent = t; m.classList.toggle("bad", !!bad); msgAt = Date.now(); }
+    var msgAt = 0;
     function refresh(keep) {
-      if (!$("ed-msg")) return; if (keep) return;
-      var n = serialize(); msg("글자 " + n.texts.length + " · 서식 " + n.styles.length + " · 도형 " + n.shapes.length + " · 이동 " + n.moves.length + (sig() !== savedSig ? " · 저장 안 됨" : "") + (stale ? " · 적용 안 된 수정 " + stale + "건" : ""));
+      if (!$("ed-msg")) return; if (keep) return; if (Date.now() < msgHold || Date.now() - msgAt < 6000) return; /* 방금 띄운 저장 결과 · 오류 문구는 6초 동안 유지 */
+      var n = serialize(), m0 = $("ed-msg"); m0.classList.remove("bad"); m0.textContent = ("글자 " + n.texts.length + " · 서식 " + n.styles.length + " · 도형 " + n.shapes.length + " · 이동 " + n.moves.length + (sig() !== savedSig ? " · 저장 안 됨" : "") + (stale ? " · 원문이 바뀌어 적용되지 않는 예전 수정 " + stale + "건" : ""));
     }
     function setTool(t) { tool = t; document.body.classList.toggle("ed-draw", t !== "sel"); Array.prototype.forEach.call(document.querySelectorAll("#ed-ui [data-t]"), function (b) { b.classList.toggle("on", b.getAttribute("data-t") === t); }); }
     function setOn(v) {
@@ -2611,7 +2623,8 @@ a.bst:hover { text-decoration: underline; }
       '<span class="sp"></span><label class="c-bg">배경 <input type="color" id="ed-bg"></label><button type="button" id="ed-nobg" class="c-bg" title="배경 없음(투명)">없음</button><label class="c-fg">글자 <input type="color" id="ed-fg"></label><label class="c-st">선 <input type="color" id="ed-st"></label>' +
       '<span class="sp c-fm"></span><span class="c-fm ed-fm"><button type="button" data-f="bold" title="굵게 (Ctrl+B)"><b>B</b></button><button type="button" data-f="italic" title="기울임 (Ctrl+I)"><i>I</i></button><button type="button" data-f="underline" title="밑줄 (Ctrl+U)"><u>U</u></button><button type="button" data-f="strike" title="취소선"><s>S</s></button><button type="button" data-z="-2" title="글자 작게 (블록·글상자 전체)">A−</button><button type="button" data-z="2" title="글자 크게 (블록·글상자 전체)">A+</button></span>' +
       '<span class="sp"></span><button type="button" id="ed-up" class="c-el" title="바로 위 요소(블록)를 선택">↑ 상위</button><button type="button" id="ed-mu" class="c-el" title="선택한 블록을 한 칸 위로 (Alt+↑)">▲ 위로</button><button type="button" id="ed-md" class="c-el" title="선택한 블록을 한 칸 아래로 (Alt+↓)">▼ 아래로</button><button type="button" data-w="-80" class="c-w" title="블록 폭 좁게">⇥⇤ 좁게</button><button type="button" data-w="80" class="c-w" title="블록 폭 넓게 (오른쪽 여백까지)">⇤⇥ 넓게</button><button type="button" data-w="0" class="c-w" title="블록 폭 최대 + 오른쪽까지 글자를 채움 — 줄 수를 줄임">폭 최대</button><button type="button" data-w="1" class="c-w" title="줄바꿈 없이 한 줄로 (넘치면 글자를 자동으로 줄임)">한 줄로</button><button type="button" id="ed-rs" class="c-el" title="이 요소의 서식(색·굵기·크기·폭) 수정을 취소">서식 초기화</button><button type="button" id="ed-del" class="c-sh">삭제</button><button type="button" id="ed-undo" title="되돌리기 (Ctrl/⌘+Z)" aria-label="되돌리기"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg></button>' +
-      '<span class="sp"></span><button type="button" id="ed-save" class="pri">저장 (git)</button><button type="button" id="ed-tok" title="GitHub 토큰 입력/삭제">토큰</button></div><div class="ed-msg" id="ed-msg" role="status"></div>';
+      '<span class="sp"></span><button type="button" id="ed-save" class="pri">저장 (git)</button><button type="button" id="ed-tok" title="GitHub 토큰 입력/삭제">토큰</button></div><div class="ed-msg" id="ed-msg" role="status"></div>' +
+      '<form class="ed-cred" id="ed-cred" hidden onsubmit="return false"><span class="ed-cred-t"></span><label>비밀번호 <input type="password" id="ed-pw" autocomplete="current-password"></label><label>이름 <input type="text" id="ed-nm" maxlength="30" autocomplete="name"></label><button type="submit" id="ed-cred-ok" class="pri">확인</button><button type="button" id="ed-cred-x">취소</button></form>';
     document.body.appendChild(ui);
     var tg = document.createElement("button");
     /* 편집 버튼은 편집자에게만: 이 브라우저에 토큰이 있거나 주소에 ?edit 를 붙여 연 경우 (고객사 화면에는 안 보임) */
@@ -2620,6 +2633,7 @@ a.bst:hover { text-decoration: underline; }
     tg.type = "button"; tg.id = "ed-toggle"; tg.className = "pg-back"; tg.setAttribute("aria-pressed", "false"); tg.title = "화면 편집 (글자 · 도형 · 색상)"; tg.textContent = "✎ 편집";
     $("fs").parentNode.insertBefore(tg, $("fs"));
     tg.addEventListener("click", function () { setOn(!on); });
+    $("ed-cred").addEventListener("keydown", function (ev) { ev.stopPropagation(); if (ev.key === "Enter") { ev.preventDefault(); $("ed-cred-ok").click(); } else if (ev.key === "Escape") { ev.preventDefault(); $("ed-cred-x").click(); } });
     ui.addEventListener("mousedown", function (ev) { if (ev.target.closest("[data-f],[data-z],[data-w]")) ev.preventDefault(); }); /* 서식 버튼은 글자 선택·편집 상태를 유지 */
     ui.addEventListener("click", function (ev) {
       var b = ev.target.closest("button"); if (!b) return;
@@ -2628,7 +2642,9 @@ a.bst:hover { text-decoration: underline; }
       else if (b.hasAttribute("data-z")) size(+b.getAttribute("data-z"));
       else if (b.hasAttribute("data-w")) width(+b.getAttribute("data-w"));
       else if (b.id === "ed-save") save();
-      else if (b.id === "ed-tok" && srvOn) { askPw(); askName(); msg(pw() ? "비밀번호를 저장했습니다" + (editor() ? " · 편집자 " + editor() : "") : "비밀번호를 삭제했습니다."); }
+      else if (b.id === "ed-tok" && srvOn) credForm(false, null);
+      else if (b.id === "ed-cred-ok") { var v1 = $("ed-pw").value.trim(), v2 = $("ed-nm").value.trim(); try { v1 ? localStorage.setItem(PK, v1) : localStorage.removeItem(PK); if (v2) localStorage.setItem(NK, v2.slice(0, 30)); } catch (e) {} $("ed-cred").hidden = true; msgHold = 0; if (!v1) msg("비밀번호를 지웠습니다.", 1); else if (!v2) msg("이름을 입력해야 저장할 수 있습니다.", 1); else if (credThen) { var fn = credThen; credThen = null; fn(); } else msg("비밀번호 · 이름을 저장했습니다 · 편집자 " + v2); }
+      else if (b.id === "ed-cred-x") { $("ed-cred").hidden = true; credThen = null; msgHold = 0; msg("저장하지 않았습니다.", 1); }
       else if (b.id === "ed-tok") { askToken(); if (token()) askName(); msg(token() ? "토큰을 저장했습니다" + (editor() ? " · 편집자 " + editor() : "") : "토큰을 삭제했습니다."); startPull(on); }
       else if (b.id === "ed-undo") undo();
       else if (b.id === "ed-del") { if (selShape) delShape(); }

@@ -113,6 +113,7 @@ module.exports = function (base) {
   DK.blk.doneRows = DK.blk.doneRows.concat([["필요 인력 (청구)", "15.00 MM (11월 5 + 12월 10)", "25.00 MM (11월 5 + 12월 10 + 1월 10)"]]);
   DK.man.kicker = "Item2 · 추가 인력 산정";
   DK.man.cards[1].d = "실제 대응분 · ACOS 인력안 T2사 검토 중";
+  DK.man.lede = "개발 조직은 15명 내외로 확보 · 대응하되 유휴 확보분은 LGU+가 부담하고, 실제 대응 예상분 11월 5 · 12월 10 · 1월 10 MM에 해당하는 부분에 대해 인정 요청 드립니다."; /* 화면 편집(i2-man 리드) 문구를 원본에 반영 */
   DK.man.bullets.push("월 10 MM 산정분 중 ACOS 인력 활용안은 현재 T2사에서 검토 중이며, 검토 결과가 확정되는 대로 반영합니다.");
   DK.man.title = "DVT 개발 인력 유지 · 예측 공수 25.00 MM (11.18 ~ 2027.01.29, 1월 말 종료 기준)";
   DK.man.foot += ". 12월 말 종료로 확정되면 1월분 10.0 MM을 제외한 15.00 MM";
