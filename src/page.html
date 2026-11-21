@@ -42,6 +42,8 @@ button { font: inherit; color: inherit; }
 .bar-in { max-width: 1240px; margin: 0 auto; padding: 10px 24px; display: flex; align-items: center; gap: 12px 20px; flex-wrap: wrap; }
 .brand { font-weight: 700; font-size: 14px; white-space: nowrap; }
 .brand span { color: var(--ink-3); font-weight: 500; }
+.brand-a { color: inherit; text-decoration: none; border-radius: 4px; padding: 4px 6px; margin: -4px -6px; display: inline-block; }
+.brand-a:hover { background: var(--wash); text-decoration: underline; text-underline-offset: 3px; }
 .nav { display: flex; gap: 2px; flex-wrap: wrap; margin-right: auto; }
 .bar-in .brand { margin-right: auto; }
 .bar-in .nav { order: 3; flex-basis: 100%; margin-right: 0; } /* 전체 화면 · 편집 버튼을 상단 첫 줄 오른쪽에 두고 메뉴는 아래 줄 */
@@ -929,6 +931,29 @@ a.bst:hover { text-decoration: underline; }
 #app > section > #pg-back { position: absolute; top: 18px; right: 22px; z-index: 6; min-height: 34px; box-shadow: 0 2px 10px rgba(23, 20, 26, .12); }
 .backon .sh-top, .backon > .sheet-no { padding-right: 128px; }
 .mmchart.focus .r5svg defs * { opacity: 1 !important; }
+/* ── 장표 내 검색 ── */
+.bar-in #srch-btn { order: 2; }
+#srch-btn kbd { font: inherit; font-size: 11px; font-weight: 700; border: 1px solid var(--line); border-radius: 3px; padding: 0 5px; color: var(--ink-2); }
+.srch-scrim { position: fixed; inset: 0; z-index: 60; background: rgba(23, 20, 26, .32); }
+.srch { position: fixed; z-index: 61; top: 64px; left: 50%; transform: translateX(-50%); width: min(680px, calc(100vw - 32px)); max-height: calc(100vh - 96px); display: flex; flex-direction: column; background: var(--paper); border: 1px solid var(--line); border-radius: 8px; box-shadow: 0 12px 40px rgba(23, 20, 26, .22); }
+.srch[hidden], .srch-scrim[hidden] { display: none; }
+.srch-h { display: flex; align-items: center; gap: 8px; padding: 12px 14px; border-bottom: 1px solid var(--line); }
+.srch-h svg { width: 18px; height: 18px; color: var(--ink-2); flex: none; }
+.srch-h input { flex: 1; min-width: 0; font: inherit; font-size: 16px; border: 0; outline: 0; background: transparent; color: var(--ink); padding: 4px 0; }
+.srch-h label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.srch-h .srch-x { font: inherit; font-size: 13px; border: 1px solid var(--line); background: var(--paper); color: var(--ink-2); border-radius: 4px; padding: 4px 10px; min-height: 28px; cursor: pointer; }
+.srch-n { padding: 8px 14px 0; font-size: 12.5px; color: var(--ink-2); }
+.srch ul { list-style: none; margin: 0; padding: 6px; overflow: auto; }
+.srch li { margin: 0; padding: 8px 10px; border-radius: 6px; cursor: pointer; }
+.srch li[aria-selected="true"] { background: var(--accent-wash); outline: 2px solid var(--accent); outline-offset: -2px; }
+.srch li .w { display: flex; gap: 8px; align-items: baseline; font-size: 13px; font-weight: 700; color: var(--ink); }
+.srch li .w i { font-style: normal; font-size: 11px; font-weight: 700; color: #fff; background: var(--ink-2); border-radius: 3px; padding: 0 5px; flex: none; }
+.srch li .w i.i1 { background: var(--i1); } .srch li .w i.i2 { background: var(--i2); } .srch li .w i.dr { background: var(--paper); color: var(--ink-2); border: 1px solid var(--line); }
+.srch li .s { font-size: 13px; color: var(--ink-2); margin-top: 2px; }
+.srch li mark, .srch-tip mark { background: var(--mark); color: var(--ink); padding: 0 1px; border-radius: 2px; }
+.srch-tip { padding: 8px 14px 12px; font-size: 12px; color: var(--ink-3); border-top: 1px solid var(--line); }
+::highlight(srch) { background-color: var(--mark); color: var(--ink); }
+::highlight(srch-cur) { background-color: #ffb300; color: var(--ink); }
 </style>
 </head>
 <body data-mode="changed">
@@ -937,6 +962,7 @@ a.bst:hover { text-decoration: underline; }
     <button type="button" class="pg-back" id="pg-back" hidden><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M12 5 7 10l5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>이전 화면</button>
     <div class="brand" id="brand"></div>
     <nav class="nav" id="nav" aria-label="섹션"></nav>
+    <button type="button" class="pg-back" id="srch-btn" aria-haspopup="dialog" aria-controls="srch" title="장표 검색 (/ 또는 Ctrl+K)"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m12.5 12.5 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>검색 <kbd>/</kbd></button>
     <button type="button" class="pg-back" id="fs" aria-pressed="false" title="전체 화면 (F)"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3.5 7.5v-4h4M16.5 7.5v-4h-4M3.5 12.5v4h4M16.5 12.5v4h-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>전체 화면 <kbd>F</kbd></button>
   </div>
 </header>
@@ -955,6 +981,13 @@ a.bst:hover { text-decoration: underline; }
   <div class="p-head"><button type="button" class="p-back" id="p-back"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M12 5 7 10l5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>돌아가기</button><div><small id="p-kicker"></small><h3 id="p-title"></h3></div><button type="button" class="p-close" id="p-close">닫기</button></div>
   <div class="p-body" id="p-body"></div>
 </aside>
+<div class="srch-scrim" id="srch-scrim" hidden></div>
+<div class="srch" id="srch" role="dialog" aria-modal="true" aria-label="장표 검색" hidden>
+  <div class="srch-h"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m12.5 12.5 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><label for="srch-q">장표 · 부록 · 상세 보기 내용 검색</label><input id="srch-q" type="search" role="combobox" aria-expanded="false" aria-controls="srch-list" aria-autocomplete="list" autocomplete="off" spellcheck="false" placeholder="찾을 내용 (예: 10.10, VDP, 콜버튼)"><button type="button" class="srch-x" id="srch-x">닫기</button></div>
+  <div class="srch-n" id="srch-n" role="status" aria-live="polite"></div>
+  <ul id="srch-list" role="listbox" aria-label="검색 결과"></ul>
+  <div class="srch-tip">↑↓ 이동 · Enter 열기 · Esc 닫기 · 띄어쓰기는 무시하고 찾습니다</div>
+</div>
 <script id="data" type="application/json">/*__DATA__*/</script>
 <script>
 (function () {
@@ -1742,7 +1775,7 @@ a.bst:hover { text-decoration: underline; }
 
   /* ── mount ── */
   $("chg").innerHTML = '변경 이력 <b>' + esc(D.meta.changelog[0].v) + '</b>'; $("ver").textContent = D.meta.changelog[0].v; $("chg").setAttribute("aria-label", "이 장표의 변경 이력, 현재 " + D.meta.changelog[0].v);
-  $("brand").innerHTML = esc(D.meta.short || D.meta.title) + ' <span>· ' + esc(D.meta.owner) + ' ' + esc(D.meta.project) + ' · ' + esc(D.meta.date) + '</span>';
+  $("brand").innerHTML = '<a class="brand-a" href="#overview" title="요약(첫 장표)으로 이동">' + esc(D.meta.short || D.meta.title) + ' <span>· ' + esc(D.meta.owner) + ' ' + esc(D.meta.project) + ' · ' + esc(D.meta.date) + '</span></a>';
   var NAVS = [["overview", "요약"], ["i1-why", "Item1 ① 지연 사유"], ["i1-mm", "Item1 ② 공수 산출"], ["i2-plan", "Item2 ① 현황 · 진행 계획"], ["i2-man", "Item2 ② 추가 인력"]];
   $("nav").innerHTML = NAVS.map(function (n) { return '<a href="#' + n[0] + '">' + n[1] + '</a>'; }).join("") + '<span class="sep"></span><a href="#appendix">Appendix</a>';
   $("app").innerHTML = vOverview() + vI1Why() + vI1Mm() + vI2Plan() + vI2Man() + vAppendix();
@@ -1890,6 +1923,86 @@ a.bst:hover { text-decoration: underline; }
     else if (k === "Home") { ev.preventDefault(); go(0); }
     else if (k === "End") { ev.preventDefault(); go(pages.length - 1); }
   });
+  /* ── 장표 내 검색: 메인 · 부록 장표와 상세 보기(드로어) 본문 ── */
+  (function deckSearch() {
+    var dlg = $("srch"), scr = $("srch-scrim"), q = $("srch-q"), list = $("srch-list"), cnt = $("srch-n"), idx = null, res = [], sel = -1, opener = null, tq = null;
+    function walk(root, fn) { var tw = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, { acceptNode: function (n) { var e = n.parentElement; return !e || e.closest("script, style, #pg-back, #chg, .ed-layer") ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT; } }); var n; while ((n = tw.nextNode())) fn(n); }
+    function plain(root) { var a = []; walk(root, function (n) { var t = n.nodeValue.replace(/\s+/g, " ").trim(); if (t) a.push(t); }); return a.join(" "); }
+    function strip(t) { var s = "", m = []; for (var i = 0; i < t.length; i++) if (!/\s/.test(t[i])) { s += t[i].toLowerCase(); m.push(i); } return { s: s, m: m }; }
+    function pageLabel(p, k) { if (k < NMAIN) { var n = NAVS[k]; return { tag: n[1].indexOf("Item1") === 0 ? "i1" : n[1].indexOf("Item2") === 0 ? "i2" : "", code: k === 0 ? "요약" : n[1].split(" ").slice(0, 2).join(" "), title: n[1].indexOf("Item") === 0 ? n[1].split(" ").slice(2).join(" ") : (p.querySelector("h1, h2") || p).textContent.trim().slice(0, 60) }; }
+      var c = p.querySelector(".code"), t = p.querySelector("h3.t, h2, h1"); return { tag: "", code: c ? c.textContent.replace("Appendix", "").trim() || "부록" : "부록", title: t ? t.textContent.trim() : p.id }; }
+    function build() {
+      idx = [];
+      pages.forEach(function (p, k) { var L = pageLabel(p, k), t = plain(p); idx.push({ kind: "page", k: k, tag: L.tag, code: L.code, title: L.title, text: t, st: strip(t) }); });
+      var seen = {}, queue = [];
+      function grab(root) { Array.prototype.forEach.call(root.querySelectorAll("[data-panel]"), function (e) { var key = e.getAttribute("data-panel"); if (!seen[key]) { seen[key] = 1; var pg = e.closest("#app > section"); queue.push({ key: key, from: pg ? pages.indexOf(pg) : -1 }); } }); }
+      grab(document); var box = document.createElement("div");
+      for (var i = 0; i < queue.length && i < 600; i++) {
+        var c = null; try { c = panelContent(queue[i].key); } catch (e) { c = null; } if (!c) continue;
+        box.innerHTML = c.html; grab(box); var t = plain(box);
+        idx.push({ kind: "panel", key: queue[i].key, from: queue[i].from, tag: "dr", code: "상세", title: (c.kicker ? c.kicker + " · " : "") + c.title, text: c.title + " " + t, st: strip(c.title + " " + t) });
+      }
+    }
+    function snippet(e, qs) {
+      var at = e.st.s.indexOf(qs); if (at < 0) return esc(e.text.slice(0, 90));
+      var a = e.st.m[at], b = e.st.m[at + qs.length - 1] + 1, s0 = Math.max(0, a - 36), s1 = Math.min(e.text.length, b + 56);
+      return (s0 > 0 ? "… " : "") + esc(e.text.slice(s0, a)) + "<mark>" + esc(e.text.slice(a, b)) + "</mark>" + esc(e.text.slice(b, s1)) + (s1 < e.text.length ? " …" : "");
+    }
+    function run() {
+      var raw = q.value, qs = strip(raw).s; res = []; sel = -1;
+      if (!qs) { list.innerHTML = ""; cnt.textContent = ""; q.setAttribute("aria-expanded", "false"); q.removeAttribute("aria-activedescendant"); return; }
+      idx.forEach(function (e) { var n = 0, at = -1; while ((at = e.st.s.indexOf(qs, at + 1)) >= 0 && n < 99) n++; if (n) res.push({ e: e, n: n }); });
+      res.sort(function (x, y) { return (x.e.kind === "page" ? 0 : 1) - (y.e.kind === "page" ? 0 : 1) || (x.e.kind === "page" ? x.e.k - y.e.k : 0); });
+      var tot = 0; res.forEach(function (r) { tot += r.n; });
+      cnt.textContent = res.length ? "장표 " + res.filter(function (r) { return r.e.kind === "page"; }).length + "곳 · 상세 보기 " + res.filter(function (r) { return r.e.kind === "panel"; }).length + "곳에서 " + tot + "건" : "찾는 내용이 없습니다";
+      list.innerHTML = res.slice(0, 80).map(function (r, i) { var e = r.e; return '<li role="option" id="srch-o' + i + '" aria-selected="false" data-i="' + i + '"><div class="w"><i class="' + e.tag + '">' + esc(e.code) + '</i><span>' + esc(e.title) + '</span><span style="margin-left:auto;font-weight:400;color:var(--ink-3)">' + r.n + '건</span></div><div class="s">' + snippet(e, qs) + '</div></li>'; }).join("");
+      q.setAttribute("aria-expanded", res.length ? "true" : "false"); if (res.length) setSel(0);
+    }
+    function setSel(i) {
+      var items = list.children; if (!items.length) return; sel = (i + items.length) % items.length;
+      Array.prototype.forEach.call(items, function (li, k) { li.setAttribute("aria-selected", String(k === sel)); });
+      q.setAttribute("aria-activedescendant", "srch-o" + sel); items[sel].scrollIntoView({ block: "nearest" });
+    }
+    function ranges(root, qs) {
+      var nodes = [], s = "", m = []; walk(root, function (n) { var v = n.nodeValue; for (var i = 0; i < v.length; i++) if (!/\s/.test(v[i])) { s += v[i].toLowerCase(); m.push([n, i]); } });
+      var out = [], at = -1; while ((at = s.indexOf(qs, at + 1)) >= 0 && out.length < 200) { var r = document.createRange(), a = m[at], b = m[at + qs.length - 1]; r.setStart(a[0], a[1]); r.setEnd(b[0], b[1] + 1); out.push(r); }
+      return out;
+    }
+    function mark(root, qs) {
+      clearMark(); var rs = ranges(root, qs); if (!rs.length) return;
+      var vis = rs.filter(function (r) { var e = r.startContainer.parentElement; return e && e.getClientRects().length; }), first = vis[0] || rs[0];
+      if (window.CSS && CSS.highlights && window.Highlight) { var H = window.Highlight; CSS.highlights.set("srch", new (Function.prototype.bind.apply(H, [null].concat(rs)))()); CSS.highlights.set("srch-cur", new Highlight(first)); }
+      var el = first.startContainer.parentElement; if (el && el.scrollIntoView) setTimeout(function () { el.scrollIntoView({ block: "center" }); }, 30);
+      clearTimeout(tq); tq = setTimeout(clearMark, 12000);
+    }
+    function clearMark() { if (window.CSS && CSS.highlights) { CSS.highlights.delete("srch"); CSS.highlights.delete("srch-cur"); } }
+    function pick(i) {
+      var r = res[i]; if (!r) return; var e = r.e, qs = strip(q.value).s; close(true);
+      if (e.kind === "page") { if (document.body.classList.contains("open")) closePanel(); go(e.k, { push: e.k !== cur }); mark(pages[e.k], qs); }
+      else { if (e.from >= 0 && e.from !== cur && !document.body.classList.contains("open")) go(e.from, { push: true }); openPanel(e.key); mark($("p-body"), qs); }
+    }
+    function open() {
+      if (!dlg.hidden) { q.select(); return; }
+      opener = document.activeElement; build(); dlg.hidden = false; scr.hidden = false; $("srch-btn").setAttribute("aria-expanded", "true"); q.focus(); q.select(); if (q.value) run();
+    }
+    function close(keep) { if (dlg.hidden) return; dlg.hidden = true; scr.hidden = true; $("srch-btn").setAttribute("aria-expanded", "false"); if (!keep && opener && opener.focus) opener.focus(); }
+    $("srch-btn").addEventListener("click", open); $("srch-x").addEventListener("click", function () { close(); }); scr.addEventListener("click", function () { close(); });
+    q.addEventListener("input", run);
+    list.addEventListener("click", function (ev) { var li = ev.target.closest("li[data-i]"); if (li) pick(+li.getAttribute("data-i")); });
+    dlg.addEventListener("keydown", function (ev) {
+      var k = ev.key; ev.stopPropagation();
+      if (k === "Escape") { ev.preventDefault(); close(); }
+      else if (k === "ArrowDown") { ev.preventDefault(); setSel(sel + 1); }
+      else if (k === "ArrowUp") { ev.preventDefault(); setSel(sel - 1); }
+      else if (k === "Enter") { ev.preventDefault(); if (sel >= 0) pick(sel); }
+      else if (k === "Tab") { ev.preventDefault(); (document.activeElement === q ? $("srch-x") : q).focus(); }
+    });
+    document.addEventListener("keydown", function (ev) {
+      var tag = ev.target && ev.target.tagName, ed = ev.target && ev.target.isContentEditable;
+      if (((ev.ctrlKey || ev.metaKey) && (ev.key === "k" || ev.key === "K")) || (ev.key === "/" && !ev.altKey && !ev.ctrlKey && !ev.metaKey && tag !== "INPUT" && tag !== "TEXTAREA" && !ed)) { ev.preventDefault(); ev.stopPropagation(); open(); }
+    }, true);
+    document.addEventListener("click", function (ev) { if (!ev.target.closest("#srch")) clearMark(); }, true);
+  })();
   /* ── sums: click a total to see which numbers make it ── */
   function numOf(t) { t = String(t).replace(/−/g, "-").replace(/,/g, "").replace(/MM|MD/g, "").trim(); return /^[+-]?\d+(\.\d+)?$/.test(t) ? parseFloat(t) : null; }
   function txtOf(el) { if (el.hasAttribute("data-v")) return el.getAttribute("data-v"); var v = el.querySelector(".v") || el.querySelector(".evb > span:first-child"); return (v ? v.textContent : el.textContent).trim(); }
