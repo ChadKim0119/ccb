@@ -898,6 +898,19 @@ module.exports = {
   summary, schedule, effort, appendix,
 };
 
+// ── 2026.11.21 Item1 + Item2 통합 장표 ──
+require("./merge.js")(module.exports);
+module.exports.meta.title = "Global South 추가 공수 협의 · Item1 ACOS · VDP 지연 추가 개발 · Item2 DVT 개발 인력 유지";
+module.exports.meta.short = "추가 공수 협의 (Item1 · Item2)";
+module.exports.meta.date = "2026.11.21";
+module.exports.meta.changelog.unshift({ v: "v20", at: "2026.11.21", items: [
+  "DVT · E2E 운영방안 장표와 통합: 첫 장에 Item1(ACOS · VDP 지연 추가 개발 22.06 MM)과 Item2(DVT 개발 인력 유지) 핵심 요약",
+  "Item1을 2장으로 재구성: ① 일정 변경과 8.10 · 10.10 MM 항목별 지연 사유 · 증적(오른쪽 패널) ② 공수 산출 — 10.10 MM의 모든 구성 숫자에 마우스를 올리면 산식 표시",
+  "Item2를 최신 DVT 평가(992 TC · Pass 656 · Fail 2 · NT 334)로 갱신하고, 대안(A · B · C) 비교 없이 '잔여 이슈 일정 조율로 지속 관리 + E2E 병행(초반 GS TC)' 기조로 통일. DVT 종료(12월 말 15.00 / 1월 말 25.00 MM)는 TMC 측 선행 조건 해소에 따름",
+  "부록 추가: E1 고객사 증적 요청 5개 항목 대응표, E2 항목별 지연 사유 · 증적, B1 월별 투입 공수 표(기존 4장), Item2 DVT 결과 · 원인 · E2E 준비 부록",
+  "A13 · A16 현재 상태를 최신 평가로 갱신, A15 · A16 향후 공수를 Item2 산정(25.00 MM)으로 통일"
+] });
+
 if (require.main === module) {
   const d = module.exports;
   const sum = (a) => Math.round(a.reduce((x, y) => x + y, 0) * 100) / 100;
