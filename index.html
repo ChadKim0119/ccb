@@ -2513,6 +2513,26 @@ a.bst:hover { text-decoration: underline; }
     }
     /* ── 공동 편집: 저장할 때 다른 사람이 그사이 저장한 수정과 항목 단위로 합치고, 편집 중에는 20초마다 다른 사람 수정을 받아 옴 ── */
     var NK = "ccb_editor", API = "https://api.github.com/repos/" + REPO + "/contents/" + FILE;
+    /* 서버 저장(Vercel /api/edits)이 설정돼 있으면 편집 비밀번호 하나로 저장 · 동기화. 없으면 기존 GitHub 토큰 방식 */
+    var SRV = "/api/edits", PK = "ccb_edit_pw", srvOn = false;
+    var pw = function () { try { return localStorage.getItem(PK) || ""; } catch (e) { return ""; } };
+    function askPw(again) { var v = prompt((again ? "비밀번호가 맞지 않습니다. " : "") + "편집 비밀번호를 입력하세요. (이 브라우저에만 저장됩니다. 비우면 삭제)", again ? "" : pw()); if (v === null) return pw(); try { v.trim() ? localStorage.setItem(PK, v.trim()) : localStorage.removeItem(PK); } catch (e) {} return v.trim(); }
+    async function srvGet() { var r = await fetch(SRV + "?t=" + Date.now(), { cache: "no-store" }); if (!r.ok) throw new Error("편집 저장소 조회 실패(" + r.status + ")"); var j = await r.json(); return { sha: j.sha, text: j.text || "" }; }
+    async function srvSave() {
+      var who = editor() || askName(), key = pw() || askPw(); if (!key) return msg("비밀번호가 없어 저장하지 않았습니다.", 1);
+      msg("저장 중…");
+      try {
+        for (var tries = 0; tries < 2; tries++) {
+          var r = await fetch(SRV, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ pw: key, base: loadedText, mine: JSON.stringify(serialize()), name: who }) });
+          var j = await r.json().catch(function () { return {}; });
+          if (r.status === 401) { key = askPw(true); if (!key) return msg("저장을 취소했습니다.", 1); continue; }
+          if (!r.ok) throw new Error(j.error || "저장 실패(" + r.status + ")");
+          loadedText = j.text; remoteSha = j.sha; if (j.merged) replaceState(parse(j.text)); savedSig = sig();
+          return msg("저장됨 · 커밋 " + String(j.commit || "").slice(0, 7) + (j.merged ? " · 다른 편집자 수정과 합침" : "") + (j.conflicts ? " · 같은 곳을 함께 고친 " + j.conflicts + "건은 내 수정으로 저장" : "") + " · 바로 모든 화면에 반영");
+        }
+        msg("비밀번호가 맞지 않아 저장하지 않았습니다.", 1);
+      } catch (e) { msg(String(e.message || e), 1); }
+    }
     var editor = function () { try { return localStorage.getItem(NK) || ""; } catch (e) { return ""; } };
     function askName() { var v = prompt("편집자 이름 (저장 기록에 남습니다)", editor()); if (v !== null && v.trim()) { try { localStorage.setItem(NK, v.trim().slice(0, 30)); } catch (e) {} } return editor(); }
     function hdr(tk) { return { Authorization: "Bearer " + tk, Accept: "application/vnd.github+json" }; }
@@ -2540,7 +2560,7 @@ a.bst:hover { text-decoration: underline; }
     }
     function replaceState(obj) { S = { texts: {}, styles: {}, shapes: [], moves: {} }; load(JSON.stringify(obj)); applyAll(); }
     async function save() {
-      stopEdit();
+      stopEdit(); if (srvOn) return srvSave();
       var tk = token() || askToken(); if (!tk) return msg("토큰이 없어 저장하지 않았습니다.", 1);
       var who = editor() || askName();
       msg("저장 중…");
@@ -2561,9 +2581,9 @@ a.bst:hover { text-decoration: underline; }
     }
     var remoteSha = null, pullT = null;
     async function pull(quiet) {
-      var tk = token(); if (!tk || editing || drag) return;
+      var tk = token(); if ((!srvOn && !tk) || editing || drag) return;
       try {
-        var r0 = await remoteGet(tk); if (r0.text === loadedText || (remoteSha && r0.sha === remoteSha)) { remoteSha = r0.sha; return; }
+        var r0 = srvOn ? await srvGet() : await remoteGet(tk); if (r0.text === loadedText || (remoteSha && r0.sha === remoteSha)) { remoteSha = r0.sha; return; }
         remoteSha = r0.sha;
         var dirty = sig() !== savedSig, m = merge3(parse(loadedText), serialize(), parse(r0.text));
         loadedText = r0.text; replaceState(m.obj);
@@ -2571,7 +2591,7 @@ a.bst:hover { text-decoration: underline; }
         msg("다른 편집자의 저장을 반영했습니다" + (dirty ? " · 내 수정은 아직 저장 안 됨" : ""));
       } catch (e) { if (!quiet) msg(String(e.message || e), 1); }
     }
-    function startPull(v) { clearInterval(pullT); pullT = null; if (v && token()) { pull(true); pullT = setInterval(function () { if (!document.hidden) pull(true); }, 20000); } }
+    function startPull(v) { clearInterval(pullT); pullT = null; if (v && (srvOn || token())) { pull(true); pullT = setInterval(function () { if (!document.hidden) pull(true); }, 20000); } }
 
     /* ── 툴바 ── */
     function msg(t, bad) { var m = $("ed-msg"); m.textContent = t; m.classList.toggle("bad", !!bad); }
@@ -2595,7 +2615,7 @@ a.bst:hover { text-decoration: underline; }
     document.body.appendChild(ui);
     var tg = document.createElement("button");
     /* 편집 버튼은 편집자에게만: 이 브라우저에 토큰이 있거나 주소에 ?edit 를 붙여 연 경우 (고객사 화면에는 안 보임) */
-    var EDITOR_UI = !!token() || /[?&#]edit\b/.test(location.search + location.hash);
+    var EDITOR_UI = !!token() || !!pw() || /[?&#]edit\b/.test(location.search + location.hash);
     tg.hidden = !EDITOR_UI;
     tg.type = "button"; tg.id = "ed-toggle"; tg.className = "pg-back"; tg.setAttribute("aria-pressed", "false"); tg.title = "화면 편집 (글자 · 도형 · 색상)"; tg.textContent = "✎ 편집";
     $("fs").parentNode.insertBefore(tg, $("fs"));
@@ -2608,6 +2628,7 @@ a.bst:hover { text-decoration: underline; }
       else if (b.hasAttribute("data-z")) size(+b.getAttribute("data-z"));
       else if (b.hasAttribute("data-w")) width(+b.getAttribute("data-w"));
       else if (b.id === "ed-save") save();
+      else if (b.id === "ed-tok" && srvOn) { askPw(); askName(); msg(pw() ? "비밀번호를 저장했습니다" + (editor() ? " · 편집자 " + editor() : "") : "비밀번호를 삭제했습니다."); }
       else if (b.id === "ed-tok") { askToken(); if (token()) askName(); msg(token() ? "토큰을 저장했습니다" + (editor() ? " · 편집자 " + editor() : "") : "토큰을 삭제했습니다."); startPull(on); }
       else if (b.id === "ed-undo") undo();
       else if (b.id === "ed-del") { if (selShape) delShape(); }
@@ -2627,7 +2648,8 @@ a.bst:hover { text-decoration: underline; }
     window.addEventListener("resize", function () { setTimeout(function () { if (on && !document.body.classList.contains("staged")) setOn(false); }, 250); });
 
     pages.forEach(layer);
-    (token() ? remoteGet(token()).then(function (r) { remoteSha = r.sha; return r.text; }).catch(function () { return fetch(FILE, { cache: "no-store" }).then(function (r) { return r.ok ? r.text() : ""; }); }) : fetch(FILE, { cache: "no-store" }).then(function (r) { return r.ok ? r.text() : ""; })).then(function (t) {
+    var staticGet = function () { return fetch(FILE, { cache: "no-store" }).then(function (r) { return r.ok ? r.text() : ""; }); };
+    (location.protocol.indexOf("http") === 0 ? fetch(SRV, { cache: "no-store" }).then(function (r) { if (!r.ok) throw 0; return r.json(); }).then(function (j) { srvOn = true; remoteSha = j.sha; $("ed-tok").textContent = "비밀번호"; $("ed-tok").title = "편집 비밀번호 · 편집자 이름"; $("ed-save").textContent = "저장"; return j.text || ""; }) : Promise.reject(0)).catch(function () { if (srvOn) throw 0; return token() ? remoteGet(token()).then(function (r) { remoteSha = r.sha; return r.text; }).catch(staticGet) : staticGet(); }).then(function (t) {
       loadedText = t; if (t) { load(t); applyAll(); }
       savedSig = sig();
     }).catch(function () { savedSig = sig(); });
