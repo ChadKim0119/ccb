@@ -461,6 +461,10 @@ module.exports = function (base) {
       ["근거 없는 항목: DMS 1.05 · Digital Key 0.25 · Share User 409", "근거 없는 항목: DMS 1.05 · Share User 409"],
       ["근거가 없는 항목: DMS 1.05 · Digital Key 0.25", "근거가 없는 항목: DMS 1.05 (Digital Key 0.25는 11/04 방화벽 등록 요청 메일로 확인)"],
     ];
+    /* 연동 범위: GSP DB의 LC-01 DCM Lifecycle(v1.19, 11/01) p.9 KR TSP 서버 구성도 · p.10 ACOS IF 표 기준 */
+    N.frame[2] = ["분석 대상 범위", "E2E는 KR TSP 서버와 13개 시스템(TMC 6 · TMKR 1 · LG U+ 2 · 외부 4) 간 연동을 대상으로 함. 잔여 이슈가 남은 상태에서는 PM 1인 분석만으로 원인 확인 · 조치까지 이어가기 어려움"];
+    N.worry[1] = "나온 건에 대해 원인 분석부터 쉽지 않음(13개 시스템 연동, 운영 주체 4곳)";
+    N.src = N.src.replace(" · 8개 시스템 15개 연동", "").replace("GSP DB · 11/24", "GSP DB(DCM Lifecycle 구성도) · 11/24");
     (function rep(o) { Object.keys(o).forEach((k) => { const v = o[k]; if (typeof v === "string") o[k] = DKR.reduce((t, r) => t.split(r[0]).join(r[1]), v); else if (v && typeof v === "object") rep(v); }); })({ DK, M, EV, A, X });
   })();
   base.M = M;
