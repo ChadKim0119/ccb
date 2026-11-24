@@ -314,6 +314,77 @@ module.exports = function (base) {
   if (X.apxNew.m11) X.apxNew.m11.message = X.apxNew.m11.message.replace("최신 집계임", "11/20 개발 PM 확인 집계임");
   (function fix3(o) { Object.keys(o).forEach((k) => { const v = o[k]; if (typeof v === "string") o[k] = v.replace("(최신 집계: Pass 21", "(11/20 개발 PM 확인 집계: Pass 21"); else if (v && typeof v === "object") fix3(v); }); })(X.appendix || {});
   if (EV.e2e1) { EV.e2e1.kicker = "Kensho E2E"; EV.e2e1.title = "GS TC 위주, DVT와 병행 (11/23 ~ 12/30)"; }
+
+  /* ── 11/24 전제 재정리: DVT는 고객사 요청으로 11/23부로 중지, 단 잔여 이슈는 해결까지 관리 ── */
+  (function dvtStop() {
+    const STOP = "DVT는 고객사 요청으로 11/23부로 중지";
+    EV.p1 = { kicker: "진행 기준 1", title: "DVT 중지(11/23) · 잔여 이슈 해결", facts: [STOP + "하되, 중지 시점의 잔여 이슈는 해결 대상으로 관리", "잔여 Fail 2 · NT 334건은 일정을 이유로 Pass 처리하지 않고 상태 그대로 기록", "TMC · TMKR 측 선행 조건이 해소되는 대로 해당 이슈를 수정 · 재확인 — 일정은 주간 단위로 조율", "결함은 개발사가 수정 · 재확인"], src: ["r3", "pm1111"], apx: "apx-total" };
+    EV.p2.title = "E2E 병행 수행";
+    EV.p2.facts = EV.p2.facts.map((t) => t.replace("E2E는 DVT 잔여 대응과 병행", "E2E는 잔여 이슈 해결과 병행").replace("Kensho E2E를 DVT와 병행 수행", "Kensho E2E 수행"));
+    EV.p3.title = "외부 선행 조건 해소가 잔여 이슈 해결 완료 시점을 결정";
+    EV.p3.facts[2] = "11월 중 해소 → 12월 말 해결 완료 가능 / 12월 중 단계적 해소 → 1월 말 해결 완료";
+    EV.p5.facts = EV.p5.facts.map((t) => t.replace("DVT 종료 시점 확정에 따라", "잔여 이슈 해결 완료 시점에 따라"));
+    EV.reg.facts = EV.reg.facts.map((t) => t.replace("GS TC 위주 E2E와 DVT 잔여 대응을 병행", "GS TC 위주 E2E와 잔여 이슈 해결을 병행"));
+    EV.deadline.title = "12/30 = Kensho E2E 회귀 테스트 종료일 · 잔여 이슈 해결 현황 점검";
+    EV.deadline.facts[1] = "12월 중 TMC · TMKR 측 선행 조건 해소 현황을 점검해 잔여 이슈 해결 완료를 12월 말로 할지 1월 말로 할지 확정";
+    EV.end.kicker = "근거 · 잔여 이슈 해결 완료 시점";
+    EV.end.title = "12월 말 vs 1월 말 — 잔여 이슈의 선행 조건 해소 시점에 달림";
+    EV.end.facts = EV.end.facts.map((t) => t.replace("12월 말 종료:", "12월 말 해결 완료:").replace("1월 말 종료:", "1월 말 해결 완료:").replace("12월 말 종료 시", "12월 말 해결 완료 시").replace("1월 말 종료 시", "1월 말 해결 완료 시"));
+    if (EV.e2e1) { EV.e2e1.title = "GS TC 위주, 잔여 이슈 해결과 병행 (11/23 ~ 12/30)"; EV.e2e1.facts = EV.e2e1.facts.map((t) => t.replace("DVT 잔여 이슈 해소 현황", "잔여 이슈 해결 현황")); }
+    if (EV.t1123) { EV.t1123.title = "11/23 DVT 중지(고객사 요청) · Kensho E2E 착수"; EV.t1123.facts = [STOP + ". 잔여 이슈는 해결 대상으로 계속 관리"].concat(EV.t1123.facts || []); }
+
+    DK.s1.title = STOP + "하되 잔여 이슈는 해결까지 관리하고, E2E는 병행 수행함. 초반 E2E는 GS TC 위주로 진행하며, 이를 위한 개발 인력 유지(월 10 MM)가 필요함";
+    DK.s1.kpis[3].small = "추가 인력 (11/18 ~ 해결 완료)";
+    DK.s1.kpis[3].d = "12월 말 해결 15.00 · 1월 말 해결 25.00 (선행 조건 해소에 따름)";
+    DK.s1.cols[2].head = "DVT는 11/23 중지, 잔여 이슈는 해결까지 관리하고 E2E는 GS TC 위주로 병행 수행함";
+    DK.s1.cols[2].body = STOP + "함. 잔여 이슈는 해결까지 관리하며, VDP 서버 영향으로 e-Care E2E는 진행이 불가하여 초반 E2E는 GS TC 위주로 진행함. 잔여 이슈를 언제 해결할 수 있는지(12월 말 또는 1월 말)는 TMC · TMKR 측 선행 조건 해소에 달려 있으며, 그때까지 대기 · 운영 15명 내외, 청구 월 10 MM이 필요함.";
+    DK.s1.cols[2].more = "해결 완료 시점 근거";
+    DK.s1.ask = "요청 사항: ① DVT는 고객사 요청으로 11/23 중지, 잔여 이슈는 해결까지 관리 ② E2E는 GS TC 위주로 병행 수행(e-Care는 VDP 서버 정상화 후) ③ 11/18 이후 개발 인력 월 10 MM(11월 5 MM) 인정 — 12월 말 해결 완료 시 15.00 MM, 1월 말 해결 완료 시 25.00 MM";
+    DK.blk.title = "잔여 이슈 5건은 TMC · TMKR 측 선행 조건이 풀려야 해소되며, 해소 시점이 잔여 이슈 해결 완료(12월 말 또는 1월 말)를 결정함";
+    DK.blk.doneTitle = "잔여 이슈 해결 완료 시점: 12월 말 vs 1월 말 (선행 조건 해소에 따름)";
+    DK.man.title = "DVT 잔여 이슈 해결 · E2E 대응 인력 유지 · 예측 공수 25.00 MM (11.18 ~ 2027.01.29, 1월 말 해결 완료 기준)";
+    DK.man.foot = DK.man.foot.replace("12월 말 종료로 확정되면", "12월 말 해결 완료로 확정되면");
+    DK.man.bullets = DK.man.bullets.map((t) => t.replace("DVT · E2E 기간에는 각 모듈 담당자가", "DVT 중지(11/23) 이후에도 잔여 이슈 해결 · E2E 기간에는 각 모듈 담당자가"));
+
+    const P = DK.plan;
+    P.title = STOP + "하고 E2E(GS TC 위주)를 착수함. 잔여 이슈는 TMC · TMKR 측 선행 조건 해소에 맞춰 12월 말 또는 1월 말까지 해결함";
+    P.lede = "DVT 중지(11/23) 시점의 잔여 이슈(Fail 2 · NT 334)는 상태 그대로 기록하고, 선행 조건이 풀리는 순서대로 해결 · 재확인함. Kensho E2E는 GS TC 위주로 병행함. 12월 중 해소 현황을 점검해 해결 완료 시점(12월 말 · 1월 말)을 확정함. 점선은 미확정 구간임.";
+    P.prem[0] = ["1", "DVT 중지 · 잔여 이슈 해결", STOP + ". 중지 시점 잔여 Fail 2 · NT 334건은 상태 그대로 기록하고, 선행 조건이 해소되는 대로 해결 · 재확인 (주간 일정 조율)", "해결 완료 시점 재협의"];
+    P.prem[1] = ["2", "Kensho E2E 병행", "11/23 착수, GS TC 위주로 잔여 이슈 해결과 병행. 회귀 테스트는 TMC 환경 구성(Procedure · DCM Update) 선결 후 수행", "E2E 일정 재조정"];
+    P.prem[2][3] = "해소 시점에 따라 12월 말 ↔ 1월 말 해결 완료";
+    P.prem[4][3] = "해결 완료 시점에 맞춰 1월분 조정";
+    P.tracks[0] = { h: "DVT 중지 (11/23) · 잔여 이슈 해결", b: STOP + ". 잔여 Fail · NT는 상태 그대로 기록하고, 위 선행 조건이 풀리는 대로 해결 · 재확인 (주간 일정 조율). 해소가 늦어지면 1월 말까지", ev: "dv:p1" };
+    P.tracks[1] = { h: "Kensho E2E · GS TC 위주 (11/23 ~ 12/30)", b: "VDP 서버 영향이 없는 GS TC 위주로 잔여 이슈 해결과 병행 수행. ACOS IF 기반 TC 포함", ev: "dv:e2e1" };
+    EV.prem.facts = P.prem.map((r) => r[0] + ". " + r[1] + " — " + r[2] + " (달라지면: " + r[3] + ")");
+    const T = DK.tl;
+    T.marks = T.marks.map((m) => m.l === "11/23 E2E 착수" ? Object.assign({}, m, { l: "11/23 DVT 중지 · E2E 착수" }) : m.l === "12/30 종료 시점 점검" ? Object.assign({}, m, { l: "12/30 해결 현황 점검" }) : m);
+    T.lanes[0] = { h: "잔여 이슈 해결", sub: "DVT는 11/23 중지", bars: [
+      { a: [2026, 11, 18], b: [2026, 12, 31], t: "dvt", l: "잔여 이슈 해결 · 선행 조건 해소분 수정 · 재확인", ev: "dv:p1" },
+      { a: [2027, 1, 1], b: [2027, 1, 29], t: "cond", dash: true, l: "선행 조건 해소 지연 시 1월 말까지", ev: "dv:end" },
+    ] };
+    T.lanes[1].sub = "GS TC 위주 · 병행";
+    T.lanes[1].bars[0].l = "GS TC 위주 · 잔여 이슈 해결과 병행 (ACOS IF 포함)";
+    T.notes = [STOP + "하되 잔여 이슈는 해결까지 관리하고 E2E는 병행 수행 (A · B 대안 비교 없이 단일 진행 기조)", "12월 중 TMC · TMKR 측 선행 조건 해소 현황을 점검해 잔여 이슈 해결 완료를 12월 말 또는 1월 말로 확정"];
+    const m4 = X.apxNew.m4;
+    m4.message = "11.18 이후 DVT 잔여 이슈 해결(DVT는 11/23 고객사 요청으로 중지)과 E2E 병행에 필요한 개발 인력 산정임. 해결 완료 시점(12월 말 / 1월 말)에 따라 1월분을 조정함.";
+    m4.rows[0] = ["1", "DVT 중지 · 잔여 이슈 해결", STOP + ". 잔여 Fail · NT는 상태 그대로 기록, 선행 조건 해소 시 해결 · 재확인", "해결 완료 시점 재협의", "잔여 N/T 재수행 · 회귀시험 2.60"];
+    m4.rows[1][2] = "11/23 착수, GS TC 위주로 잔여 이슈 해결과 병행. 회귀 테스트는 TMC 환경 구성 선결 후";
+    m4.rows[2][3] = "12월 말 ↔ 1월 말 해결 완료";
+    m4.rows[4][4] = "12월 말 해결 완료 15.00 · 1월 말 해결 완료 25.00";
+
+    const O = M.overview.i2;
+    O.kpi[2] = ["GS TC", "Kensho E2E 위주", "11/23 착수 · DVT 중지"];
+    O.stance = "NT 건 대응방안 : " + STOP + "하되, 잔여 이슈는 해결까지 관리하고 E2E는 병행 수행합니다. 초반 E2E는 GS TC 위주로 진행합니다.";
+    O.end[0].k = "12월 말 해결 가능 시"; O.end[0].c = "11월 중 TMC · TMKR 측 주요 선행 조건 해소 시";
+    O.end[1].k = "1월 말 해결 가능 시";
+    O.endNote = "잔여 이슈를 언제까지 해결할 수 있는지는 TMC · TMKR 측 선행 조건(VDP 서버 · ACOS API · CTI · DMS 등) 해소에 달려 있어, 12월 중 점검해 확정합니다.";
+    M.overview.ask = M.overview.ask.replace("DVT 종료 시점에 따라", "잔여 이슈 해결 완료 시점에 따라");
+    A.extraDvt.notes[1] = "잔여 이슈 해결 완료 시점은 TMC · TMKR 측 선행 조건 해소에 따라 2026년 12월 말 또는 2027년 1월 말로 확정 — 12월 말 해결 완료 시 15.00 MM(11월 5 + 12월 10)";
+    EV.deadline.facts = EV.deadline.facts.map((t) => t.replace("일정 조율을 통해 지속 관리", "해결까지 관리"));
+    if (EV.e2e1) EV.e2e1.facts = EV.e2e1.facts.map((t) => t.replace("진행 기조: DVT 잔여 이슈는 일정 조율을 통해 지속 관리하고 E2E는 병행 수행", "진행 기조: " + STOP + "하되, 잔여 이슈는 해결까지 관리하고 E2E는 병행 수행"));
+    if (X.apxNew.m11 && X.apxNew.m11.message) X.apxNew.m11.message = X.apxNew.m11.message.replace("Open Item으로 두고 일정 조율을 통해 지속 관리함", "Open Item으로 두고, DVT 중지(11/23, 고객사 요청) 이후에도 해결까지 관리함");
+    if (EV.e2e11) { EV.e2e11.title = "DVT 중지(11/23) · 잔여 이슈 해결 + E2E 병행 수행"; EV.e2e11.facts = [STOP + "하되, 잔여 이슈는 해결까지 관리하고 E2E는 병행 수행"].concat(EV.e2e11.facts.slice(1).map((t) => t.replace("E2E 기간에도 DVT 잔여 대응 인력이 함께 필요", "E2E 기간에도 잔여 이슈 해결 인력이 함께 필요"))); }
+  })();
   base.M = M;
   base.X = X;
   /* 고객사에 LGU+ 이름으로 나가는 자료: 요청 · 부담 주체를 LGU+로 통일 (변경 이력 meta는 원문 유지) */

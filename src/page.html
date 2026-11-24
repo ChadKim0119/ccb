@@ -975,6 +975,9 @@ a.bst:hover { text-decoration: underline; }
 .srch li .s { font-size: 13px; color: var(--ink-2); margin-top: 2px; }
 .srch li mark, .srch-tip mark { background: var(--mark); color: var(--ink); padding: 0 1px; border-radius: 2px; }
 .srch-tip { padding: 8px 14px 12px; font-size: 12px; color: var(--ink-3); border-top: 1px solid var(--line); }
+/* TMKR 연계 항목 표식 */
+.tk::after { content: "TMKR"; display: inline-block; margin-left: 5px; padding: 0 4px; font-size: 9.5px; font-weight: 700; line-height: 14px; letter-spacing: .02em; color: var(--ink-3); border: 1px solid var(--line); border-radius: 3px; vertical-align: 1px; white-space: nowrap; }
+td.tkm { background: rgba(23, 20, 26, .045); box-shadow: inset 0 -2px 0 rgba(23, 20, 26, .18); }
 ::highlight(srch) { background-color: var(--mark); color: var(--ink); }
 ::highlight(srch-cur) { background-color: #ffb300; color: var(--ink); }
 </style>
@@ -1680,7 +1683,7 @@ a.bst:hover { text-decoration: underline; }
     return '<section class="sheet i2" id="i2-man">' + sheetHead("Item2 ②", s.kicker.replace(/^Item2 · /, "")) + '<h2>' + esc(s.title) + '</h2><p class="lede">' + esc(s.lede) + '</p>' +
       '<div class="man-cols"><div><h3 class="blk-t" style="margin-top:0">' + esc(s.baseTitle) + '</h3><div class="man-cards">' + s.cards.map(function (c) { return '<div class="mc' + (c.hot ? " hot" : "") + '"><small>' + esc(c.small) + '</small><b>' + esc(c.v) + '</b><span>' + esc(c.d) + '</span></div>'; }).join("") + '</div>' +
       '<ul class="man-ul">' + s.bullets.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join("") + '</ul>' +
-      '<h3 class="blk-t">종료 시점별 청구 (대기 · 운영 월 15명 유지)</h3><div class="manend"><div><small>12월 말 종료 시</small><b class="num">15.00 MM</b><span>11월 5 + 12월 10</span></div><div class="hot"><small>1월 말 종료 시</small><b class="num">25.00 MM</b><span>+ 1월 10</span></div></div></div>' +
+      '<h3 class="blk-t">잔여 이슈 해결 완료 시점별 청구 (대기 · 운영 월 15명 유지)</h3><div class="manend"><div><small>12월 말 해결 완료 시</small><b class="num">15.00 MM</b><span>11월 5 + 12월 10</span></div><div class="hot"><small>1월 말 해결 완료 시</small><b class="num">25.00 MM</b><span>+ 1월 10</span></div></div></div>' +
       '<div>' + table(s.areaHead, s.areaRows, { nowrap: [0, 1, 3, 4, 5, 6], right: [3, 4, 5, 6], rowCls: function (r) { return r[0] === "합계" ? "tot" : ""; } }) + '<p class="blk-foot">' + esc(s.foot) + '</p></div></div></section>';
   }
   function dayN2(d) { return (Date.UTC(d[0], d[1] - 1, d[2]) - Date.UTC(XK.tl.start[0], XK.tl.start[1] - 1, XK.tl.start[2])) / 864e5; }
@@ -1698,10 +1701,10 @@ a.bst:hover { text-decoration: underline; }
     var preBlk = '<h3 class="i2h"><i>1</i>외부 선행 조건 <small>TMC · TMKR 측이 풀어야 DVT 재수행 · E2E 범위가 넓어짐</small></h3><div class="prec">' + t.pre.map(function (c) { return '<button type="button" class="pre-c ' + c.st + '" data-panel="' + c.ev + '"><span class="pre-t"><span class="otag" style="--oc:' + OC[c.o] + '">' + esc(c.o) + '</span><span class="bst ' + c.st + '">' + stl[c.st] + '</span></span><b>' + esc(c.h) + '</b><span class="pre-s">' + esc(c.s) + '</span><span class="pre-u">풀리면 → ' + esc(c.u) + '</span></button>'; }).join("") + '</div>';
     var ticks = ""; for (var k = 0; k <= N2; k += 7) ticks += '<i style="left:' + (k / N2 * 100).toFixed(2) + '%"></i>';
     return '<section class="sheet i2" id="i2-plan">' + sheetHead("Item2 ①", s.kicker.replace(/^Item2 · /, "")) + '<h2>' + esc(s.title) + '</h2><p class="lede">' + esc(s.lede) + '</p>' + dvtNow() + preBlk +
-      '<h3 class="i2h"><i>2</i>DVT 대응 · <i>3</i>Kensho E2E 일정</h3><div class="tl i2tl"><div class="tl-head"><span></span><div class="tl-ax">' + weeks.join("") + marks + '</div></div><div class="tl-body"><div class="tl-grid"><span></span><div>' + ticks + '</div></div>' + lanes + '</div></div>' +
-      '<div class="lg" style="margin-top:6px"><span><i class="sw2" style="background:var(--ink)"></i>DVT 잔여 이슈 관리</span><span><i class="sw2" style="background:var(--accent)"></i>종료 연장 가능 구간</span><span><i class="sw2" style="background:#00856a"></i>Kensho E2E (GS TC)</span><span><i class="sw2" style="background:none;box-shadow:inset 0 0 0 1.5px var(--ink-3)"></i>미확정</span></div>' +
+      '<h3 class="i2h"><i>2</i>잔여 이슈 해결 · <i>3</i>Kensho E2E 일정</h3><div class="tl i2tl"><div class="tl-head"><span></span><div class="tl-ax">' + weeks.join("") + marks + '</div></div><div class="tl-body"><div class="tl-grid"><span></span><div>' + ticks + '</div></div>' + lanes + '</div></div>' +
+      '<div class="lg" style="margin-top:6px"><span><i class="sw2" style="background:var(--ink)"></i>잔여 이슈 해결 (DVT는 11/23 중지)</span><span><i class="sw2" style="background:var(--accent)"></i>해결 연장 가능 구간</span><span><i class="sw2" style="background:#00856a"></i>Kensho E2E (GS TC)</span><span><i class="sw2" style="background:none;box-shadow:inset 0 0 0 1.5px var(--ink-3)"></i>미확정</span></div>' +
       '<div class="tracks t3">' + s.tracks.map(function (tk, i) { return '<button type="button" class="trk k' + i + '" data-panel="' + tk.ev + '"><b>' + esc(tk.h) + '</b><span>' + esc(tk.b) + '</span></button>'; }).join("") + '</div>' +
-      '<p class="blk-foot">진행 기준(DVT 잔여 관리 · E2E 병행 · 외부 선행 조건 · 범위 변경 · 인력 · 청구) <button type="button" class="more" data-panel="dv:prem">진행 기준 5가지 ›</button> <button type="button" class="more" data-panel="dv:end">종료 시점 12월 말 vs 1월 말 ›</button> <a class="more" href="#blk-dates">이슈별 해결 일자 (E4) ›</a></p></section>';
+      '<p class="blk-foot">진행 기준(DVT 중지 · 잔여 이슈 해결 · E2E 병행 · 외부 선행 조건 · 범위 변경 · 인력 · 청구) <button type="button" class="more" data-panel="dv:prem">진행 기준 5가지 ›</button> <button type="button" class="more" data-panel="dv:end">해결 완료 시점 12월 말 vs 1월 말 ›</button> <a class="more" href="#blk-dates">이슈별 해결 일자 (E4) ›</a></p></section>';
   }
 
   /* ── 부록: E1 증적 요청 대응표 · E2 항목별 지연 사유 · 증적 · B1 공수 표 · Item2 부록 ── */
@@ -1806,13 +1809,29 @@ a.bst:hover { text-decoration: underline; }
   var LINKNAME = {};
   NAVS.forEach(function (n) { var m = n[1].match(/^(Item\d [①②])/); if (m) LINKNAME[n[0]] = { code: m[1], name: n[1] }; });
   Array.prototype.forEach.call(document.querySelectorAll("#app > section"), function (sec) { var c = sec.querySelector(".code"), t = sec.querySelector("h3.t"); if (c && t) { var code = c.textContent.replace("Appendix", "").trim(); if (code) LINKNAME[sec.id] = { code: code, name: code + " " + t.textContent.replace(/\s*\([^()]*\)\s*$/, "").trim() }; } });
+  /* TMKR 연계 항목 표시 (Item1 10.10 · Item2 12월 · 1월 산정 항목): 글자는 그대로 두고 class만 붙여 작은 표식으로 구분 (편집 경로 · 검색에 영향 없음) */
+  var TK_SCOPE = "#i1-why, #i1-mm, #dvt-chg, #chg-plan, #delay-ev, #change-log, #i2-man, #apx-man, #p-body";
+  var TK_NAME = /^(?:[①②③④]\s*)?(CTI\/TCK|Global\/Local App|DMS(?: · Digital Key| \(Digital Key 향후분 포함\))?)(?:\s*·?\s*[\d.]+(?: MM)?)?$/;
+  function markTk(root) {
+    Array.prototype.forEach.call(root.querySelectorAll("td, th, span, b, h4, h5, dt, .cx"), function (e) {
+      if (!e.closest(TK_SCOPE) || e.closest("#blk-dates, .dvnow, .pre, .prec, #srch, .tk")) return;
+      if (Array.prototype.some.call(e.children, function (c) { return !/^(B|I|EM|STRONG|SMALL|SPAN)$/.test(c.tagName) || c.children.length; })) return;
+      if (TK_NAME.test(e.textContent.replace(/\s+/g, " ").trim()) && !e.querySelector(".tk")) e.classList.add("tk");
+    });
+    /* Item2 산정표: TMKR 연계 행의 12월 · 1월 칸을 옅게 구분 */
+    Array.prototype.forEach.call(root.querySelectorAll("table"), function (t) {
+      var hs = Array.prototype.map.call(t.querySelectorAll("thead th"), function (th) { return th.textContent.trim(); }), i12 = hs.indexOf("12월"), i1 = hs.indexOf("1월");
+      if (i12 < 0 || i1 < 0) return;
+      Array.prototype.forEach.call(t.querySelectorAll("tbody tr"), function (tr) { if (!tr.querySelector(".tk")) return; [i12, i1].forEach(function (i) { var c = tr.children[i]; if (c) c.classList.add("tkm"); }); });
+    });
+  }
   function normLinks(root) {
     Array.prototype.forEach.call(root.querySelectorAll('a[href^="#"]'), function (a) {
       var L = LINKNAME[a.getAttribute("href").slice(1)], tx = a.textContent.trim(); if (!L || tx.indexOf("#") >= 0 || tx.indexOf(L.code + " ") !== 0) return;
       a.textContent = L.name + (/[›→]\s*$/.test(tx) ? " ›" : "");
     });
   }
-  normLinks($("app"));
+  normLinks($("app")); markTk($("app"));
 
   /* ── mode switch (the control lives on the pages that use it) ── */
   function setMode(m) {
@@ -1904,7 +1923,7 @@ a.bst:hover { text-decoration: underline; }
   var lastFocus = null, pStack = [], pKey = null;
   function renderPanel(key) {
     var c = panelContent(key); if (!c) return false;
-    pKey = key; $("p-kicker").textContent = c.kicker; $("p-title").textContent = c.title; $("p-body").innerHTML = c.html; normLinks($("p-body")); stackTables($("p-body")); $("p-body").scrollTop = 0; return true;
+    pKey = key; $("p-kicker").textContent = c.kicker; $("p-title").textContent = c.title; $("p-body").innerHTML = c.html; normLinks($("p-body")); markTk($("p-body")); stackTables($("p-body")); $("p-body").scrollTop = 0; return true;
   }
   function stackTables(root) {
     Array.prototype.forEach.call(root.querySelectorAll("table.tbl:not(.wk):not(.stk)"), function (t) {
@@ -1914,7 +1933,7 @@ a.bst:hover { text-decoration: underline; }
       if (!tight && t.parentElement.scrollWidth <= t.parentElement.clientWidth + 2) return;
       t.classList.add("stk");
       Array.prototype.forEach.call(t.querySelectorAll("tbody tr"), function (tr) {
-        Array.prototype.forEach.call(tr.children, function (td, i) { if (!td.textContent.trim()) { td.classList.add("stk-empty"); return; } td.innerHTML = '<span class="stk-l">' + esc(heads[i] || "") + '</span><span class="stk-v">' + td.innerHTML + '</span>'; });
+        Array.prototype.forEach.call(tr.children, function (td, i) { if (!td.textContent.trim()) { td.classList.add("stk-empty"); return; } var tk = td.classList.contains("tk"); td.classList.remove("tk"); td.innerHTML = '<span class="stk-l">' + esc(heads[i] || "") + '</span><span class="stk-v' + (tk ? " tk" : "") + '">' + td.innerHTML + '</span>'; });
       });
     });
   }

@@ -912,6 +912,7 @@ module.exports.meta.changelog.unshift({ v: "v20", at: "2026.11.21", items: [
   "부록 추가: E1 고객사 증적 요청 5개 항목 대응표, E2 항목별 지연 사유 · 증적, B1 월별 투입 공수 표(기존 4장), Item2 DVT 결과 · 원인 · E2E 준비 부록",
   "A13 · A16 현재 상태를 최신 평가로 갱신, A15 · A16 향후 공수를 Item2 산정(25.00 MM)으로 통일"
 ] });
+module.exports.meta.changelog.unshift({ v: "v21", at: "2026.11.24", items: ["Item2 전제 재정리: DVT는 고객사 요청으로 11/23부로 중지, 중지 시점 잔여 이슈(Fail 2 · NT 334)는 해결까지 관리하고 E2E(GS TC 위주)와 병행. 12월 말 / 1월 말은 잔여 이슈 해결 완료 시점 기준으로 표기", "TMKR 연계 항목(CTI/TCK · Global/Local App · DMS)에 표식 추가"] });
 
 if (require.main === module) {
   const d = module.exports;
