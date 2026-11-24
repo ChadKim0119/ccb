@@ -417,8 +417,29 @@ module.exports = function (base) {
         { h: "회귀 테스트에서 나온 결함도 대응 불가", t: "회귀 테스트는 TMC Procedure 제공(11월 말 예상) · DCM Update 지원 후 수행되며 1월로 넘어갈 가능성이 있음(11/18 PM 회의). 회귀 결함을 수정할 개발 인력이 없으면 회귀 완료 판정을 받을 수 없음.", ev: [["apx-pre", "E2E 사전 준비 · 회귀 테스트"]] },
         { h: "Migration 단계 진입이 막힘", t: "24DCM Pre-Prod Regression Test는 ACOS E2E와 Regression이 모두 정상 완료된 경우에만 Migration 단계로 진행함. 잔여 이슈와 E2E 결함이 수정되지 않으면 Migration 일정 전체가 뒤로 밀림.", ev: [["dvt", "A5 일정 변경 비교 (24DCM Pre-Prod Regression)"]] },
       ],
+      frame: [
+        ["LGU+ 개발 범위", "개발 완료 — LGU+ 개발 로직은 내부 검증 완료(11/14 논의). 남은 Fail · NT는 외부 연동 선행 조건에 묶여 있음"],
+        ["E2E 계약 인력의 전제", "PM 0.25 MM(분석 업무)은 DVT가 클리어된 상태로 E2E에 들어간다는 프레임으로 산정됨. 당시 합의를 바꾸자는 것이 아니라, 그 전제(DVT 클리어)가 성립하지 않았다는 사실의 문제임"],
+        ["분석 대상 범위", "8개 시스템 · 15개 연동을 대상으로 하는 E2E로, 잔여 이슈가 남은 상태에서는 PM 1인 분석만으로 원인 확인 · 조치까지 이어가기 어려움"],
+      ],
+      now: [
+        ["API 연동 테스트가 끝나지 않음", "VDP(Diag) 24 TC 중 Fail 1 · NT 2, CCW 236 TC 전량 NT(CTI 미연동), DMS는 VDP 실데이터 미수신으로 시뮬레이터 대체 시험(11/20 집계)", "apx-total"],
+        ["ACOS API가 아직 변경되고 있음", "TSC-GC/GB Request/Response 변경 영향 지속, Redoc 사양 변경 · Pre-PROD 반영 일정에 따라 추가 개발 가능(E4 ⑤)", "blk-dates"],
+        ["인터페이스는 그대로인데 로직이 바뀜", "API 프로토콜(인터페이스)은 유지되나 24DCM과 로직이 바뀌고 있음 — 예: 회원가입 프로세스 변경", ""],
+        ["VDP(Diag) NT 2건은 LGU+ 개발과 무관", "VDP 서버(TMC) 영향으로 진입 자체가 안 된 건. 서버 정상화 전에는 수정할 대상이 없음", "blk-dates"],
+      ],
+      worry: ["E2E에서도 Fail · NT는 계속 나올 것", "나온 건에 대해 원인 분석부터 쉽지 않음(8개 시스템 · 15개 연동)", "잔여 이슈는 결국 해결해야 함 — 해결 주체(개발 인력)가 계약에 없음"],
+      ownHead: ["영역", "잔여", "TMC", "TMKR", "LGU+", "근거 · 확인 필요"],
+      ownRows: [
+        ["CCW", "NT 236", "연계환경 공동", "236", "0", "CTI 중계서버(TCK) 미개발로 전량 NT — 10/21 · 11/03 PM 회의록, E2E 사전준비 #10 CTI 중계(PIC TMKR). 27CY SU#2 전용 연계환경은 TMKR · TMC 공동(E4 ③)"],
+        ["VDP(Diag)", "Fail 1 · NT 2", "NT 2", "0", "확인 필요", "NT 2는 VDP 서버(TMC) 영향. Fail 1은 x-api-key 불일치 · WNG 필드 조건 · odometer · resultCd 처리 이슈 중 어느 건인지, 원인 주체 기록 확인 필요"],
+        ["DMS", "Fail 1 · NT 35", "NT 4 (HU 연결)", "NT 7 (CTI 연결)", "확인 필요", "건수는 11/17 NT 34건 분해 기준(선행 Blocked 17 · CTI 7 · HU 4 · 기타 6). 선행 Blocked · 기타는 건별 확인 필요. Fail 1은 11/17 Fail 2건(WNG Symbol 덮어쓰기 · CCW 위치 라벨) 중 남은 건 — 결함 여부 확인 필요"],
+        ["GS", "NT 38", "주 원인", "근거 없음", "0", "HU SW(SU#1) · MM Flag, GSA/Auth0(GSP DB상 TMC가 원인 인정, 11/6), DCM · DK 서버. 11/17 59건 분해(HU 22 · 선행 Blocked 17 · 기간 설정 12 · 기타 8) 이후 11/20 38건의 건별 분해는 미확보. HU는 GSP DB에 ‘TMC HU SW 구버전 + 한국 측 업데이트 미실행’ 복합으로 기록되어 있어 한국 측 주체 확인 필요"],
+        ["OPW", "NT 23", "확인 필요", "확인 필요", "0", "11/17 기준 23건 전량 ‘CAN Configuration 미확보 · 실패 환경 미구성’. CAN Configuration 제공 주체가 기록에 없어 귀책 미분류"],
+      ],
+      ownNote: "근거로 확인된 귀책: TMKR 측 CCW 236 · DMS CTI 연결 7(11/17), TMC 측 VDP NT 2 · DMS HU 연결 4(11/17) · GS 대부분. LGU+ 귀책으로 기록된 NT는 없음. Fail 2건과 나머지 NT는 영역 단위 원인만 있어 건별 확인 전에는 귀책을 단정하지 않음.",
       need: "필요 인력(Item2 ②): VDP " + (+mm("VDP Diag") + +mm("VDP CoCo")).toFixed(2) + " · ACOS " + (+mm("ACOS API") + +mm("ACOS Provisioning")).toFixed(2) + " · 외부시스템 " + ["MM/HU · DCM/ADF", "CTI/TCK", "Global/Local App", "DMS · Digital Key", "e-Care"].reduce((a, k) => a + +mm(k), 0).toFixed(2) + " · DVT 영향 " + mm("DVT 영향 분석") + " MM = 25.00 MM (11월 5 · 12월 10 · 1월 10)",
-      src: "근거: D1 DVT 통합 결과(11/20 개발 PM 확인 집계) · E4 이슈별 해결 일자(11/18 PM 정례회의록 · E2E 사전준비 · E2E 세부일정) · A5 · A10 · Item1 ② · Item2 ②. E2E 계약 인력(PM 0.25)은 계약 기준.",
+      src: "근거: D1 DVT 통합 결과(11/20 개발 PM 확인 집계) · DVT 결과 11/17 NT · Fail 분해 · GSP DB · E4 이슈별 해결 일자(11/18 PM 정례회의록 · E2E 사전준비 · E2E 세부일정) · A5 · A10 · Item1 ② · Item2 ②. E2E 계약 인력(PM 0.25) · 8개 시스템 15개 연동 · 24DCM 로직 변경은 내부 메모 기준.",
     };
     /* "중지함/중지하되" → 이미 중지된 사실로 */
     (function past(o) { Object.keys(o).forEach((k) => { const v = o[k]; if (typeof v === "string") o[k] = v.replace(/11\/23부로 중지하되/g, "11/23부로 중지되었으나").replace(/11\/23부로 중지하고/g, "11/23부로 중지되었고").replace(/11\/23부로 중지함/g, "11/23부로 중지됨").replace(/11\/23 중지하되/g, "11/23 중지되었으나"); else if (v && typeof v === "object") past(v); }); })({ DK, M, EV, apx: X.apxNew, ex: A.extraDvt });
