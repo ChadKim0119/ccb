@@ -444,6 +444,25 @@ module.exports = function (base) {
     /* "중지함/중지하되" → 이미 중지된 사실로 */
     (function past(o) { Object.keys(o).forEach((k) => { const v = o[k]; if (typeof v === "string") o[k] = v.replace(/11\/23부로 중지하되/g, "11/23부로 중지되었으나").replace(/11\/23부로 중지하고/g, "11/23부로 중지되었고").replace(/11\/23부로 중지함/g, "11/23부로 중지됨").replace(/11\/23 중지하되/g, "11/23 중지되었으나"); else if (v && typeof v === "object") past(v); }); })({ DK, M, EV, apx: X.apxNew, ex: A.extraDvt });
   })();
+  /* 11/24 메일 조사(받은편지함 10/19 ~ 11/23) 반영 — 근거가 메일로 확인된 것만 */
+  (function mail1124() {
+    const N = M.nodev;
+    N.now[2] = ["인터페이스는 그대로인데 로직이 바뀜", "API 프로토콜(인터페이스)은 유지되나 24DCM과 로직이 바뀌고 있음 — 예: 회원가입 프로세스 변경. 관련 검토(10/12 OneID 영향도 검토 메일): Auth0 · 백엔드 · QA 영향도 ‘매우 높음’, 통합 방식과 사용자 식별 체계를 먼저 정해야 함", ""];
+    N.ownRows.forEach((r) => {
+      if (r[0] === "VDP(Diag)") r[5] = r[5].replace("NT 2는 VDP 서버(TMC) 영향.", "NT 2는 VDP 서버(TMC) 영향(10/27 VDP 접속 주소 변경 경과 메일).");
+      if (r[0] === "GS") r[5] = r[5].replace("GSA/Auth0(GSP DB상 TMC가 원인 인정, 11/6)", "GSA/Auth0(GSP DB상 TMC가 원인 인정 11/6, 11/04 Auth0 흰 화면 원인 분석 메일)");
+    });
+    N.src = N.src.replace("GSP DB · E4", "GSP DB · 11/24 메일 조사(10/12 OneID 영향도 검토, 10/27 VDP 접속 주소 변경 경과, 11/04 Auth0 흰 화면 원인 분석) · E4");
+    if (DK.ev && DK.ev.vdp) DK.ev.vdp.facts.push("10/27 VDP 접속 주소 변경 경과 메일: 접속 주소(Endpoint) 변경이 이어진 경과 기록");
+    const DKR = [
+      ["TSC-DK Wrapper 신규 연계 (일자 확인 중)", "TSC-DK Wrapper 신규 연계 (11/04 방화벽 등록 요청 메일)"],
+      ["White List 필요 (일자 확인 중)", "White List 필요 (11/04 방화벽 등록 요청)"],
+      ["Digital Key 발생 일자는 개발팀 확인 후 갱신 예정", "Digital Key: 11/04 방화벽(White List) 등록 요청 메일로 연동 작업 확인. 최초 발생 일자는 개발팀 확인 후 갱신 예정"],
+      ["근거 없는 항목: DMS 1.05 · Digital Key 0.25 · Share User 409", "근거 없는 항목: DMS 1.05 · Share User 409"],
+      ["근거가 없는 항목: DMS 1.05 · Digital Key 0.25", "근거가 없는 항목: DMS 1.05 (Digital Key 0.25는 11/04 방화벽 등록 요청 메일로 확인)"],
+    ];
+    (function rep(o) { Object.keys(o).forEach((k) => { const v = o[k]; if (typeof v === "string") o[k] = DKR.reduce((t, r) => t.split(r[0]).join(r[1]), v); else if (v && typeof v === "object") rep(v); }); })({ DK, M, EV, A, X });
+  })();
   base.M = M;
   base.X = X;
   /* 고객사에 LGU+ 이름으로 나가는 자료: 요청 · 부담 주체를 LGU+로 통일 (변경 이력 meta는 원문 유지) */
