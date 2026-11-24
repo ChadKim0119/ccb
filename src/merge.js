@@ -385,6 +385,44 @@ module.exports = function (base) {
     if (X.apxNew.m11 && X.apxNew.m11.message) X.apxNew.m11.message = X.apxNew.m11.message.replace("Open Item으로 두고 일정 조율을 통해 지속 관리함", "Open Item으로 두고, DVT 중지(11/23, 고객사 요청) 이후에도 해결까지 관리함");
     if (EV.e2e11) { EV.e2e11.title = "DVT 중지(11/23) · 잔여 이슈 해결 + E2E 병행 수행"; EV.e2e11.facts = [STOP + "하되, 잔여 이슈는 해결까지 관리하고 E2E는 병행 수행"].concat(EV.e2e11.facts.slice(1).map((t) => t.replace("E2E 기간에도 DVT 잔여 대응 인력이 함께 필요", "E2E 기간에도 잔여 이슈 해결 인력이 함께 필요"))); }
   })();
+
+  /* ── 11/24 (2): DVT는 이미 중지됨 · E2E 계약 인력은 PM 0.25(분석)뿐 · 개발 인력 없이 E2E 진행 시 문제점 ── */
+  (function noDev() {
+    const E2EC = "E2E 계약 인력은 PM 0.25 MM(분석 업무)만 할당되어 있음 — DVT가 정상 종료된다는 전제로 산정된 것";
+    DK.man.bullets.push("E2E 계약 기준 인력은 PM 0.25 MM(분석 업무)뿐이며, 이는 DVT가 정상 종료된다는 전제로 산정되었습니다. DVT가 중지되어 잔여 이슈가 남은 지금은 결함 수정 · 재확인을 맡을 개발 인력이 계약에 없습니다.");
+    EV.p2.facts.unshift(E2EC + ". DVT가 중지되어 잔여 이슈가 남은 상태로 E2E에 진입하므로 개발 인력이 별도로 필요");
+    DK.plan.prem[1][2] = DK.plan.prem[1][2] + ". E2E 계약 인력은 PM 0.25(분석)뿐 — DVT 정상 종료 전제";
+    EV.prem.facts = DK.plan.prem.map((r) => r[0] + ". " + r[1] + " — " + r[2] + " (달라지면: " + r[3] + ")");
+    const R = {}; (X.apxNew.m11 ? X.apxNew.m11.rows : []).forEach((r) => { R[r[0]] = r; });
+    const tot = R["합계"] || ["합계", "992", "656", "2", "334", "66.1%"], open = (+tot[3]) + (+tot[4]);
+    const ar = {}; DK.man.areaRows.forEach((r) => { if (r[1]) ar[r[1]] = r; });
+    const mm = (k) => ar[k] ? ar[k][6] : "";
+    M.nodev = {
+      kicker: "Item2 · 개발 인력 없이 E2E를 진행할 경우",
+      title: "개발 인력 없이 E2E를 진행할 경우의 문제점",
+      lead: "DVT는 고객사 요청으로 11/23부로 중지되었고, " + E2EC + "임. 중지 시점에 남은 잔여 이슈는 개발 수정 없이는 해소되지 않으므로, 계약 인력만으로 E2E를 진행하면 아래 문제가 생김.",
+      kpi: [["DVT 중지 시점 미완료", open + " TC", "Fail " + tot[3] + " · NT " + tot[4] + " / " + tot[1] + " TC (" + (open / +tot[1] * 100).toFixed(1) + "%)"], ["미해소 Critical Blocker", "4 / 5건", "VDP Diag · CTI/TCK · DMS · ACOS API"], ["E2E 계약 인력", "PM 0.25", "분석 업무만 · 개발 0"], ["E2E 기간", "11/23 ~ 12/30", "e-Care E2E 12/14 ~ 12/30 계획"]],
+      areaHead: ["영역", "Total", "Fail", "NT", "미완료", "개발 인력이 없으면"],
+      areaRows: [
+        ["GS", "GS 잔여 NT 재시험 중 결함이 나와도 수정 · 재배포할 사람이 없음"],
+        ["OPW", "잔여 NT 재수행 결과에 따른 수정 불가"],
+        ["CCW", "CTI/TCK 중계서버 연계 개발(최대 3주)이 끝나지 않아 236 TC 전량 미수행 — 개발 없이는 E2E에서도 시험 자체가 불가"],
+        ["DMS", "API 5 → 24개 반영 중, 최종 변경분 E2E TC Merge 필요 — 반영 작업이 멈춤"],
+        ["VDP(Diag)", "Fail 1 · NT 2 미해소 — VDP 서버 정상화 후 수정 · 재확인 필요, 안 되면 e-Care E2E는 시뮬레이터로 KR 영역만 시험"],
+      ].filter((x) => R[x[0]]).map((x) => { const r = R[x[0]]; return [x[0], r[1], r[2] === undefined ? "" : r[3], r[4], String((+r[3]) + (+r[4])), x[1]]; }),
+      issues: [
+        { h: "결함이 나와도 고칠 사람이 없음", t: "10 ~ 11월 DVT 시험 · 결함 대응에만 개발 · 품질 인력 17.95 MM이 실제로 투입되었고, 1 ~ 3차 시험마다 결함 수정 · 재배포(예: 2차 수정 반영 11.03 ~ 11.10)를 반복함. E2E도 같은 영역을 시험하므로 결함이 예상되나, 계약 인력(PM 0.25)은 분석만 할 수 있음.", ev: [["i1-mm", "Item1 ② 17.95 MM (인지)"], ["dvt", "A5 DVT 수행 일정"], ["dvt-run", "A10 DVT 수행 실적"]] },
+        { h: "선행 조건이 풀려도 후속 개발을 할 수 없음", t: "미해소 Blocker 4건은 모두 해소되는 시점에 개발 작업이 따라붙음: VDP Diag 수정 · 재확인, CTI/TCK 중계서버 연계 개발(최대 3주), DMS API 5 → 24개 반영, ACOS API 미동작 버전 6개 정리(Redoc · Pre-PROD 반영 시 추가 개발 가능).", ev: [["blk-dates", "E4 이슈별 해결 일자 · 현재 상태"], ["chg-plan", "A16 항목별 예정 vs 실제와 공수"]] },
+        { h: "CCW 236 TC는 한 번도 시험되지 않은 상태", t: "CCW는 DVT 기간 내내 CTI 연계환경 미해소로 0 / 236 TC 수행. 개발이 끝나야 처음 시험할 수 있고, 처음 수행하는 시험이라 결함 발생 가능성이 가장 높음.", ev: [["apx-total", "D1 DVT 통합 결과 (992 TC)"], ["blk-dates", "E4 CTI/TCK 중계"]] },
+        { h: "회귀 테스트에서 나온 결함도 대응 불가", t: "회귀 테스트는 TMC Procedure 제공(11월 말 예상) · DCM Update 지원 후 수행되며 1월로 넘어갈 가능성이 있음(11/18 PM 회의). 회귀 결함을 수정할 개발 인력이 없으면 회귀 완료 판정을 받을 수 없음.", ev: [["apx-pre", "E2E 사전 준비 · 회귀 테스트"]] },
+        { h: "Migration 단계 진입이 막힘", t: "24DCM Pre-Prod Regression Test는 ACOS E2E와 Regression이 모두 정상 완료된 경우에만 Migration 단계로 진행함. 잔여 이슈와 E2E 결함이 수정되지 않으면 Migration 일정 전체가 뒤로 밀림.", ev: [["dvt", "A5 일정 변경 비교 (24DCM Pre-Prod Regression)"]] },
+      ],
+      need: "필요 인력(Item2 ②): VDP " + (+mm("VDP Diag") + +mm("VDP CoCo")).toFixed(2) + " · ACOS " + (+mm("ACOS API") + +mm("ACOS Provisioning")).toFixed(2) + " · 외부시스템 " + ["MM/HU · DCM/ADF", "CTI/TCK", "Global/Local App", "DMS · Digital Key", "e-Care"].reduce((a, k) => a + +mm(k), 0).toFixed(2) + " · DVT 영향 " + mm("DVT 영향 분석") + " MM = 25.00 MM (11월 5 · 12월 10 · 1월 10)",
+      src: "근거: D1 DVT 통합 결과(11/20 개발 PM 확인 집계) · E4 이슈별 해결 일자(11/18 PM 정례회의록 · E2E 사전준비 · E2E 세부일정) · A5 · A10 · Item1 ② · Item2 ②. E2E 계약 인력(PM 0.25)은 계약 기준.",
+    };
+    /* "중지함/중지하되" → 이미 중지된 사실로 */
+    (function past(o) { Object.keys(o).forEach((k) => { const v = o[k]; if (typeof v === "string") o[k] = v.replace(/11\/23부로 중지하되/g, "11/23부로 중지되었으나").replace(/11\/23부로 중지하고/g, "11/23부로 중지되었고").replace(/11\/23부로 중지함/g, "11/23부로 중지됨").replace(/11\/23 중지하되/g, "11/23 중지되었으나"); else if (v && typeof v === "object") past(v); }); })({ DK, M, EV, apx: X.apxNew, ex: A.extraDvt });
+  })();
   base.M = M;
   base.X = X;
   /* 고객사에 LGU+ 이름으로 나가는 자료: 요청 · 부담 주체를 LGU+로 통일 (변경 이력 meta는 원문 유지) */

@@ -747,6 +747,26 @@ body.editing #app .ed-ing:not(.ed-s) { outline: 2px solid var(--accent); outline
 .blk5 .bc.hot .who { color: #ff7ab8; }
 .blk-t { margin-top: 18px; font-size: 16px; }
 .blk-foot { margin-top: 6px; font-size: 12.5px; color: var(--ink-2); }
+.nd-cta { margin: 18px 0 0; }
+.nd-btn { display: flex; align-items: center; gap: 14px; width: 100%; text-align: left; font: inherit; cursor: pointer; background: var(--paper); border: 1.5px solid var(--i2); border-left-width: 6px; border-radius: 8px; padding: 12px 16px; color: var(--ink); }
+.nd-btn b { font-size: 15px; color: var(--i2); flex: none; }
+.nd-btn span { font-size: 13px; color: var(--ink-2); flex: 1; }
+.nd-btn i { font-style: normal; font-size: 22px; color: var(--i2); }
+.nd-btn:hover { background: #eef1f8; }
+.nd-btn.ov { margin-top: 10px; padding: 8px 12px; gap: 10px; border-left-width: 5px; }
+.nd-btn.ov b { font-size: 13.5px; } .nd-btn.ov span { font-size: 12px; } .nd-btn.ov i { font-size: 18px; }
+.nd-kpi { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 4px 0 6px; }
+.nd-kpi div { background: var(--wash); border-radius: 6px; padding: 8px 10px; }
+.nd-kpi small { display: block; font-size: 11.5px; color: var(--ink-2); }
+.nd-kpi b { display: block; font-size: 18px; color: var(--i2); }
+.nd-kpi span { display: block; font-size: 11.5px; color: var(--ink-3); line-height: 1.35; }
+@media (max-width: 600px) { .nd-kpi { grid-template-columns: 1fr 1fr; } .nd-btn { flex-wrap: wrap; } }
+.nd-list { margin: 0; padding-left: 20px; }
+.nd-list li { margin: 0 0 12px; }
+.nd-list li b { font-size: 14px; }
+.nd-list li p { margin: 2px 0 4px; }
+.nd-ev { font-size: 12px; } .nd-ev a { color: var(--accent-deep); }
+.nd-need { background: #eef1f8; border-left: 4px solid var(--i2); padding: 8px 12px; border-radius: 4px; color: var(--ink) !important; font-weight: 600; font-size: 13px; }
 @media (max-width: 980px) { .blk5 { grid-template-columns: 1fr; } .ccb-cols { grid-template-columns: 1fr; } }
 .man-cols { margin-top: 16px; display: grid; grid-template-columns: 1fr 1.3fr; gap: 36px; align-items: start; }
 .man-ul { margin: 14px 0 0; padding-left: 18px; font-size: 13.5px; line-height: 1.6; color: var(--ink-2); } .man-ul li + li { margin-top: 7px; } .man-ul li:last-child { color: var(--ink); font-weight: 600; }
@@ -1605,7 +1625,8 @@ td.tkm { background: rgba(23, 20, 26, .045); box-shadow: inset 0 -2px 0 rgba(23,
       '<p class="ovst">' + esc(b.stance) + '</p>' +
       '<div class="ovend">' + b.end.map(function (e) { return '<button type="button" class="' + (e.hot ? "hot" : "") + '" data-panel="dv:end"><small>' + esc(e.k) + '</small><b class="num">' + e.mm + '<em>MM</em></b><span>' + esc(e.c) + '</span><span class="mut">' + esc(e.d) + '</span></button>'; }).join("") + '</div>' +
       '<p class="ovnote">' + esc(b.endNote) + '</p>' +
-      '<p class="ovgo">' + b.go.map(function (g) { return '<a href="#' + g[0] + '">' + esc(g[1]) + ' <span aria-hidden="true">›</span></a>'; }).join("") + '</p></div>';
+      '<p class="ovgo">' + b.go.map(function (g) { return '<a href="#' + g[0] + '">' + esc(g[1]) + ' <span aria-hidden="true">›</span></a>'; }).join("") + '</p>' +
+      '<button type="button" class="nd-btn ov" data-panel="nodev"><b>개발 인력 없이 E2E를 진행하면?</b><span>DVT 중지 시점 미완료 336 TC · 미해소 Blocker 4건 · E2E 계약 인력 PM 0.25(분석)</span><i aria-hidden="true">›</i></button></div>'; /* 카드 맨 끝에 추가 → 화면 편집 경로 영향 없음 */
     var stl = { done: "제출", part: "일부 제출 · 보완 중", todo: "개발사 확인 중" };
     var req = '<div class="ovreq"><a class="ovreq-h" href="#evreq">고객사 증적 요청 5건 대응 <span aria-hidden="true">›</span></a>' + MG.evreq.rows.map(function (r) { return '<a class="rq ' + r.st + '" href="#evreq"><i></i><span><b>' + r.no + '</b> ' + esc(r.ask.replace(/\s*\(.*\)$/, "")) + '</span><small>' + stl[r.st] + '</small></a>'; }).join("") + '</div>';
     return '<section class="sheet hero ov" id="overview"><span class="sheet-no"><span class="pill main">메인</span>종합 요약 · Item1 + Item2</span>' +
@@ -1754,6 +1775,14 @@ td.tkm { background: rgba(23, 20, 26, .045); box-shadow: inset 0 -2px 0 rgba(23,
 
   /* ── 패널: 지연 사유 · Item2 ── */
   function panelMerged(k) {
+    if (k[0] === "nodev") {
+      var N = MG.nodev;
+      var h = '<p>' + esc(N.lead) + '</p><div class="nd-kpi">' + N.kpi.map(function (x) { return '<div><small>' + esc(x[0]) + '</small><b class="num">' + esc(x[1]) + '</b><span>' + esc(x[2]) + '</span></div>'; }).join("") + '</div>' +
+        '<h4>DVT 중지 시점 영역별 미완료 TC (11/20 개발 PM 확인 집계)</h4>' + table(N.areaHead, N.areaRows.concat([["<b>합계</b>", "<b>992</b>", "<b>2</b>", "<b>334</b>", "<b>336</b>", ""]]).map(function (r, i) { return i < N.areaRows.length ? r.map(esc) : r; }), { right: [1, 2, 3, 4], nowrap: [0, 1, 2, 3, 4], raw: 1, rowCls: function (r) { return /합계/.test(r[0]) ? "tot" : ""; } }) +
+        '<h4>개발 인력 없이 E2E를 진행하면</h4><ol class="nd-list">' + N.issues.map(function (x) { return '<li><b>' + esc(x.h) + '</b><p>' + esc(x.t) + '</p><span class="nd-ev">' + x.ev.map(function (e) { return '<a href="#' + e[0] + '">' + esc(e[1]) + '</a>'; }).join(" · ") + '</span></li>'; }).join("") + '</ol>' +
+        '<p class="nd-need">' + esc(N.need) + '</p><p class="mut" style="font-size:12px">' + esc(N.src) + '</p>';
+      return { kicker: N.kicker, title: N.title, html: h };
+    }
     if (k[0] === "why" && k[1] === "late") return { kicker: "Item1 · 고객사 문의 답변", title: "ACOS · VDP 건 공수 제출이 늦어진 경위", html: bLate(true) };
     if (k[0] === "why" && k[1] === "810") { var a = MG.why810; return { kicker: "Item1 ① · 지연 사유 · 증적", title: a.h, html: '<p>' + esc(a.why) + '</p><h4>규격 배포 이력</h4>' + table(["일자", "내용", "출처"], A.history.rows.filter(function (r) { return r[1] === "규격"; }).map(function (r) { return [r[0], r[2], r[3]]; }), { nowrap: [0] }) + '<h4>변경 개발 12개 항목 (항목을 누르면 AS-IS / TO-BE · 증적 이미지)</h4>' + bChgdev() + '<h4>DVT 일정 조정 경과</h4>' + table(["시점", "내용"], G.delay.items, { nowrap: [0] }) + '<h4>증적</h4><p>' + evLinks(a.ev) + '</p>' }; }
     if (k[0] === "why" && k[1] === "cat") {
@@ -1815,6 +1844,7 @@ td.tkm { background: rgba(23, 20, 26, .045); box-shadow: inset 0 -2px 0 rgba(23,
   function markTk(root) {
     Array.prototype.forEach.call(root.querySelectorAll("td, th, span, b, h4, h5, dt, .cx"), function (e) {
       if (!e.closest(TK_SCOPE) || e.closest("#blk-dates, .dvnow, .pre, .prec, #srch, .tk")) return;
+      var tb = e.closest("table"); if (tb && Array.prototype.some.call(tb.querySelectorAll("thead th"), function (h) { return h.textContent.trim() === "NT"; })) return; /* DVT 시험 결과 표(Pass · Fail · NT)는 비용 항목이 아님 */
       if (Array.prototype.some.call(e.children, function (c) { return !/^(B|I|EM|STRONG|SMALL|SPAN)$/.test(c.tagName) || c.children.length; })) return;
       if (TK_NAME.test(e.textContent.replace(/\s+/g, " ").trim()) && !e.querySelector(".tk")) e.classList.add("tk");
     });
