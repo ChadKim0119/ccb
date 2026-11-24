@@ -467,6 +467,45 @@ module.exports = function (base) {
     N.src = N.src.replace(" · 8개 시스템 15개 연동", "").replace("GSP DB · 11/24", "GSP DB(DCM Lifecycle 구성도) · 11/24");
     (function rep(o) { Object.keys(o).forEach((k) => { const v = o[k]; if (typeof v === "string") o[k] = DKR.reduce((t, r) => t.split(r[0]).join(r[1]), v); else if (v && typeof v === "object") rep(v); }); })({ DK, M, EV, A, X });
   })();
+  /* 11/24 공유된 최신 Kensho E2E 일정(5단계, 11/23 ~ 2/26) 반영 */
+  (function e2eSched() {
+    X.src.sch1124 = { t: "Kensho E2E 테스트 일정 (최신, 11/24 공유)", u: "", n: "내부 자료" };
+    const SCH = [
+      ["27 LifeCycle", "11/23 ~ 12/11", "27 DCM LifeCycle, Local App 중심 평가", [2026, 11, 23], [2026, 12, 11], "27 LifeCycle"],
+      ["GSA Deeplink + Ecall", "12/14 ~ 12/18", "Global App과 Local App 간 연동 확인", [2026, 12, 14], [2026, 12, 18], "Deeplink · Ecall"],
+      ["27 e-Care + 중점평가", "12/21 ~ 12/31", "e-Care 평가, DMS · VDP 연동 확인", [2026, 12, 21], [2026, 12, 31], "27 e-Care · 중점평가"],
+      ["24 LifeCycle 회귀테스트 + Ecall", "01/01 ~ 02/05", "24 DCM LifeCycle, eCall 동작 확인", [2027, 1, 1], [2027, 2, 5], "24 LifeCycle 회귀 · Ecall"],
+      ["27MM 중점평가 + GS(HU)", "02/08 ~ 02/26", "HU 연관 GS 서비스 확인", [2027, 2, 8], [2027, 2, 26], "27MM 중점평가 · GS(HU)"],
+      ["재테스트 및 결과 리포트", "상시", "재테스트 및 정리, 결과 리포트 작성", null, null, ""],
+    ];
+    const schFacts = SCH.map((r) => r[0] + " (" + r[1] + "): " + r[2]);
+    EV.e2esch = { kicker: "Kensho E2E 일정", title: "Kensho E2E 5단계 · 11/23 ~ 2/26", facts: schFacts.concat(["수행 장소: DMC 회의실", "e-Care E2E(DMS · VDP 연동 확인)는 12/21 ~ 12/31, 24 LifeCycle 회귀테스트는 1/1 ~ 2/5"]), src: ["sch1124"], apx: "apx-pre" };
+    /* 타임라인: 2/28까지 확장, E2E 레인은 5단계 막대 */
+    const T = DK.tl;
+    T.days = 105;
+    T.marks = T.marks.map((m) => m.ev === "dv:deadline" ? Object.assign({}, m, { d: [2026, 12, 31], l: "12/31 해결 현황 점검" }) : m).concat([{ d: [2027, 2, 26], l: "2/26 E2E 종료", ev: "dv:e2esch" }]);
+    T.lanes[1].sub = "5단계 · 잔여 이슈 해결과 병행";
+    T.lanes[1].bars = SCH.filter((r) => r[3]).map((r) => ({ a: r[3], b: r[4], t: "e2e", l: r[5], ev: "dv:e2esch" }));
+    DK.plan.tracks[1] = { h: "Kensho E2E · 5단계 (11/23 ~ 2/26)", b: "27 LifeCycle(Local App 중심) → GSA Deeplink · Ecall → 27 e-Care · 중점평가(DMS · VDP) → 24 LifeCycle 회귀 · Ecall → 27MM 중점평가 · GS(HU). 잔여 이슈 해결과 병행", ev: "dv:e2esch" };
+    /* 12/30 → 최신 일정 기준 */
+    EV.deadline.title = "12/31 = E2E 3단계(27 e-Care + 중점평가) 종료 · 잔여 이슈 해결 현황 점검";
+    EV.deadline.facts = EV.deadline.facts.map((t) => /e-Care E2E 종료일 12\/30/.test(t) ? "최신 E2E 일정상 27 e-Care + 중점평가(DMS · VDP 연동 확인) 종료일 12/31. 24 LifeCycle 회귀테스트는 1/1 ~ 2/5" : t);
+    if (EV.deadline.src) EV.deadline.src = EV.deadline.src.concat(["sch1124"]);
+    EV.e2e1.title = "27 LifeCycle 우선 진행, 잔여 이슈 해결과 병행 (11/23 ~ 12/11)";
+    EV.e2e1.facts = EV.e2e1.facts.map((t) => t.replace(/^12\/30 회귀 테스트 종료 시점에/, "12/31(E2E 3단계 종료) 시점에"));
+    EV.e2e1.facts.push("최신 E2E 일정: " + schFacts[0] + " → " + SCH.slice(1, 5).map((r) => r[0] + " " + r[1]).join(" → "));
+    EV.e2e1.src = (EV.e2e1.src || []).concat(["sch1124"]);
+    EV.e2e11.facts = EV.e2e11.facts.map((t) => t === "E2E 세부일정: 11/23 진입, 12/30 회귀 테스트 종료" ? "E2E 일정(최신): 11/23 진입 → 27 e-Care + 중점평가 12/21 ~ 12/31 → 24 LifeCycle 회귀테스트 1/1 ~ 2/5 → 27MM 중점평가 + GS(HU) 2/26 종료" : t);
+    EV.e2e11.src = (EV.e2e11.src || []).concat(["sch1124"]);
+    if (EV.t1123) EV.t1123.facts.push("최신 E2E 일정(11/24 공유): 27 LifeCycle 11/23 ~ 12/11 (Local App 중심 평가)");
+    const RR = [["e-Care E2E 12/14 ~ 12/30 계획", "e-Care E2E(27 e-Care + 중점평가) 12/21 ~ 12/31 계획"]];
+    (function rep(o) { Object.keys(o).forEach((k) => { const v = o[k]; if (typeof v === "string") o[k] = RR.reduce((t, r) => t.split(r[0]).join(r[1]), v); else if (v && typeof v === "object") rep(v); }); })({ DK, A, X, M });
+    DK.plan.tracks[2] = { h: "24 LifeCycle 회귀테스트 · 1/1 ~ 2/5 계획", b: "최신 E2E 일정상 24 DCM LifeCycle · eCall 동작 확인을 1/1 ~ 2/5에 수행. TMC Procedure 제공(11월 말 예상)과 DCM Update 지원이 먼저 확보되어야 함(11/18 PM 회의)", ev: "dv:reg" };
+    if (EV.reg) { EV.reg.facts.unshift("최신 E2E 일정: 24 LifeCycle 회귀테스트 + Ecall 1/1 ~ 2/5 (24 DCM LifeCycle, eCall 동작 확인)"); EV.reg.src = (EV.reg.src || []).concat(["sch1124"]); }
+    M.nodev.issues.forEach((x) => { if (/회귀 테스트에서/.test(x.h)) x.t = "회귀 테스트(24 LifeCycle 회귀 + Ecall)는 1/1 ~ 2/5 일정이며, TMC Procedure 제공(11월 말 예상) · DCM Update 지원이 선결되어야 함(11/18 PM 회의). 회귀 결함을 수정할 개발 인력이 없으면 회귀 완료 판정을 받을 수 없음."; });
+    const N = M.nodev;
+    N.kpi[3] = ["E2E 기간", "11/23 ~ 2/26", "e-Care 12/21 ~ 12/31 · 24 회귀 1/1 ~ 2/5"];
+  })();
   base.M = M;
   base.X = X;
   /* 고객사에 LGU+ 이름으로 나가는 자료: 요청 · 부담 주체를 LGU+로 통일 (변경 이력 meta는 원문 유지) */

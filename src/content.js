@@ -912,7 +912,7 @@ module.exports.meta.changelog.unshift({ v: "v20", at: "2026.11.21", items: [
   "부록 추가: E1 고객사 증적 요청 5개 항목 대응표, E2 항목별 지연 사유 · 증적, B1 월별 투입 공수 표(기존 4장), Item2 DVT 결과 · 원인 · E2E 준비 부록",
   "A13 · A16 현재 상태를 최신 평가로 갱신, A15 · A16 향후 공수를 Item2 산정(25.00 MM)으로 통일"
 ] });
-module.exports.meta.changelog.unshift({ v: "v21", at: "2026.11.24", items: ["Item2 전제 재정리: DVT는 고객사 요청으로 11/23부로 중지, 중지 시점 잔여 이슈(Fail 2 · NT 334)는 해결까지 관리하고 E2E(GS TC 위주)와 병행. 12월 말 / 1월 말은 잔여 이슈 해결 완료 시점 기준으로 표기", "TMKR 연계 항목(CTI/TCK · Global/Local App · DMS)에 표식 추가", "DVT는 중지된 사실로 표기, E2E 계약 인력(PM 0.25, 분석 업무 · DVT 정상 종료 전제) 반영", "첫 장 Item2 카드에 ‘개발 인력 없이 E2E를 진행할 경우의 문제점’ 드로어 추가 — 전제(LGU+ 개발 완료 · PM 0.25는 DVT 클리어 전제 프레임), 현황, 잔여 Fail · NT 귀책 구분(TMC / TMKR / LGU+, 근거 없는 건은 확인 필요로 표기), 우려점 (DVT 통합 결과 · E4 · A5 · A10 기반)"] });
+module.exports.meta.changelog.unshift({ v: "v21", at: "2026.11.24", items: ["Item2 전제 재정리: DVT는 고객사 요청으로 11/23부로 중지, 중지 시점 잔여 이슈(Fail 2 · NT 334)는 해결까지 관리하고 E2E(GS TC 위주)와 병행. 12월 말 / 1월 말은 잔여 이슈 해결 완료 시점 기준으로 표기", "TMKR 연계 항목(CTI/TCK · Global/Local App · DMS)에 표식 추가", "DVT는 중지된 사실로 표기, E2E 계약 인력(PM 0.25, 분석 업무 · DVT 정상 종료 전제) 반영", "첫 장 Item2 카드에 ‘개발 인력 없이 E2E를 진행할 경우의 문제점’ 드로어 추가 — 전제(LGU+ 개발 완료 · PM 0.25는 DVT 클리어 전제 프레임), 현황, 잔여 Fail · NT 귀책 구분(TMC / TMKR / LGU+, 근거 없는 건은 확인 필요로 표기), 우려점 (DVT 통합 결과 · E4 · A5 · A10 기반)", "Kensho E2E 일정을 최신 5단계(27 LifeCycle 11/23 ~ 12/11 → GSA Deeplink · Ecall 12/14 ~ 12/18 → 27 e-Care · 중점평가 12/21 ~ 12/31 → 24 LifeCycle 회귀 · Ecall 1/1 ~ 2/5 → 27MM 중점평가 · GS(HU) 2/8 ~ 2/26)로 갱신, 점검일 12/30 → 12/31"] });
 
 if (require.main === module) {
   const d = module.exports;
